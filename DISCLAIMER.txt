@@ -1,0 +1,57 @@
+DISCLAIMER  /  HAFTUNGSAUSSCHLUSS
+Capybara Gem Scanner (Community Edition)
+===============================================================================
+
+[ENGLISH]
+
+- UNOFFICIAL fan tool. This program is NOT affiliated with, endorsed by, or
+  connected to the makers of "Capybara Go" or any related company. All product
+  names, game names, logos and trademarks are the property of their respective
+  owners and are used here for identification and descriptive purposes only.
+
+- What it does: the tool only READS what is shown on your screen (via
+  screenshots/OCR) and gives advice. It does NOT modify the game, automate
+  input, or access the game's memory or network traffic.
+
+- Use at your own risk: using any third-party tool alongside a game may be
+  subject to that game's Terms of Service. You use this tool AT YOUR OWN RISK.
+
+- Data: all gem / build / skill values are COMMUNITY ESTIMATES gathered from
+  public community sources (e.g. meowdb, NiaMeowDB, game-vault wiki). They are
+  not official game data and may be inaccurate or outdated.
+
+- No warranty: the software is provided "AS IS", WITHOUT WARRANTY OF ANY KIND.
+  The authors are not liable for any damages arising from its use (see
+  LICENSE.txt).
+
+- Free / non-commercial. Bundled open-source components keep their own
+  licenses - see THIRD-PARTY-LICENSES.txt.
+
+===============================================================================
+
+[DEUTSCH]
+
+- INOFFIZIELLES Fan-Tool. Dieses Programm steht in KEINER Verbindung zu den
+  Machern von "Capybara Go" und wird von ihnen weder unterstuetzt noch
+  herausgegeben. Alle Produkt-/Spielnamen, Logos und Marken gehoeren ihren
+  jeweiligen Eigentuemern und dienen hier nur der Identifikation/Beschreibung.
+
+- Was es tut: Das Tool LIEST nur, was auf deinem Bildschirm angezeigt wird
+  (per Screenshot/OCR), und gibt Empfehlungen. Es VERAENDERT das Spiel nicht,
+  automatisiert keine Eingaben und greift nicht auf Spielspeicher oder
+  Netzwerkverkehr zu.
+
+- Nutzung auf eigene Gefahr: Die Verwendung von Drittanbieter-Tools neben einem
+  Spiel kann den Nutzungsbedingungen (AGB) des Spiels unterliegen. Die Nutzung
+  erfolgt AUF EIGENE GEFAHR.
+
+- Daten: Alle Edelstein-/Build-/Skill-Werte sind COMMUNITY-EINSCHAETZUNGEN aus
+  oeffentlichen Quellen (z. B. meowdb, NiaMeowDB, game-vault). Keine offiziellen
+  Spieldaten; koennen ungenau oder veraltet sein.
+
+- Keine Gewaehr: Die Software wird "WIE BESEHEN" ohne jegliche GEWAEHRLEISTUNG
+  bereitgestellt. Die Autoren haften nicht fuer Schaeden aus der Nutzung
+  (siehe LICENSE.txt).
+
+- Kostenlos / nicht-kommerziell. Gebuendelte Open-Source-Komponenten behalten
+  ihre eigenen Lizenzen - siehe THIRD-PARTY-LICENSES.txt.

@@ -1,0 +1,777 @@
+{
+  "_meta": {
+    "note": "Community-Guides (NiaMeowDB Mai 2026 u.a.). Keine offiziellen Daten. Quelle pro Build verlinkt. | v24: feinkörnige prefs (Blitz/Feuer/Explosion/Normal/Physisch) pro Build."
+  },
+  "builds": [
+    {
+      "name": "Whisperer / Elres  (Bogen · Dolch-Krit · PvE+PvP)",
+      "prefs": {
+        "dagger": 1.3,
+        "crit": 1.25,
+        "combo": 1.15,
+        "final": 1.05,
+        "rage": 0.85,
+        "swordchi": 0.3,
+        "coef_other": 0.4,
+        "lightning": 0.2,
+        "fire": 0.2,
+        "explosion": 0.15,
+        "normal": 0.7
+      },
+      "char": {
+        "inheritance": {
+          "de": "Ghost-Baum (bester Allround). Spät-PvP-Burst: Ranger-Baum.",
+          "en": "Ghost tree (best all-round). Late-PvP burst: Ranger tree."
+        },
+        "adventurer": {
+          "de": "Gagarin (meta). Früh/PvP-Kombo: Leonardo bis 5★.",
+          "en": "Gagarin (meta). Early/PvP-combo: Leonardo until 5★."
+        },
+        "heroes": {
+          "pve_de": "Knight of the End + Geisterprinzessin (Ghost Princess). Mythisch: April O'Neil als Ersatz.",
+          "pve_en": "Knight of the End + Ghost Princess. Mythic: April O'Neil substitute.",
+          "pvp_de": "Knight of the End + Geisterprinzessin (oder April O'Neil).",
+          "pvp_en": "Knight of the End + Ghost Princess (or April O'Neil)."
+        },
+        "brands": {
+          "pve_de": "Fantasy Joker, White Robe Wizard, Cleopatra. Murloc (Kombo) früh, später SS Vulture. Boneclub Golem (Krit) leveln.",
+          "pve_en": "Fantasy Joker, White Robe Wizard, Cleopatra. Murloc (combo) early, later SS Vulture. Level Boneclub Golem (crit).",
+          "pvp_de": "Fantasy Joker, White Robe Wizard, Frankenstein, Cleopatra.",
+          "pvp_en": "Fantasy Joker, White Robe Wizard, Frankenstein, Cleopatra."
+        },
+        "pets": {
+          "pve_de": "Ice Queen + Freya + Piggy. Früh: Unicorn + Slime King + Little Elephant.",
+          "pve_en": "Ice Queen + Freya + Piggy. Early: Unicorn + Slime King + Little Elephant.",
+          "pvp_de": "Ice Queen + Freya + Unicorn (Piggy raus – Kombo in PvP unsicher).",
+          "pvp_en": "Ice Queen + Freya + Unicorn (drop Piggy)."
+        },
+        "mounts": {
+          "de": "Diego (aktiv: Kombo +1/+20%), Laputa (PvE), Sphinx (Tower/PvP), Catastrophe (Tank). Diego NICHT erwecken.",
+          "en": "Diego (active: combo +1/+20%), Laputa (PvE), Sphinx (Tower/PvP), Catastrophe (tank). Do NOT awaken Diego."
+        },
+        "collection": {
+          "de": "1st Anniversary Cake (Skill-Krit). PvP zusätzlich Wave-Treading Dragon Boat.",
+          "en": "1st Anniversary Cake (Skill Crit). PvP also Wave-Treading Dragon Boat."
+        }
+      },
+      "lines": [
+        {
+          "k": "H2",
+          "de": "Kernidee",
+          "en": "Core idea"
+        },
+        {
+          "k": "P",
+          "de": "Viele WAFFEN-Krits → pro Krit 2 Dolche. Dolche/Skills = Hauptschaden. Krit-Chance, Kombo, Skill-Schaden stapeln.",
+          "en": "Many WEAPON crits → 2 daggers per crit. Daggers/skills = main damage. Stack crit chance, combo and skill damage."
+        },
+        {
+          "k": "H2",
+          "de": "Ausrüstung",
+          "en": "Equipment"
+        },
+        {
+          "k": "B",
+          "de": "Waffe: Whisperer-Bogen (Pflicht). Elres nur mit Wut-Dolch-Gem/Sivira's Dagger.",
+          "en": "Weapon: Whisperer Bow (mandatory). Elres only with Rage-Dagger gem/Sivira's Dagger."
+        },
+        {
+          "k": "B",
+          "de": "Rüstung: Tunika (Schaden) oder Reinhardt's Resolve (Survival). Ring: Verdan/Judgment + Sivira's Dagger (immer 1 Wächterring!).",
+          "en": "Armor: Tunic (damage) or Reinhardt's Resolve (survival). Ring: Verdan/Judgment + Sivira's Dagger (always keep 1 Guardian's Ring!)."
+        },
+        {
+          "k": "B",
+          "de": "Halskette: Blutkelch + Icy Bubble/Reckoning Badge.",
+          "en": "Accessory: Bloody Grail + Icy Bubble/Reckoning Badge."
+        },
+        {
+          "k": "H2",
+          "de": "Edelsteine",
+          "en": "Gems"
+        },
+        {
+          "k": "B",
+          "de": "Waffe: Finaler Schaden > Wut-Dolch. Rüstung: Kombo-Anzahl +1 > FDR.",
+          "en": "Weapon: Final Damage > Rage Dagger. Armor: Combo Count +1 > FDR."
+        },
+        {
+          "k": "B",
+          "de": "Ring: Kombo-Rate > FDR-ignorieren. Halskette: ATK bei Treffer.",
+          "en": "Ring: Combo Rate > ignore-FDR. Accessory: ATK on hit."
+        },
+        {
+          "k": "P",
+          "de": "Quelle/Details: https://meowdb.com/db/capybara-go/whisperer-elres-ultimate-build-guide",
+          "en": "Source/details: https://meowdb.com/db/capybara-go/whisperer-elres-ultimate-build-guide"
+        }
+      ],
+      "name_en": "Whisperer / Elres  (Bow · Dagger-Crit · PvE+PvP)"
+    },
+    {
+      "name": "Skysplitter / Ailoren  (Schwert · Wut/Skill) — beliebtester",
+      "prefs": {
+        "rage": 1.25,
+        "swordchi": 1.3,
+        "combo": 1.05,
+        "final": 1.05,
+        "dagger": 0.6,
+        "crit": 0.85,
+        "coef_other": 0.6,
+        "lightning": 0.2,
+        "fire": 0.2,
+        "explosion": 0.15,
+        "normal": 0.5
+      },
+      "char": {
+        "inheritance": {
+          "de": "Ghost-Baum ist der beste Allround-Vermächtnisbaum.",
+          "en": "Ghost tree is the best all-round inheritance tree."
+        },
+        "adventurer": {
+          "de": "Gagarin ist meta-stark; Leonardo früh/PvP-Kombo.",
+          "en": "Gagarin is meta; Leonardo early/PvP-combo."
+        },
+        "heroes": {
+          "de": "Allround stark: Knight of the End + Geisterprinzessin (Ghost Princess).",
+          "en": "Strong all-round: Knight of the End + Ghost Princess."
+        },
+        "brands": {
+          "de": "Top-Allround: Fantasy Joker, White Robe Wizard, Cleopatra.",
+          "en": "Top all-round: Fantasy Joker, White Robe Wizard, Cleopatra."
+        },
+        "pets": {
+          "de": "Früh: Unicorn (Krit) + Slime King (Kombo/Konter) + Little Elephant (Survival). Später: Ice Queen + Freya.",
+          "en": "Early: Unicorn (crit) + Slime King (combo/counter) + Little Elephant (survival). Later: Ice Queen + Freya."
+        },
+        "mounts": {
+          "de": "Diego (Kombo, aktiv), Laputa (PvE-Schaden), Sphinx (Tower/PvP), Catastrophe (Tank).",
+          "en": "Diego (combo, active), Laputa (PvE damage), Sphinx (Tower/PvP), Catastrophe (tank)."
+        },
+        "collection": {
+          "de": "1st Anniversary Cake (Skill-Krit-Rate) ist der universelle Top-Pick.",
+          "en": "1st Anniversary Cake (Skill Crit Rate) is the universal top pick."
+        },
+        "note": {
+          "de": "Details: NiaMeowDB Skysplitter/Ailoren-Guide.",
+          "en": "Details: NiaMeowDB Skysplitter/Ailoren guide."
+        }
+      },
+      "lines": [
+        {
+          "k": "H2",
+          "de": "Kernidee",
+          "en": "Core idea"
+        },
+        {
+          "k": "P",
+          "de": "Wut/Skill-Build: Basisangriffe erzeugen Wut. Ailoren ist stärker (Wut-Schaden ~800%) und in fast allem besser; Skysplitter ist die Starter-Waffe.",
+          "en": "Rage/skill build: basic attacks generate rage. Ailoren is stronger (~800% rage DMG) and better at almost everything; Skysplitter is the starter weapon."
+        },
+        {
+          "k": "H2",
+          "de": "Ausrüstung",
+          "en": "Equipment"
+        },
+        {
+          "k": "B",
+          "de": "Rüstung: Reinhardt's Resolve/Revival Cape (Sustain), Crimson Dracula (PvP), Tunika (Seal/Raid).",
+          "en": "Armor: Reinhardt's Resolve/Revival Cape (sustain), Crimson Dracula (PvP), Tunic (Seal/Raid)."
+        },
+        {
+          "k": "B",
+          "de": "Ring: Verdan/Judgment (immer) + Skybreaker Elenos Creed. Drachenball nur mit Fantasy Joker.",
+          "en": "Ring: Verdan/Judgment (always) + Skybreaker Elenos Creed. Dragon Ball only with Fantasy Joker."
+        },
+        {
+          "k": "B",
+          "de": "Halskette: Ice Soul Guard (Survival) + Blutkelch / Reckoning Badge (Raid/Seal) / Justice Emblem (PvP-FDR).",
+          "en": "Accessory: Ice Soul Guard (survival) + Bloody Grail / Reckoning Badge (Raid/Seal) / Justice Emblem (PvP FDR)."
+        },
+        {
+          "k": "H2",
+          "de": "Edelsteine",
+          "en": "Gems"
+        },
+        {
+          "k": "B",
+          "de": "Waffe: Finaler Schaden > Globale ATK > Physisch > Schwertchi-Koeffizient.",
+          "en": "Weapon: Final Damage > Global ATK > Physical > Sword Chi Coefficient."
+        },
+        {
+          "k": "B",
+          "de": "Rüstung: Kombo-Anzahl +1 > FDR. Ring: Kombo-Rate > Globale ATK.",
+          "en": "Armor: Combo Count +1 > FDR. Ring: Combo Rate > Global ATK."
+        },
+        {
+          "k": "B",
+          "de": "Halskette: Wuttechnik-Koeffizient (Wut-Skill!) > ATK bei Treffer.",
+          "en": "Accessory: Rage Skill Coefficient (rage skill!) > ATK on hit."
+        },
+        {
+          "k": "P",
+          "de": "Quelle/Details: https://meowdb.com/db/capybara-go/skysplitter-ailoren-ultimate-build-guide",
+          "en": "Source/details: https://meowdb.com/db/capybara-go/skysplitter-ailoren-ultimate-build-guide"
+        }
+      ],
+      "name_en": "Skysplitter / Ailoren  (Sword · Rage/Skill) — most popular"
+    },
+    {
+      "name": "Helos / Blade of Justice  (Schwert · Einzelziel-DPS)",
+      "prefs": {
+        "combo": 1.2,
+        "crit": 1.05,
+        "final": 1.05,
+        "swordchi": 0.85,
+        "dagger": 0.7,
+        "rage": 0.7,
+        "coef_other": 0.5,
+        "lightning": 0.2,
+        "fire": 0.2,
+        "explosion": 0.15,
+        "normal": 0.6
+      },
+      "char": {
+        "inheritance": {
+          "de": "Skeleton-Vermächtnis.",
+          "en": "Skeleton inheritance."
+        },
+        "adventurer": {
+          "de": "Raphael (5★ Pflicht für gute Leistung).",
+          "en": "Raphael (5★ required to perform)."
+        },
+        "heroes": {
+          "de": "Allround stark: Knight of the End + Geisterprinzessin (Ghost Princess).",
+          "en": "Strong all-round: Knight of the End + Ghost Princess."
+        },
+        "brands": {
+          "de": "Top-Allround: Fantasy Joker, White Robe Wizard, Cleopatra.",
+          "en": "Top all-round: Fantasy Joker, White Robe Wizard, Cleopatra."
+        },
+        "pets": {
+          "de": "Früh: Unicorn (Krit) + Slime King (Kombo/Konter) + Little Elephant (Survival). Später: Ice Queen + Freya.",
+          "en": "Early: Unicorn (crit) + Slime King (combo/counter) + Little Elephant (survival). Later: Ice Queen + Freya."
+        },
+        "mounts": {
+          "de": "Diego (Kombo, aktiv), Laputa (PvE-Schaden), Sphinx (Tower/PvP), Catastrophe (Tank).",
+          "en": "Diego (combo, active), Laputa (PvE damage), Sphinx (Tower/PvP), Catastrophe (tank)."
+        },
+        "collection": {
+          "de": "1st Anniversary Cake (Skill-Krit-Rate) ist der universelle Top-Pick.",
+          "en": "1st Anniversary Cake (Skill Crit Rate) is the universal top pick."
+        },
+        "note": {
+          "de": "Einzelziel-DPS – braucht 5★ Raphael; schwach in AoE (Gulu/Hard Mode). Details: NiaMeowDB Helos/BoJ-Guide.",
+          "en": "Single-target DPS – needs 5★ Raphael; weak in AoE (Gulu/Hard Mode). Details: NiaMeowDB Helos/BoJ guide."
+        }
+      },
+      "lines": [
+        {
+          "k": "H2",
+          "de": "Kernidee",
+          "en": "Core idea"
+        },
+        {
+          "k": "P",
+          "de": "Stärkste EINZELZIEL-DPS-Waffe – aber kein AoE (schwach in Hard Mode/Gulu) und BRAUCHT 5★ Raphael. Kombo-/Basis-lastig, Wut nebensächlich. Helos Warblade > Blade of Justice (Starter).",
+          "en": "Strongest SINGLE-TARGET DPS – but no AoE (weak in Hard Mode/Gulu) and REQUIRES 5★ Raphael. Combo/basic focused, rage minor. Helos Warblade > Blade of Justice (starter)."
+        },
+        {
+          "k": "H2",
+          "de": "Edelsteine",
+          "en": "Gems"
+        },
+        {
+          "k": "B",
+          "de": "Kombo-Anzahl +1, Kombo-/Basis-Schaden-Boosts, Finaler Schaden. Survival: FDR / Immun gegen erste Schaden.",
+          "en": "Combo Count +1, combo/basic damage boosts, Final Damage. Survival: FDR / Immune to first damage."
+        },
+        {
+          "k": "P",
+          "de": "Quelle/Details: https://meowdb.com/db/capybara-go/helos-blade-of-justice-ultimate-build-guide",
+          "en": "Source/details: https://meowdb.com/db/capybara-go/helos-blade-of-justice-ultimate-build-guide"
+        }
+      ],
+      "name_en": "Helos / Blade of Justice  (Sword · Single-target DPS)"
+    },
+    {
+      "name": "Angel Bow / St. Mung  (Bogen · PvP-Nuke/Tank)",
+      "prefs": {
+        "final": 1.1,
+        "utility": 1.1,
+        "survival": 1.05,
+        "defensive": 1.05,
+        "dagger": 0.9,
+        "swordchi": 0.4,
+        "coef_other": 0.5,
+        "lightning": 0.2,
+        "fire": 0.2,
+        "explosion": 0.15,
+        "normal": 0.85
+      },
+      "char": {
+        "inheritance": {
+          "de": "Ghost-Baum ist der beste Allround-Vermächtnisbaum.",
+          "en": "Ghost tree is the best all-round inheritance tree."
+        },
+        "adventurer": {
+          "de": "Gagarin ist meta-stark; Leonardo früh/PvP-Kombo.",
+          "en": "Gagarin is meta; Leonardo early/PvP-combo."
+        },
+        "heroes": {
+          "de": "Allround stark: Knight of the End + Geisterprinzessin (Ghost Princess).",
+          "en": "Strong all-round: Knight of the End + Ghost Princess."
+        },
+        "brands": {
+          "de": "Top-Allround: Fantasy Joker, White Robe Wizard, Cleopatra.",
+          "en": "Top all-round: Fantasy Joker, White Robe Wizard, Cleopatra."
+        },
+        "pets": {
+          "de": "Früh: Unicorn (Krit) + Slime King (Kombo/Konter) + Little Elephant (Survival). Später: Ice Queen + Freya.",
+          "en": "Early: Unicorn (crit) + Slime King (combo/counter) + Little Elephant (survival). Later: Ice Queen + Freya."
+        },
+        "mounts": {
+          "de": "Diego (Kombo, aktiv), Laputa (PvE-Schaden), Sphinx (Tower/PvP), Catastrophe (Tank).",
+          "en": "Diego (combo, active), Laputa (PvE damage), Sphinx (Tower/PvP), Catastrophe (tank)."
+        },
+        "collection": {
+          "de": "1st Anniversary Cake (Skill-Krit-Rate) ist der universelle Top-Pick.",
+          "en": "1st Anniversary Cake (Skill Crit Rate) is the universal top pick."
+        },
+        "note": {
+          "de": "Dedizierte PvP-Waffe (Nuke ODER Tank) – schwächer in PvE. Details: NiaMeowDB St. Mung/Angel Bow-Guide.",
+          "en": "Dedicated PvP weapon (nuke OR tank) – weaker in PvE. Details: NiaMeowDB St. Mung/Angel Bow guide."
+        }
+      },
+      "lines": [
+        {
+          "k": "H2",
+          "de": "Kernidee",
+          "en": "Core idea"
+        },
+        {
+          "k": "P",
+          "de": "Dedizierte PvP-Waffe: zwei Nuke-Fenster, hoher Passiv-Schaden während Stun. Ilar-Engel (vom Wut-Skill) wandelt Schaden in Schild → als Nuke ODER Tank spielbar. Deutlich schwächer in PvE. Angel Bow (S) → St. Mung's Elven Bow (SS).",
+          "en": "Dedicated PvP weapon: two nuke windows, heavy passive damage while stunned. Ilar Angel converts damage into shield → playable as nuke OR tank. Much weaker in PvE. Angel Bow (S) → St. Mung's Elven Bow (SS)."
+        },
+        {
+          "k": "H2",
+          "de": "Edelsteine",
+          "en": "Gems"
+        },
+        {
+          "k": "B",
+          "de": "Finaler Schaden; Survival via FDR + Krit-Schadensreduktion (Tank) bzw. Krit/Globale ATK (Nuke).",
+          "en": "Final Damage; survival via FDR + Crit DR (tank) or crit/Global ATK (nuke)."
+        },
+        {
+          "k": "P",
+          "de": "Quelle/Details: https://meowdb.com/db/capybara-go/mung-elven-bow-ultimate-build-guide",
+          "en": "Source/details: https://meowdb.com/db/capybara-go/mung-elven-bow-ultimate-build-guide"
+        }
+      ],
+      "name_en": "Angel Bow / St. Mung  (Bow · PvP nuke/tank)"
+    },
+    {
+      "name": "Nashir / Reaper  (Blitz-Stab)",
+      "prefs": {
+        "lightning": 1.4,
+        "final": 1.15,
+        "survival": 1.05,
+        "defensive": 1.05,
+        "crit": 0.95,
+        "rage": 0.4,
+        "dagger": 0.7,
+        "combo": 0.8,
+        "swordchi": 0.4,
+        "fire": 0.3,
+        "explosion": 0.2,
+        "normal": 0.6,
+        "physical": 0.5
+      },
+      "char": {
+        "inheritance": {
+          "de": "Ghost-Baum ist der beste Allround-Vermächtnisbaum.",
+          "en": "Ghost tree is the best all-round inheritance tree."
+        },
+        "adventurer": {
+          "de": "Gagarin ist meta-stark; Leonardo früh/PvP-Kombo.",
+          "en": "Gagarin is meta; Leonardo early/PvP-combo."
+        },
+        "heroes": {
+          "de": "Allround stark: Knight of the End + Geisterprinzessin (Ghost Princess).",
+          "en": "Strong all-round: Knight of the End + Ghost Princess."
+        },
+        "brands": {
+          "de": "Top-Allround: Fantasy Joker, White Robe Wizard, Cleopatra.",
+          "en": "Top all-round: Fantasy Joker, White Robe Wizard, Cleopatra."
+        },
+        "pets": {
+          "de": "Früh: Unicorn (Krit) + Slime King (Kombo/Konter) + Little Elephant (Survival). Später: Ice Queen + Freya.",
+          "en": "Early: Unicorn (crit) + Slime King (combo/counter) + Little Elephant (survival). Later: Ice Queen + Freya."
+        },
+        "mounts": {
+          "de": "Diego (Kombo, aktiv), Laputa (PvE-Schaden), Sphinx (Tower/PvP), Catastrophe (Tank).",
+          "en": "Diego (combo, active), Laputa (PvE damage), Sphinx (Tower/PvP), Catastrophe (tank)."
+        },
+        "collection": {
+          "de": "1st Anniversary Cake (Skill-Krit-Rate) ist der universelle Top-Pick.",
+          "en": "1st Anniversary Cake (Skill Crit Rate) is the universal top pick."
+        },
+        "note": {
+          "de": "Blitz-Stab; Wut-Koeffizient NUTZLOS (Wut macht 0 Wutschaden). PvE + PvP-Tank/Nuke. Details: NiaMeowDB Nashir/Reaper-Guide.",
+          "en": "Lightning staff; rage coefficient USELESS (rage deals 0 rage damage). PvE + PvP tank/nuke. Details: NiaMeowDB Nashir/Reaper guide."
+        }
+      },
+      "lines": [
+        {
+          "k": "H2",
+          "de": "Kernidee",
+          "en": "Core idea"
+        },
+        {
+          "k": "P",
+          "de": "Blitz-Stab: Schaden kommt fast nur aus Wut-/Auflade-DONNERN, nicht aus Wut-Skalierung. WICHTIG: Wut macht 0 Wutschaden – Wut-Koeffizient & Wut-Schaden sind NUTZLOS. Stattdessen Daji-Koeffizient + Blitz stapeln. Reaper Staff (S) → Divine Thunder Nashir's Scepter (SS).",
+          "en": "Lightning staff: damage from rage/charge-release THUNDERS, not rage scaling. IMPORTANT: rage deals 0 rage damage – rage coefficient & rage damage are USELESS. Stack Daji coefficient + lightning instead. Reaper Staff (S) → Divine Thunder Nashir's Scepter (SS)."
+        },
+        {
+          "k": "H2",
+          "de": "Edelsteine",
+          "en": "Gems"
+        },
+        {
+          "k": "B",
+          "de": "Finaler Schaden + Blitz-/Schaden-Quellen. KEIN Wut-Koeffizient. Survival: FDR.",
+          "en": "Final Damage + lightning/damage sources. NO rage coefficient. Survival: FDR."
+        },
+        {
+          "k": "P",
+          "de": "Quelle/Details: https://meowdb.com/db/capybara-go/reaper-nashir-ultimate-build-guide",
+          "en": "Source/details: https://meowdb.com/db/capybara-go/reaper-nashir-ultimate-build-guide"
+        }
+      ],
+      "name_en": "Nashir / Reaper  (Lightning staff)"
+    },
+    {
+      "name": "Durian / Seles' Suffering  (Hammer · PvP Anti-Schild)",
+      "prefs": {
+        "utility": 1.3,
+        "defensive": 1.15,
+        "survival": 1.1,
+        "control": 1.1,
+        "crit": 0.8,
+        "dagger": 0.8,
+        "rage": 0.7,
+        "swordchi": 0.4,
+        "lightning": 0.2,
+        "fire": 0.2,
+        "explosion": 0.2,
+        "normal": 0.6
+      },
+      "char": {
+        "inheritance": {
+          "de": "Ghost-Baum ist der beste Allround-Vermächtnisbaum.",
+          "en": "Ghost tree is the best all-round inheritance tree."
+        },
+        "adventurer": {
+          "de": "Gagarin ist meta-stark; Leonardo früh/PvP-Kombo.",
+          "en": "Gagarin is meta; Leonardo early/PvP-combo."
+        },
+        "heroes": {
+          "de": "Allround stark: Knight of the End + Geisterprinzessin (Ghost Princess).",
+          "en": "Strong all-round: Knight of the End + Ghost Princess."
+        },
+        "brands": {
+          "de": "Top-Allround: Fantasy Joker, White Robe Wizard, Cleopatra.",
+          "en": "Top all-round: Fantasy Joker, White Robe Wizard, Cleopatra."
+        },
+        "pets": {
+          "de": "Früh: Unicorn (Krit) + Slime King (Kombo/Konter) + Little Elephant (Survival). Später: Ice Queen + Freya.",
+          "en": "Early: Unicorn (crit) + Slime King (combo/counter) + Little Elephant (survival). Later: Ice Queen + Freya."
+        },
+        "mounts": {
+          "de": "Diego (Kombo, aktiv), Laputa (PvE-Schaden), Sphinx (Tower/PvP), Catastrophe (Tank).",
+          "en": "Diego (combo, active), Laputa (PvE damage), Sphinx (Tower/PvP), Catastrophe (tank)."
+        },
+        "collection": {
+          "de": "1st Anniversary Cake (Skill-Krit-Rate) ist der universelle Top-Pick.",
+          "en": "1st Anniversary Cake (Skill Crit Rate) is the universal top pick."
+        },
+        "note": {
+          "de": "PvP Anti-Schild (gegen Nashir/Mung/Dracula); Krit-DR-Fokus. Nicht für PvE. Details: NiaMeowDB Seles Suffering/Durian-Guide.",
+          "en": "PvP anti-shield (vs Nashir/Mung/Dracula); crit-DR focus. Not for PvE. Details: NiaMeowDB Seles Suffering/Durian guide."
+        }
+      },
+      "lines": [
+        {
+          "k": "H2",
+          "de": "Kernidee",
+          "en": "Core idea"
+        },
+        {
+          "k": "P",
+          "de": "PvP-Waffe (Seles Suffering, Übergang über Durian Hammer): Anti-Schild-Spezialist gegen Nashir/Mung/Dracula-Stacks. Setzt auf Krit-Schadensreduktion. Nicht für PvE.",
+          "en": "PvP weapon (Seles Suffering, via Durian Hammer transition): anti-shield specialist vs Nashir/Mung/Dracula stacks. Relies on Crit DR. Not for PvE."
+        },
+        {
+          "k": "H2",
+          "de": "Edelsteine",
+          "en": "Gems"
+        },
+        {
+          "k": "B",
+          "de": "Schaden an Schild-Zielen, Konterrate, Immun gegen Kontrolle, FDR, Krit-Schadensreduktion.",
+          "en": "Damage to shielded targets, Counter Rate, immune to control, FDR, Crit DR."
+        },
+        {
+          "k": "P",
+          "de": "Quelle/Details: https://meowdb.com/db/capybara-go/durian-seles-suffering-ultimate-build-guide",
+          "en": "Source/details: https://meowdb.com/db/capybara-go/durian-seles-suffering-ultimate-build-guide"
+        }
+      ],
+      "name_en": "Durian / Seles' Suffering  (Hammer · PvP anti-shield)"
+    },
+    {
+      "name": "Star Staff  (Stab · PvE+PvP)",
+      "prefs": {
+        "final": 1.05,
+        "rage": 0.9,
+        "dagger": 0.8,
+        "swordchi": 0.4,
+        "lightning": 0.4,
+        "fire": 0.5,
+        "explosion": 0.5,
+        "normal": 0.6,
+        "physical": 0.7
+      },
+      "char": {
+        "inheritance": {
+          "de": "Ghost-Baum ist der beste Allround-Vermächtnisbaum.",
+          "en": "Ghost tree is the best all-round inheritance tree."
+        },
+        "adventurer": {
+          "de": "Gagarin ist meta-stark; Leonardo früh/PvP-Kombo.",
+          "en": "Gagarin is meta; Leonardo early/PvP-combo."
+        },
+        "heroes": {
+          "de": "Allround stark: Knight of the End + Geisterprinzessin (Ghost Princess).",
+          "en": "Strong all-round: Knight of the End + Ghost Princess."
+        },
+        "brands": {
+          "de": "Top-Allround: Fantasy Joker, White Robe Wizard, Cleopatra.",
+          "en": "Top all-round: Fantasy Joker, White Robe Wizard, Cleopatra."
+        },
+        "pets": {
+          "de": "Früh: Unicorn (Krit) + Slime King (Kombo/Konter) + Little Elephant (Survival). Später: Ice Queen + Freya.",
+          "en": "Early: Unicorn (crit) + Slime King (combo/counter) + Little Elephant (survival). Later: Ice Queen + Freya."
+        },
+        "mounts": {
+          "de": "Diego (Kombo, aktiv), Laputa (PvE-Schaden), Sphinx (Tower/PvP), Catastrophe (Tank).",
+          "en": "Diego (combo, active), Laputa (PvE damage), Sphinx (Tower/PvP), Catastrophe (tank)."
+        },
+        "collection": {
+          "de": "1st Anniversary Cake (Skill-Krit-Rate) ist der universelle Top-Pick.",
+          "en": "1st Anniversary Cake (Skill Crit Rate) is the universal top pick."
+        },
+        "note": {
+          "de": "Stab; PvE + PvP. Details: NiaMeowDB Star-Staff-Guide.",
+          "en": "Staff; PvE + PvP. Details: NiaMeowDB Star Staff guide."
+        }
+      },
+      "lines": [
+        {
+          "k": "H2",
+          "de": "Kernidee",
+          "en": "Core idea"
+        },
+        {
+          "k": "P",
+          "de": "Stab-Build mit PvE- und PvP-Setups. Genaue Build-Details (Edelsteine/Helden/Brandmal/Pets) siehe NiaMeowDB Star-Staff-Guide.",
+          "en": "Staff build with PvE and PvP setups. Exact build details (gems/heroes/brands/pets): NiaMeowDB Star Staff guide."
+        },
+        {
+          "k": "H2",
+          "de": "Edelsteine",
+          "en": "Gems"
+        },
+        {
+          "k": "B",
+          "de": "Allgemein: Finaler Schaden + Koeffizienten, Survival via FDR.",
+          "en": "General: Final Damage + coefficients, survival via FDR."
+        },
+        {
+          "k": "P",
+          "de": "Quelle/Details: https://meowdb.com/db/capybara-go/star-staff-ultimate-build-guide",
+          "en": "Source/details: https://meowdb.com/db/capybara-go/star-staff-ultimate-build-guide"
+        }
+      ],
+      "name_en": "Star Staff  (Staff · PvE+PvP)"
+    },
+    {
+      "name": "Mushroom-Hammer  (Konter/Tank · PvP)",
+      "prefs": {
+        "utility": 1.3,
+        "survival": 1.2,
+        "defensive": 1.2,
+        "control": 1.15,
+        "dagger": 0.6,
+        "crit": 0.6,
+        "rage": 0.85,
+        "swordchi": 0.4,
+        "lightning": 0.2,
+        "fire": 0.2,
+        "explosion": 0.15,
+        "normal": 0.6
+      },
+      "char": {
+        "inheritance": {
+          "de": "Ghost-Baum ist der beste Allround-Vermächtnisbaum.",
+          "en": "Ghost tree is the best all-round inheritance tree."
+        },
+        "adventurer": {
+          "de": "Wukong. Synergie: Endless Battle, War Maniac, Mind Focus.",
+          "en": "Wukong. Synergy: Endless Battle, War Maniac, Mind Focus."
+        },
+        "heroes": {
+          "de": "Allround stark: Knight of the End + Geisterprinzessin (Ghost Princess).",
+          "en": "Strong all-round: Knight of the End + Ghost Princess."
+        },
+        "brands": {
+          "de": "Top-Allround: Fantasy Joker, White Robe Wizard, Cleopatra.",
+          "en": "Top all-round: Fantasy Joker, White Robe Wizard, Cleopatra."
+        },
+        "pets": {
+          "de": "Früh: Unicorn (Krit) + Slime King (Kombo/Konter) + Little Elephant (Survival). Später: Ice Queen + Freya.",
+          "en": "Early: Unicorn (crit) + Slime King (combo/counter) + Little Elephant (survival). Later: Ice Queen + Freya."
+        },
+        "mounts": {
+          "de": "Diego (Kombo, aktiv), Laputa (PvE-Schaden), Sphinx (Tower/PvP), Catastrophe (Tank).",
+          "en": "Diego (combo, active), Laputa (PvE damage), Sphinx (Tower/PvP), Catastrophe (tank)."
+        },
+        "collection": {
+          "de": "1st Anniversary Cake (Skill-Krit-Rate) ist der universelle Top-Pick.",
+          "en": "1st Anniversary Cake (Skill Crit Rate) is the universal top pick."
+        },
+        "note": {
+          "de": "PvP-only Konter/Tank – nicht für PvE. Details: NiaMeowDB Mushroom-Hammer-Guide.",
+          "en": "PvP-only counter/tank – not for PvE. Details: NiaMeowDB Mushroom Hammer guide."
+        }
+      },
+      "lines": [
+        {
+          "k": "H2",
+          "de": "Kernidee",
+          "en": "Core idea"
+        },
+        {
+          "k": "P",
+          "de": "PvP-only Konter/Tank: −25% Schaden nach Konter, +25% HP, Schild. NICHT für PvE.",
+          "en": "PvP-only counter/tank: −25% DMG after counter, +25% HP, shield. NOT for PvE."
+        },
+        {
+          "k": "H2",
+          "de": "Ausrüstung",
+          "en": "Equipment"
+        },
+        {
+          "k": "B",
+          "de": "Rüstung: Crimson Dracula Chestplate. Ring: Forbidden Julian Inquisition (fix) + Thunderous Ezra End (wenig DR) ODER Verdan-Ring (genug DR).",
+          "en": "Armor: Crimson Dracula Chestplate. Ring: Forbidden Julian Inquisition (locked) + Thunderous Ezra End (low DR) OR Verdan Ring (ample DR)."
+        },
+        {
+          "k": "B",
+          "de": "Halskette: Ice Soul Guard + Battle Will Grande Wrath (später Reckoning Badge mit Cursed Blade Muramasa A7/A10).",
+          "en": "Accessory: Ice Soul Guard + Battle Will Grande Wrath (later Reckoning Badge with Cursed Blade Muramasa A7/A10)."
+        },
+        {
+          "k": "H2",
+          "de": "Abenteurer / Edelsteine",
+          "en": "Adventurer / Gems"
+        },
+        {
+          "k": "B",
+          "de": "Abenteurer: Wukong. Synergie: Endless Battle, War Maniac, Mind Focus.",
+          "en": "Adventurer: Wukong. Synergy: Endless Battle, War Maniac, Mind Focus."
+        },
+        {
+          "k": "B",
+          "de": "Edelsteine: Konterrate, FDR, Immun gegen Kontrolle, Schadensreduktion, Silence.",
+          "en": "Gems: Counter Rate, FDR, immune to control, damage reduction, silence."
+        },
+        {
+          "k": "P",
+          "de": "Quelle/Details: https://meowdb.com/db/capybara-go/mushroom-hammer-build-guide",
+          "en": "Source/details: https://meowdb.com/db/capybara-go/mushroom-hammer-build-guide"
+        }
+      ],
+      "name_en": "Mushroom-Hammer  (Counter/Tank · PvP)"
+    },
+    {
+      "name": "Allgemeine Regeln (alle Builds)",
+      "prefs": {},
+      "char": {
+        "inheritance": {
+          "de": "Ghost-Baum ist der beste Allround-Vermächtnisbaum.",
+          "en": "Ghost tree is the best all-round inheritance tree."
+        },
+        "adventurer": {
+          "de": "Gagarin ist meta-stark; Leonardo früh/PvP-Kombo.",
+          "en": "Gagarin is meta; Leonardo early/PvP-combo."
+        },
+        "heroes": {
+          "de": "Allround stark: Knight of the End + Geisterprinzessin (Ghost Princess).",
+          "en": "Strong all-round: Knight of the End + Ghost Princess."
+        },
+        "brands": {
+          "de": "Top-Allround: Fantasy Joker, White Robe Wizard, Cleopatra.",
+          "en": "Top all-round: Fantasy Joker, White Robe Wizard, Cleopatra."
+        },
+        "pets": {
+          "de": "Früh: Unicorn (Krit) + Slime King (Kombo/Konter) + Little Elephant (Survival). Später: Ice Queen + Freya.",
+          "en": "Early: Unicorn (crit) + Slime King (combo/counter) + Little Elephant (survival). Later: Ice Queen + Freya."
+        },
+        "mounts": {
+          "de": "Diego (Kombo, aktiv), Laputa (PvE-Schaden), Sphinx (Tower/PvP), Catastrophe (Tank).",
+          "en": "Diego (combo, active), Laputa (PvE damage), Sphinx (Tower/PvP), Catastrophe (tank)."
+        },
+        "collection": {
+          "de": "1st Anniversary Cake (Skill-Krit-Rate) ist der universelle Top-Pick.",
+          "en": "1st Anniversary Cake (Skill Crit Rate) is the universal top pick."
+        }
+      },
+      "lines": [
+        {
+          "k": "H2",
+          "de": "Cap-Regeln",
+          "en": "Cap rules"
+        },
+        {
+          "k": "B",
+          "de": "Krit-Schaden-Cap: 500% (700% mit speziellem Ring) – nicht überstacken.",
+          "en": "Crit DMG cap: 500% (700% with a specific ring)."
+        },
+        {
+          "k": "B",
+          "de": "1000%-Cap: Koeffizienten (Wut/Dolch/Kombo/Schwertchi) umgehen ihn; 'Schaden %'-Effekte zählen dagegen.",
+          "en": "1000% cap: coefficients (rage/dagger/combo/sword chi) bypass it; '% damage' counts toward it."
+        },
+        {
+          "k": "B",
+          "de": "Immer mind. 1 Wächterring behalten. Defensiv-Steine im PvE nur, solange du stirbst.",
+          "en": "Always keep ≥1 Guardian's Ring. Defensive gems in PvE only while you die."
+        },
+        {
+          "k": "H2",
+          "de": "Analyse-Tipp",
+          "en": "Analysis tip"
+        },
+        {
+          "k": "B",
+          "de": "Scanne jeden Slot im Scanner-Tab; der Loadout-Tab zeigt dein ganzes Build + Empfehlungen.",
+          "en": "Scan each slot in the Scanner tab; the Loadout tab shows your full build + recommendations."
+        }
+      ],
+      "name_en": "General rules (all builds)"
+    }
+  ]
+}

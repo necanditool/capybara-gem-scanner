@@ -1,0 +1,187 @@
+=========================================================
+  Capybara Gem Scanner  -  Community Edition (v41)
+  PATCHNOTES  (English)
+=========================================================
+
+START (one click)
+  - Keep all files in ONE folder.
+  - Double-click "Edelstein-Scanner starten.bat".
+  - The first run installs everything automatically (please wait a moment).
+  - If Python was just installed, double-click the .bat ONCE MORE.
+
+HOW TO USE (short)
+  - Top right: language (DE <-> EN) and the light/dark toggle (moon/sun).
+    Below that, pick your build - it changes the rating in every tab.
+  - Quick Scan: mark one region -> it reads ALL gems, rates them for your
+    build and shows the Build Doctor on top (Keep / Swap).
+  - Slot: pick PvE/PvP and the slot, set two regions (Equipped on the right,
+    Selection on the left), select a gem, press "Scan & compare" -> verdict.
+  - Hero: set the region once (the whole game screen is fine), then scan
+    equipped + reserve heroes -> comparison + swap suggestion.
+  - Skills: mark the offered skills, press "Check skills" -> the tool tells
+    you per build which to LEARN and which to AVOID.
+  - Loadout: all slots at a glance. Guide: full build specs.
+
+---------------------------------------------------------
+  ANTIVIRUS NOTE (false positive)
+---------------------------------------------------------
+  Some antivirus tools may flag it. This is a FALSE POSITIVE, not malware.
+  Why: the tool takes screenshots (to read the gems) and the launcher (.bat)
+  auto-installs Python packages on first run - scanners flag this behaviour
+  just in case. NO data is sent anywhere (only the optional online update
+  downloads from a URL that YOU enter). The source code
+  "capybara_gem_scanner.py" is open and readable.
+  Fix: add the tool's folder as an exclusion/whitelist. Windows Defender ->
+  "Virus & threat protection" -> "Manage settings" -> "Exclusions" ->
+  "Add an exclusion" -> Folder. (Or, after a block, choose "Allow on device"
+  in Protection history.)
+
+=========================================================
+  WHAT'S NEW
+=========================================================
+
+v41 (lower CPU usage):
+  - Auto-scan (gems & skills) now uses far less CPU. Text recognition (OCR)
+    previously used ALL CPU cores per scan, briefly spiking the CPU to ~100%;
+    it is now capped to a few cores -> the spike drops drastically (test: from
+    30+% down to under 10%), at practically the same recognition speed.
+  - The screen grabber is also reused instead of being recreated on every
+    check (lower baseline load during continuous auto-scan).
+
+v40 (gem recognition fix):
+  - "DMG vs guarded/shielded targets" is now recognized. The real in-game
+    wording ("Schaden gegen geschuetzte Ziele") was added - before, only "Ziele
+    mit Schild" was known, so it showed "gem unclear".
+  TIP: if a gem stays "unclear", turn on "show details", copy the text and
+  report it - then I add the exact wording.
+
+v39 (window / layout fix):
+  - The Slot tab is now SCROLLABLE -> "Selected gem (candidate)" and "Best for
+    slot" are no longer cut off (all tabs scroll now).
+  - The window height adapts to your screen height (leaves room for the
+    taskbar), smaller minimum size -> fits smaller screens too.
+    TIP: you can resize the window smaller now; the content scrolls.
+
+v38 (auto-scan CPU optimization):
+  - Auto-scan (Slot & Skills) now triggers OCR ONLY on a significant AND
+    settled change (threshold image diff instead of an exact hash). Sparkles
+    and animations no longer trigger a scan -> drastically lower CPU.
+  - It waits until the image is stable (not mid-fade) before scanning.
+    Check interval ~1.3 s, very lightweight.
+
+v37 (translation + multi-monitor):
+  - Build names are now translated in English mode (Bogen->Bow, Schwert->Sword,
+    Blitz-Stab->Lightning staff, ...). Ratings are unaffected.
+  - The region selector now spans ALL monitors -> you can mark regions on
+    monitor 1-4 (e.g. BlueStacks on a second screen). Capture already worked
+    across monitors.
+  NOTE: fully markerless detection of the game's inner areas isn't reliable.
+  Mark each area ONCE, then everything (incl. auto-scan) works across monitors.
+
+v36 (gem auto-scan):
+  - The Slot tab now also has "Auto-scan": it watches region 1 (Equipped,
+    right) and region 2 (Selection, left) and compares automatically as soon
+    as you view a gem in-game - no click needed. It only re-scans when the
+    image changes (saves CPU). Turn it off with the same checkbox.
+
+v35 (skill names translated in English mode):
+  - When you switch to English, skill names now show in English. More skills
+    are curated (DE+EN) and recognized even with glued OCR - no more German
+    duplicate entries.
+  - Unknown skills get a rough word-by-word translation.
+
+v34 (skill: run-tracking, synergy & fixes):
+  - Dagger skills (e.g. Rage Dagger / Wutdolch) now count as DAGGER skills ->
+    strong in dagger builds (Whisperer: more daggers = more attacks). Poison
+    skills only count in poison/DoT builds, otherwise AVOID.
+  - "Your run": remember the skills you picked (the "+ run" button) - also ones
+    other than the suggestion. The tool detects synergies (e.g. Combo Dagger +
+    Rage Dagger) and rates matching skills higher.
+  - "New run" clears the run content (press it when a run ends).
+
+v33 (skill auto-scan):
+  - The Skills tab has "Auto-scan": after you mark the region, the tool watches
+    it itself and detects automatically as soon as the skill choice appears -
+    no click needed. It only scans when the image changes (saves CPU).
+    Turn it off again with the same checkbox.
+
+v32 (NEW: skill advisor):
+  - New "Skills" tab: mark the offered skills (on level-up / in the choice
+    screen) -> the tool tells you PER BUILD which to LEARN and which to
+    AVOID (skill doctor with a clear recommendation).
+  - Own database skills.json (45 skills, tier S+..D; sources allclash,
+    meowdb, game-vault) + keyword understanding for unknown skills.
+  - Build-dependent: e.g. "Multiple Bolt" = LEARN on Nashir, AVOID on
+    Whisperer.
+
+v31 (dark mode without pink):
+  - The dark mode now matches the Capybara image: night-sky navy with
+    SKY-BLUE buttons, gold, turquoise and grass-green. No more pink.
+
+v30 (light/dark toggle):
+  - New button at the top (moon/sun) switches between the LIGHT and DARK
+    look. Your choice is remembered.
+
+v29 (Capybara image theme):
+  - Your Capybara-king image is the header banner (capybara_banner.png is in
+    the folder). Want your own? Just replace the file.
+  - The ENTIRE UI uses the image's colors: light sky-blue background, white
+    cards, dark-brown text, gold/cyan/green accents.
+
+v28 (Capybara banner + detection fixes):
+  - Banner: drop your Capybara image as "capybara_banner.png" into the folder.
+  - Crit/counter/combo "% of max HP" gems are detected reliably (100%) and no
+    longer confused with each other.
+  - Fix: "endschaden" was too short and stole foreign texts -> removed;
+    "Endschadensbonus" is still detected reliably.
+
+v27 (sharpness + hero comparison):
+  - SHARPNESS: the app is now DPI-aware -> no more blurry Windows upscaling.
+  - Hero page: multiple scans! Set the region ONCE (whole screen is fine),
+    then scan 2 equipped + up to 4 reserve heroes. The tool compares rank +
+    build fit and recommends swaps.
+
+v26 (detection fixes):
+  - No more false "already equipped": the SELECTED gem's own attribute (the
+    detail card, everything after "Gem Attribute") never counts as equipped.
+    If region 1 captures the selection card, the tool warns you.
+  - "Waffe" (weapon label) is no longer misread as "Weapon Crit"; "Global
+    ATK" is detected reliably again.
+  TIP: Region 1 "Equipped" = the RIGHT column with the effect boxes, NOT the
+  detail card of the selected gem in the middle.
+
+v25 (Build Doctor):
+  - The Quick Scan shows a clear verdict on top: KEEP / SWAP for your build,
+    every weak gem with the reason, plus "Best for this build: ..." (the
+    highest-rated gems to aim for).
+
+v24 (every build understands good vs. bad):
+  - Lightning/Fire/Explosion/Normal-attack/Physical are separate categories,
+    split from "global ATK". -> Lightning is only good on Nashir.
+  - All 8 builds re-tuned (dagger/crit on Whisperer, rage/sword-chi on
+    Skysplitter, lightning on Nashir, counter/survival on Mushroom, etc.).
+
+v22-v23 (database + real game text):
+  - HUGE database expansion: 122 effects (up from 64) from the complete meowdb
+    list (986 gems / 199 families). New: DMG vs Boss, Speed, DMG to shielded
+    targets, instant skill pick on stage entry, fire/lightning/explosion
+    boosts and reductions, crit rates, pet anti-crit and much more.
+  - Values cross-checked against the meowdb tiers.
+  - "Normal attack with X% chance for 2x damage" and "When casting a skill ...
+    ignore ..." are read correctly; more robust against glued OCR lines.
+
+v10-v21 (foundations):
+  - Quick Scan, hero reading, full loadout analysis, 8 build guides, online
+    update button, language-safe detection (DE+EN), stricter match thresholds
+    against false hits.
+
+=========================================================
+  IMPORTANT
+=========================================================
+  - Keep all files in the same folder
+    (bat, capybara_gem_scanner.py, gems.json, builds.json, capybara_banner.png).
+  - Values are community estimates (meowdb and others), not official game
+    numbers.
+  - German version: "Patchnotes Deutsch.txt". Nicely designed as PDF:
+    "Lies mich (Deutsch).pdf" and "Read Me (English).pdf".
+=========================================================

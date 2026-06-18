@@ -1,0 +1,2210 @@
+{
+  "_meta": {
+    "version": 41,
+    "note": "Community-Einschätzungen (meowdb Gem-Liste Juni 2026 – komplette Liste mit 986 Steinen / 199 Effekt-Familien, NiaMeowDB, game-vault Wiki). Keine offiziellen Spielwerte. Frei erweiterbar. pve/pvp 0-100. cat = Kategorie (für Build-Anpassung). match = Suchphrasen DE+EN. Tier-Mapping: SS=100,S=92,A=80,B=62,C=46,D=28,F=12.",
+    "cats": [
+      "final",
+      "rage",
+      "dagger",
+      "combo",
+      "crit",
+      "atk",
+      "survival",
+      "control",
+      "pvp_ignore",
+      "defensive",
+      "coef_other",
+      "conditional",
+      "utility",
+      "swordchi",
+      "lightning",
+      "fire",
+      "explosion",
+      "normal",
+      "physical"
+    ]
+  },
+  "Weapon": [
+    {
+      "id": "counter_dmg_boost",
+      "de": "Konterschaden-Verstärkung +X%",
+      "en": "Counter Damage Boost +X%",
+      "pve": 48,
+      "pvp": 55,
+      "cat": "utility",
+      "note_de": "Mehr Konterschaden – stark in Konter-Builds (z. B. Mushroom).",
+      "note_en": "More counter damage – strong in counter builds (e.g. Mushroom).",
+      "match": [
+        "konterschaden",
+        "konterschadensverstarkung",
+        "konterschaden verstarkung",
+        "konterschaden-verstarkung",
+        "counter damage",
+        "counter dmg boost",
+        "counter damage boost"
+      ]
+    },
+    {
+      "id": "lightning_paralysis",
+      "de": "Blitz auf brennendes Ziel: Lähmchance (keine Gegenwehr)",
+      "en": "Lightning on burning target: paralysis chance (no counter)",
+      "pve": 30,
+      "pvp": 62,
+      "cat": "control",
+      "note_de": "Kontroll-Effekt (Lähmung) – stark im PvP, schwach im PvE.",
+      "note_en": "Control effect (paralysis) – strong in PvP, weak in PvE.",
+      "match": [
+        "blitz auf brennendes ziel",
+        "blitzeinschlag auf brennendes ziel",
+        "blitzeinschlag auf brennendes",
+        "lahmchance",
+        "chance auf lahmung",
+        "lahmung keine gegenwehr",
+        "lightning burning",
+        "chance to paralyze"
+      ]
+    },
+    {
+      "id": "dmg_70hp_w",
+      "de": "+X% Schaden an Zielen über 70% HP",
+      "en": "+X% DMG to targets above 70% HP",
+      "pve": 32,
+      "pvp": 40,
+      "cat": "conditional",
+      "note_de": "Konditional, zählt gegen 1000%-Cap. Lückenfüller.",
+      "note_en": "Conditional, counts toward 1000% cap. Filler.",
+      "match": [
+        "zielen mit uber 70",
+        "fugt zielen mit 70",
+        "zielen mit 70 hp",
+        "ziele mit 70 hp",
+        "70 hp schaden",
+        "uber 70 hp",
+        "uber 70 leben",
+        "mehr als 70",
+        "mehr als 70 leben",
+        "targets above 70",
+        "over 70 hp",
+        "more than 70"
+      ]
+    },
+    {
+      "id": "dot_dmg",
+      "de": "DoT-Dauer +1 / DoT-Schaden +X% (Brand/Gift)",
+      "en": "DoT Duration +1 / DoT DMG +X% (burn/poison)",
+      "pve": 52,
+      "pvp": 48,
+      "cat": "fire",
+      "note_de": "Schaden über Zeit (Brand/Gift) – stark in DoT-Builds, sonst situativ.",
+      "note_en": "Damage over time (burn/poison) – strong in DoT builds, otherwise situational.",
+      "match": [
+        "dot-dauer",
+        "dot dauer",
+        "dot-schaden",
+        "dot schaden",
+        "dot dauer 1 dot schaden",
+        "dot duration",
+        "dot damage",
+        "schaden uber zeit"
+      ]
+    },
+    {
+      "id": "counter_hp_dmg",
+      "de": "Konter-Zusatzschaden (% der max. HP, gedeckelt)",
+      "en": "Counter bonus damage (% of max HP, capped)",
+      "pve": 50,
+      "pvp": 55,
+      "cat": "utility",
+      "note_de": "Zusatzschaden beim Kontern (skaliert mit Gegner-Max-HP) – stark in Konter-Builds, sonst situativ.",
+      "note_en": "Bonus damage on counter (scales with enemy max HP) – strong in counter builds, otherwise situational.",
+      "match": [
+        "beim konter zusatzlicher schaden in hohe",
+        "beim konter zusatzlicher schaden",
+        "beim konter",
+        "konter zusatzlicher schaden",
+        "nicht uber 6 angriff",
+        "counter additional damage",
+        "extra damage on counter"
+      ]
+    },
+    {
+      "id": "lightning_dmg",
+      "de": "Blitzschaden-Verstärkung +X%",
+      "en": "Lightning Damage Boost +X%",
+      "pve": 50,
+      "pvp": 52,
+      "cat": "lightning",
+      "note_de": "Mehr Blitzschaden – stark in Blitz-/Donner-Builds (z. B. Nashir), sonst situativ.",
+      "note_en": "More lightning damage – strong in lightning/thunder builds (e.g. Nashir), otherwise situational.",
+      "match": [
+        "blitzschadensverstarkung",
+        "blitzschaden verstarkung",
+        "blitzschaden",
+        "blitz schaden verstark",
+        "lightning damage",
+        "lightning dmg boost"
+      ]
+    },
+    {
+      "id": "final_dmg",
+      "de": "Finaler Schaden / Endschadensbonus +X%",
+      "en": "Final Damage / End Damage Bonus +X%",
+      "pve": 100,
+      "pvp": 100,
+      "cat": "final",
+      "note_de": "Bester Edelstein im Spiel.",
+      "note_en": "Best gem in the game.",
+      "match": [
+        "finaler schaden",
+        "finalen schaden",
+        "endschadensbonus",
+        "final damage",
+        "final dmg",
+        "end damage bonus",
+        "end damage"
+      ]
+    },
+    {
+      "id": "rage_dagger",
+      "de": "Wut-Dolch (alle 3 Dolche → +15 Wut)",
+      "en": "Rage Dagger (every 3 daggers → +15 rage)",
+      "pve": 96,
+      "pvp": 95,
+      "cat": "rage",
+      "note_de": "Must-have für Dolch-Builds.",
+      "note_en": "Must-have for dagger builds.",
+      "match": [
+        "wut-dolch",
+        "wut dolch",
+        "alle 3 dolche",
+        "stellt 15 wut",
+        "wutdolch",
+        "rage dagger",
+        "every 3 daggers",
+        "restores 15 rage",
+        "1 wutdolch"
+      ]
+    },
+    {
+      "id": "steal_atk",
+      "de": "ATK des Gegners stehlen (Kampfstart)",
+      "en": "Steal enemy ATK (battle start)",
+      "pve": 84,
+      "pvp": 80,
+      "cat": "atk",
+      "note_de": "Eigene Kategorie, sehr stark.",
+      "note_en": "Its own category, very strong.",
+      "match": [
+        "stiehlt",
+        "angriffskraft des gegners stehlen",
+        "zu kampfbeginn",
+        "steals atk",
+        "steal enemy atk"
+      ]
+    },
+    {
+      "id": "crit_rate_w",
+      "de": "Krit-Rate / Waffen-Krit +X%",
+      "en": "Crit Rate / Weapon Crit +X%",
+      "pve": 86,
+      "pvp": 72,
+      "cat": "crit",
+      "note_de": "Mehr Krits → mehr Dolche (Dolch-Builds).",
+      "note_en": "More crits → more daggers (dagger builds).",
+      "match": [
+        "krit-rate",
+        "kritrate",
+        "waffen-krit",
+        "waffenkrit",
+        "crit rate",
+        "weapon crit",
+        "kritische trefferchance"
+      ]
+    },
+    {
+      "id": "crit_dmg_w",
+      "de": "Krit-Schaden +X%",
+      "en": "Crit DMG +X%",
+      "pve": 72,
+      "pvp": 70,
+      "cat": "crit",
+      "note_de": "Bis Cap 500/700%.",
+      "note_en": "Up to cap 500/700%.",
+      "match": [
+        "krit-schaden",
+        "kritschaden",
+        "kritischer schaden",
+        "crit damage",
+        "crit dmg"
+      ]
+    },
+    {
+      "id": "global_atk_w",
+      "de": "Globale ATK +X%",
+      "en": "Global ATK +X%",
+      "pve": 70,
+      "pvp": 68,
+      "cat": "atk",
+      "note_de": "Solider Schadenszuwachs.",
+      "note_en": "Solid damage increase.",
+      "match": [
+        "globale atk",
+        "globaler angriff",
+        "global atk"
+      ]
+    },
+    {
+      "id": "normal_dmg_boost",
+      "de": "Normalschaden-Verstärkung +X%",
+      "en": "Normal Attack DMG Boost +X%",
+      "pve": 48,
+      "pvp": 46,
+      "cat": "normal",
+      "note_de": "Basisangriff-Schaden. Für Skill-Builds schwach.",
+      "note_en": "Basic-attack damage. Weak for skill builds.",
+      "match": [
+        "normalschaden",
+        "normalschadens",
+        "normalschaden verstarkung",
+        "normalschadensverstarkung",
+        "normalangriffsschaden",
+        "normalangriffsschaden verstarkung",
+        "erhohter normalschaden",
+        "normal attack damage",
+        "normal attack dmg boost",
+        "basic attack damage"
+      ]
+    },
+    {
+      "id": "phys_boost_w",
+      "de": "Physischer Schaden-Boost +X%",
+      "en": "Physical Damage Boost +X%",
+      "pve": 50,
+      "pvp": 48,
+      "cat": "physical",
+      "note_de": "Okay als Lückenfüller.",
+      "note_en": "Okay as filler.",
+      "match": [
+        "physischer schaden-boost",
+        "physischer schaden boost",
+        "physical damage boost"
+      ]
+    },
+    {
+      "id": "dbl_dmg_chance",
+      "de": "Normalangriff: Chance auf 2× Schaden",
+      "en": "Normal attack: chance for 2× DMG",
+      "pve": 55,
+      "pvp": 45,
+      "cat": "normal",
+      "note_de": "Gut für Basisangriff-Builds.",
+      "note_en": "Good for basic-attack builds.",
+      "match": [
+        "normalangriff mit chance auf 2x schaden",
+        "normalangriff chance auf 2x schaden",
+        "normalangriffe haben eine chance",
+        "chance auf 2x schaden",
+        "chance auf 2 schaden",
+        "chance auf doppelten schaden",
+        "chance auf das doppelte",
+        "2x schaden",
+        "doppelten schaden",
+        "basisangriffe haben eine",
+        "2 schaden zu verursachen",
+        "double damage",
+        "chance to deal 2",
+        "chance for double",
+        "deal 2x dmg"
+      ]
+    },
+    {
+      "id": "light_spear_coef",
+      "de": "Lichtspeer-Schaden-Koeffizient +X%",
+      "en": "Light Spear DMG Coefficient +X%",
+      "pve": 24,
+      "pvp": 22,
+      "cat": "coef_other",
+      "note_de": "Koeffizient (uncapped) – nur bei Lichtspeer-Builds stark.",
+      "note_en": "Coefficient (uncapped) – only strong in light-spear builds.",
+      "match": [
+        "lichtspeer",
+        "lichtspeern",
+        "lichtspeer schaden koeffizient",
+        "light spear",
+        "light spear coefficient"
+      ]
+    },
+    {
+      "id": "ign_dr_skill",
+      "de": "Skill ignoriert X% Schadensreduktion",
+      "en": "Skill ignores X% DR",
+      "pve": 20,
+      "pvp": 82,
+      "cat": "pvp_ignore",
+      "note_de": "Reiner PvP-Stein.",
+      "note_en": "PvP-only gem.",
+      "match": [
+        "beim einsatz einer fahigkeit",
+        "einsatz einer fahigkeit",
+        "beim einsatz einer fertigkeit",
+        "einsatz einer fertigkeit",
+        "fahigkeit besteht eine chance",
+        "fertigkeit besteht eine chance",
+        "ignoriert die schadensreduktion",
+        "schadensreduktion zu ignorieren",
+        "der schadensreduktion zu ignorieren",
+        "schadensreduktion zu ignor",
+        "ignore damage reduction",
+        "chance to ignore",
+        "ignore the enemy",
+        "when casting a skill",
+        "casting a skill has"
+      ]
+    },
+    {
+      "id": "sword_chi_coef",
+      "de": "Schwertchi-Schaden-Koeffizient +X%",
+      "en": "Sword Chi DMG Coefficient +X%",
+      "pve": 55,
+      "pvp": 52,
+      "cat": "swordchi",
+      "note_de": "Koeffizient (uncapped) – Kern bei Schwert-/Wut-Builds (Skysplitter/Ailoren/Helos).",
+      "note_en": "Coefficient (uncapped) – core for sword/rage builds (Skysplitter/Ailoren/Helos).",
+      "match": [
+        "schwertchi",
+        "schwert-chi",
+        "schwertchi-schaden-koeffizient",
+        "schwertchi koeffizient",
+        "sword chi coefficient",
+        "sword qi",
+        "sword aura",
+        "blood shadow sword qi",
+        "klingen-chi"
+      ]
+    },
+    {
+      "id": "dmg_vs_boss",
+      "de": "Schaden gegen Bosse +X%",
+      "en": "DMG vs Boss +X%",
+      "pve": 80,
+      "pvp": 12,
+      "cat": "conditional",
+      "note_de": "Stark in Boss-/Raid-Kämpfen, im PvP nutzlos.",
+      "note_en": "Strong vs bosses/raids, useless in PvP.",
+      "match": [
+        "schaden gegen bosse",
+        "schaden an bossen",
+        "boss schaden",
+        "gegen bosse",
+        "dmg vs boss",
+        "damage to boss",
+        "boss damage",
+        "vs boss"
+      ]
+    },
+    {
+      "id": "combo_boost_w",
+      "de": "Kombo-Schaden-Verstärkung +X% (gedeckelt)",
+      "en": "Combo DMG Boost +X% (capped)",
+      "pve": 55,
+      "pvp": 50,
+      "cat": "combo",
+      "note_de": "Gedeckelte Kombo-Verstärkung – solide in Kombo-Builds, zählt gegen den 1000%-Cap.",
+      "note_en": "Capped combo boost – solid in combo builds, counts toward the 1000% cap.",
+      "match": [
+        "kombo-schaden-verstarkung",
+        "kombo schaden verstarkung",
+        "komboschaden verstarkung",
+        "kombo schadensbonus",
+        "combo dmg boost",
+        "combo damage boost",
+        "combo dmg bonus"
+      ]
+    },
+    {
+      "id": "explosion_boost_w",
+      "de": "Explosionsschaden-Verstärkung +X%",
+      "en": "Explosion DMG Boost +X%",
+      "pve": 20,
+      "pvp": 18,
+      "cat": "explosion",
+      "note_de": "Nische – nur in Explosions-Builds nützlich.",
+      "note_en": "Niche – only useful in explosion builds.",
+      "match": [
+        "explosionsschaden",
+        "explosion schaden",
+        "explosions verstarkung",
+        "explosion dmg",
+        "explosion damage"
+      ]
+    },
+    {
+      "id": "fire_boost_w",
+      "de": "Feuerschaden-Verstärkung +X%",
+      "en": "Fire DMG Boost +X%",
+      "pve": 30,
+      "pvp": 28,
+      "cat": "fire",
+      "note_de": "Nur in Feuer-/Brand-Builds stark, sonst Lückenfüller.",
+      "note_en": "Strong only in fire/burn builds, otherwise filler.",
+      "match": [
+        "feuerschaden",
+        "feuer schaden verstark",
+        "feuerschadensverstarkung",
+        "fire dmg",
+        "fire damage boost"
+      ]
+    },
+    {
+      "id": "stage_skill_choose",
+      "de": "Stage-Start: sofort 1 Fertigkeit wählen (+Schaden)",
+      "en": "On stage entry: instantly choose 1 skill (+DMG)",
+      "pve": 88,
+      "pvp": 5,
+      "cat": "final",
+      "note_de": "Sehr stark im PvE (Hauptstory/Abyss) – freie Skill-Wahl. Im PvP wirkungslos.",
+      "note_en": "Very strong in PvE (Main Story/Abyss) – free skill pick. Useless in PvP.",
+      "match": [
+        "sofort 1 fertigkeit wahlen",
+        "fertigkeit wahlen beim betreten",
+        "beim betreten einer stage",
+        "stage sofort fertigkeit",
+        "1 fertigkeit wahlen",
+        "immediately choose 1 skill",
+        "choose 1 skill when entering",
+        "choose a skill when entering",
+        "upon entering a stage"
+      ]
+    },
+    {
+      "id": "output_fluctuate",
+      "de": "Ausgangsschaden schwankt zufällig (−X% bis +X%)",
+      "en": "Output DMG fluctuates randomly (−X% to +X%)",
+      "pve": 60,
+      "pvp": 60,
+      "cat": "atk",
+      "note_de": "Glücksspiel-Stein: Schaden schwankt, im Schnitt solider Zuwachs.",
+      "note_en": "Gamble gem: damage fluctuates, on average a solid increase.",
+      "match": [
+        "ausgangsschaden schwankt",
+        "schaden schwankt zwischen",
+        "schwankt zufallig",
+        "ausgegebener schaden schwankt",
+        "output dmg fluctuates",
+        "damage fluctuates",
+        "fluctuates randomly between",
+        "fluctuates between"
+      ]
+    },
+    {
+      "id": "combo_hp_dmg_w",
+      "de": "Kombo: Zusatzschaden (% max. HP des Ziels, gedeckelt)",
+      "en": "Combo: bonus DMG (% target max HP, capped)",
+      "pve": 30,
+      "pvp": 40,
+      "cat": "combo",
+      "note_de": "Zusatzschaden je Kombotreffer – nur in reinen Kombo-Builds spürbar.",
+      "note_en": "Bonus damage per combo hit – only noticeable in pure combo builds.",
+      "match": [
+        "jeder kombotreffer zusatzlicher schaden",
+        "kombo zusatzlicher schaden max hp",
+        "kombo zusatzlicher schaden",
+        "each combo hit deals additional",
+        "combo hit additional dmg",
+        "combo additional damage max hp",
+        "jeder kombotreffer",
+        "kombotreffer zusatzlich",
+        "kombotreffer zusatzlicher schaden"
+      ]
+    },
+    {
+      "id": "crit_hp_dmg_w",
+      "de": "Krit: Zusatzschaden (% max. HP des Ziels, gedeckelt)",
+      "en": "Crit: bonus DMG (% target max HP, capped)",
+      "pve": 30,
+      "pvp": 40,
+      "cat": "crit",
+      "note_de": "Zusatzschaden bei Krits – situativ, gegen Bosse mit viel HP okay.",
+      "note_en": "Bonus damage on crits – situational, okay vs high-HP bosses.",
+      "match": [
+        "bei einem kritischen treffer",
+        "bei kritischem treffer",
+        "kritischen treffer zusatzlicher schaden",
+        "kritischer treffer zusatzlicher schaden",
+        "krit zusatzlicher schaden max hp",
+        "on critical hit deal additional",
+        "on critical hit deals additional",
+        "critical hit additional dmg max hp"
+      ]
+    },
+    {
+      "id": "helos_normal_coef",
+      "de": "Helos Kriegsklinge: Normalangriff-Koeffizient +X%",
+      "en": "Helos Warblade: Normal ATK Coefficient +X%",
+      "pve": 30,
+      "pvp": 28,
+      "cat": "normal",
+      "note_de": "Helden-Signaturstein – nur mit Helos/Kriegsklinge sinnvoll.",
+      "note_en": "Hero-signature gem – only useful with Helos/Warblade.",
+      "match": [
+        "helos",
+        "kriegsklinge",
+        "warblade normal atk coefficient",
+        "helos warblade"
+      ]
+    },
+    {
+      "id": "holy_angel_dagger_coef_w",
+      "de": "Heiliger Engel: Dolchschaden-Koeffizient +X%",
+      "en": "Holy Angel: Dagger DMG Coefficient +X%",
+      "pve": 40,
+      "pvp": 35,
+      "cat": "dagger",
+      "note_de": "Helden-Signaturstein – nur in Engel-/Dolch-Builds stark (uncapped).",
+      "note_en": "Hero-signature gem – strong only in angel/dagger builds (uncapped).",
+      "match": [
+        "heiliger engel dolch",
+        "holy angel dagger",
+        "angel dagger coefficient",
+        "heiliger engel dolchschaden"
+      ]
+    },
+    {
+      "id": "nashir_electric_shield",
+      "de": "Nashirs Zepter: Elektroschild +X%",
+      "en": "Nashir's Scepter: Electric Shield +X%",
+      "pve": 25,
+      "pvp": 22,
+      "cat": "lightning",
+      "note_de": "Helden-Signaturstein – nur mit Nashir/Blitz-Build.",
+      "note_en": "Hero-signature gem – only with Nashir/lightning build.",
+      "match": [
+        "nashir",
+        "elektroschild",
+        "electric shield",
+        "divine thunder",
+        "zepter elektroschild"
+      ]
+    },
+    {
+      "id": "seles_thorn_shield",
+      "de": "Seles' Leid: Dornenschild-Schaden-Koeffizient +X%",
+      "en": "Seles' Suffering: Thorn Shield DMG Coefficient +X%",
+      "pve": 25,
+      "pvp": 22,
+      "cat": "coef_other",
+      "note_de": "Helden-Signaturstein – nur mit Seles/Durian (Anti-Schild-Build).",
+      "note_en": "Hero-signature gem – only with Seles/Durian (anti-shield build).",
+      "match": [
+        "seles",
+        "dornenschild",
+        "thorn shield",
+        "seles suffering",
+        "leid dornenschild"
+      ]
+    }
+  ],
+  "Armor": [
+    {
+      "id": "combo_coef_armor",
+      "de": "Kombo-Schadenskoeffizient +X%",
+      "en": "Combo DMG Coefficient +X%",
+      "pve": 84,
+      "pvp": 72,
+      "cat": "combo",
+      "note_de": "Koeffizient (uncapped) – stark in Kombo-Builds.",
+      "note_en": "Coefficient (uncapped) – strong in combo builds.",
+      "match": [
+        "kombo-schadenskoeffizient",
+        "kombo schadenskoeffizient",
+        "komboschaden koeffizient",
+        "komboschaden",
+        "kombo-koeffizient",
+        "kombo koeffizient",
+        "combo dmg coefficient",
+        "combo damage coefficient"
+      ]
+    },
+    {
+      "id": "heal_per_round",
+      "de": "Heilt pro Runde X% LP",
+      "en": "Heals X% HP per round",
+      "pve": 45,
+      "pvp": 48,
+      "cat": "survival",
+      "note_de": "Survival/Heilung – für Schadens-Builds schwach.",
+      "note_en": "Survival/healing – weak for damage builds.",
+      "match": [
+        "heilt pro runde",
+        "heilung pro runde",
+        "heilt jede runde",
+        "pro runde",
+        "heals per round",
+        "heal per round",
+        "per round"
+      ]
+    },
+    {
+      "id": "battle_start_shield",
+      "de": "Schild zu Kampfbeginn (X% der max. LP)",
+      "en": "Shield at battle start (X% of max HP)",
+      "pve": 55,
+      "pvp": 72,
+      "cat": "survival",
+      "note_de": "Survival; stark in PvP/Tower.",
+      "note_en": "Survival; strong in PvP/tower.",
+      "match": [
+        "zu beginn des kampfes schild",
+        "kampfes schild in hohe",
+        "schild in hohe von",
+        "schild zu kampfbeginn",
+        "schild der max lp",
+        "shield at battle start",
+        "shield at the start",
+        "battle start shield"
+      ]
+    },
+    {
+      "id": "combo_plus1",
+      "de": "Kombo-Anzahl +1 (Kombo-Schaden −X%)",
+      "en": "Combo Count +1 (Combo DMG −X%)",
+      "pve": 100,
+      "pvp": 70,
+      "cat": "combo",
+      "note_de": "Begehrtester Stein, irrer Schaden.",
+      "note_en": "Most wanted gem, insane damage.",
+      "match": [
+        "kombo-anzahl +1",
+        "komboanzahl",
+        "kombozahl",
+        "combo count",
+        "combo +1",
+        "combo number"
+      ]
+    },
+    {
+      "id": "dmg_per_skill",
+      "de": "+1% globaler Schaden pro gelerntem Skill",
+      "en": "+1% global DMG per learned skill",
+      "pve": 90,
+      "pvp": 0,
+      "cat": "final",
+      "note_de": "Nur Kapitel/Dungeon/Raid. Sehr stark dort.",
+      "note_en": "Chapters/dungeon/raid only. Very strong there.",
+      "match": [
+        "pro gelernter fertigkeit",
+        "gelernte fertigkeit",
+        "erlernte fahigkeit",
+        "erlernten fahigkeit",
+        "erlernte fertigkeit",
+        "pro 1 erlernte",
+        "pro erlernte fahigkeit",
+        "globaler schaden pro",
+        "per learned skill",
+        "for each skill learned"
+      ]
+    },
+    {
+      "id": "rage_coef_armor",
+      "de": "Wuttechnik-Koeffizient +X%",
+      "en": "Rage Skill DMG Coefficient +X%",
+      "pve": 84,
+      "pvp": 80,
+      "cat": "rage",
+      "note_de": "Guter Koeffizient (uncapped).",
+      "note_en": "Good coefficient (uncapped).",
+      "match": [
+        "wuttechnik-schadenskoeffizient",
+        "wuttechnik",
+        "rage skill dmg coefficient",
+        "rage coefficient"
+      ]
+    },
+    {
+      "id": "fdr",
+      "de": "Finale Schadensreduktion (FDR) +X%",
+      "en": "Final Damage Reduction (FDR) +X%",
+      "pve": 80,
+      "pvp": 95,
+      "cat": "survival",
+      "note_de": "Top-Survival. Im PvE droppen, wenn du nicht stirbst.",
+      "note_en": "Top survival. Drop in PvE if not dying.",
+      "match": [
+        "finale schadensreduktion",
+        "finale schaden-reduktion",
+        "final damage reduction",
+        "final dmg reduction"
+      ]
+    },
+    {
+      "id": "dagger_coef_armor",
+      "de": "Dolchschaden-Koeffizient +X%",
+      "en": "Dagger DMG Coefficient +X%",
+      "pve": 78,
+      "pvp": 72,
+      "cat": "dagger",
+      "note_de": "Guter Koeffizient (uncapped).",
+      "note_en": "Good coefficient (uncapped).",
+      "match": [
+        "dolchschaden",
+        "dagger dmg coefficient",
+        "dagger coefficient"
+      ]
+    },
+    {
+      "id": "imm_dmg",
+      "de": "Immun gegen erste X Schaden",
+      "en": "Immune to first X damage",
+      "pve": 62,
+      "pvp": 88,
+      "cat": "survival",
+      "note_de": "Must-have für Tower/Dungeon/Tempel.",
+      "note_en": "Must-have for tower/dungeon/temple.",
+      "match": [
+        "immun gegen die ersten",
+        "schadensinstanzen",
+        "immune to the first",
+        "first x damage"
+      ]
+    },
+    {
+      "id": "stun_chance",
+      "de": "X% Stun-Chance bei Angriff",
+      "en": "X% stun chance on attack",
+      "pve": 56,
+      "pvp": 50,
+      "cat": "survival",
+      "note_de": "Survival. PvP nur im Kombo-Build.",
+      "note_en": "Survival. PvP only in combo build.",
+      "match": [
+        "chance den gegner zu betauben",
+        "betauben",
+        "stun chance",
+        "chance to stun"
+      ]
+    },
+    {
+      "id": "imm_ctrl",
+      "de": "Immun gegen erste X Kontrolle",
+      "en": "Immune to first X control",
+      "pve": 30,
+      "pvp": 92,
+      "cat": "control",
+      "note_de": "Must-have für PvP.",
+      "note_en": "Must-have for PvP.",
+      "match": [
+        "ersten kontrollinstanzen",
+        "immun gegen kontrolle",
+        "immune to control",
+        "first x control"
+      ]
+    },
+    {
+      "id": "global_defense",
+      "de": "Globale Verteidigung +X%",
+      "en": "Global Defense +X%",
+      "pve": 18,
+      "pvp": 28,
+      "cat": "defensive",
+      "note_de": "Reine Defense – für Schadens-Builds schwach.",
+      "note_en": "Pure defense – weak for damage builds.",
+      "match": [
+        "globale verteidigung",
+        "global defense",
+        "globale verteidigung"
+      ]
+    },
+    {
+      "id": "dmg_70hp",
+      "de": "+X% Schaden an Zielen über 70% HP",
+      "en": "+X% DMG to targets above 70% HP",
+      "pve": 32,
+      "pvp": 40,
+      "cat": "conditional",
+      "note_de": "Konditional, zählt gegen 1000%-Cap. Lückenfüller.",
+      "note_en": "Conditional, counts toward 1000% cap. Filler.",
+      "match": [
+        "zielen mit uber 70",
+        "fugt zielen mit 70",
+        "zielen mit 70 hp",
+        "ziele mit 70 hp",
+        "70 hp schaden",
+        "uber 70 hp",
+        "uber 70 leben",
+        "mehr als 70",
+        "mehr als 70 leben",
+        "targets above 70",
+        "over 70 hp",
+        "more than 70"
+      ]
+    },
+    {
+      "id": "light_spear_coef",
+      "de": "Lichtspeer-Schaden-Koeffizient +X%",
+      "en": "Light Spear DMG Coefficient +X%",
+      "pve": 24,
+      "pvp": 22,
+      "cat": "coef_other",
+      "note_de": "Koeffizient (uncapped) – nur bei Lichtspeer-Builds stark.",
+      "note_en": "Coefficient (uncapped) – only strong in light-spear builds.",
+      "match": [
+        "lichtspeer",
+        "lichtspeern",
+        "lichtspeer schaden koeffizient",
+        "light spear",
+        "light spear coefficient"
+      ]
+    },
+    {
+      "id": "ign_cc_armor",
+      "de": "Kombo/Krit ignorieren +X%",
+      "en": "Ignore Combo/Crit +X%",
+      "pve": 16,
+      "pvp": 85,
+      "cat": "pvp_ignore",
+      "note_de": "Reiner PvP-Stein.",
+      "note_en": "PvP-only gem.",
+      "match": [
+        "komborate ignorieren",
+        "kritrate ignorieren",
+        "ignore combo",
+        "ignore crit"
+      ]
+    },
+    {
+      "id": "sword_chi_coef",
+      "de": "Schwertchi-Schaden-Koeffizient +X%",
+      "en": "Sword Chi DMG Coefficient +X%",
+      "pve": 55,
+      "pvp": 52,
+      "cat": "swordchi",
+      "note_de": "Koeffizient (uncapped) – Kern bei Schwert-/Wut-Builds (Skysplitter/Ailoren/Helos).",
+      "note_en": "Coefficient (uncapped) – core for sword/rage builds (Skysplitter/Ailoren/Helos).",
+      "match": [
+        "schwertchi",
+        "schwert-chi",
+        "schwertchi-schaden-koeffizient",
+        "schwertchi koeffizient",
+        "sword chi coefficient",
+        "sword qi",
+        "sword aura",
+        "blood shadow sword qi",
+        "klingen-chi"
+      ]
+    },
+    {
+      "id": "combo_dmg_reduction",
+      "de": "Kombo-Schadensreduzierung +X%",
+      "en": "Combo DMG Reduction +X%",
+      "pve": 16,
+      "pvp": 70,
+      "cat": "defensive",
+      "note_de": "Defensiv gegen Kombo-Gegner – stark im PvP gegen Dolch-/Kombo-Builds.",
+      "note_en": "Defensive vs combo enemies – strong in PvP against dagger/combo builds.",
+      "match": [
+        "kombo-schadensreduzierung",
+        "komboschaden reduzierung",
+        "kombo schaden reduktion",
+        "combo dmg reduction",
+        "combo damage reduction"
+      ]
+    },
+    {
+      "id": "counter_dmg_reduction_armor",
+      "de": "Konterschaden-Reduzierung +X%",
+      "en": "Counter DMG Reduction +X%",
+      "pve": 16,
+      "pvp": 44,
+      "cat": "defensive",
+      "note_de": "Defensiver Nischen-Stein gegen Konter-Gegner.",
+      "note_en": "Niche defensive gem vs counter enemies.",
+      "match": [
+        "konterschaden-reduzierung",
+        "konterschaden reduzierung",
+        "konterschadenreduzierung",
+        "counter damage reduction",
+        "counter dmg reduction"
+      ]
+    },
+    {
+      "id": "control_immunity_armor",
+      "de": "Kontrollimmunitätsrate +X%",
+      "en": "Control Immunity Rate +X%",
+      "pve": 28,
+      "pvp": 80,
+      "cat": "control",
+      "note_de": "PvP-orientiert – schützt vor Betäubung/Kontrolle.",
+      "note_en": "PvP-oriented – protects against stun/control.",
+      "match": [
+        "kontrollimmunitatsrate",
+        "kontrollimmunitat rate",
+        "control immunity rate"
+      ]
+    },
+    {
+      "id": "counter_coef_armor",
+      "de": "Konterschaden-Koeffizient +X%",
+      "en": "Counter DMG Coefficient +X%",
+      "pve": 40,
+      "pvp": 40,
+      "cat": "utility",
+      "note_de": "Koeffizient (uncapped) – nur in Konter-Builds (z. B. Mushroom) stark.",
+      "note_en": "Coefficient (uncapped) – only strong in counter builds (e.g. Mushroom).",
+      "match": [
+        "konterschaden koeffizient",
+        "konter koeffizient",
+        "konterschaden-koeffizient",
+        "counter dmg coefficient",
+        "counter damage coefficient"
+      ]
+    },
+    {
+      "id": "burn_coef_armor",
+      "de": "Brandschaden-Koeffizient +X%",
+      "en": "Burn DMG Coefficient +X%",
+      "pve": 35,
+      "pvp": 30,
+      "cat": "fire",
+      "note_de": "Koeffizient (uncapped) – nur in Brand-/DoT-Builds stark.",
+      "note_en": "Coefficient (uncapped) – only strong in burn/DoT builds.",
+      "match": [
+        "brandschaden koeffizient",
+        "brand koeffizient",
+        "verbrennung koeffizient",
+        "burn dmg coefficient",
+        "burn damage coefficient"
+      ]
+    },
+    {
+      "id": "fire_reduction_armor",
+      "de": "Feuerschaden-Reduktion +X%",
+      "en": "Fire DMG Reduction +X%",
+      "pve": 20,
+      "pvp": 30,
+      "cat": "defensive",
+      "note_de": "Nur gegen Feuer-/Brand-Schaden – Nische.",
+      "note_en": "Only vs fire/burn damage – niche.",
+      "match": [
+        "feuerschaden reduktion",
+        "feuer schadensreduktion",
+        "feuerschaden-reduktion",
+        "fire dmg reduction",
+        "fire damage reduction"
+      ]
+    },
+    {
+      "id": "lightning_reduction_armor",
+      "de": "Blitzschaden-Reduktion +X%",
+      "en": "Lightning DMG Reduction +X%",
+      "pve": 20,
+      "pvp": 35,
+      "cat": "defensive",
+      "note_de": "Nur gegen Blitzschaden – Nische (vs. Nashir im PvP).",
+      "note_en": "Only vs lightning damage – niche (vs Nashir in PvP).",
+      "match": [
+        "blitzschaden reduktion",
+        "blitz schadensreduktion",
+        "blitzschaden-reduktion",
+        "lightning dmg reduction",
+        "lightning damage reduction"
+      ]
+    },
+    {
+      "id": "physical_reduction_armor",
+      "de": "Physische Schadensreduktion +X%",
+      "en": "Physical DMG Reduction +X%",
+      "pve": 30,
+      "pvp": 50,
+      "cat": "defensive",
+      "note_de": "Nur gegen physischen Schaden – im PvP solide.",
+      "note_en": "Only vs physical damage – solid in PvP.",
+      "match": [
+        "physische schadensreduktion",
+        "physischer schaden reduktion",
+        "physisch reduktion",
+        "physical dmg reduction",
+        "physical damage reduction"
+      ]
+    },
+    {
+      "id": "normal_atk_reduction_armor",
+      "de": "Normalangriff-Schadensreduktion +X%",
+      "en": "Normal ATK DMG Reduction +X%",
+      "pve": 46,
+      "pvp": 28,
+      "cat": "defensive",
+      "note_de": "Reduziert Basisangriff-Schaden – okay gegen Basisangriff-Gegner.",
+      "note_en": "Reduces basic-attack damage – okay vs basic-attack enemies.",
+      "match": [
+        "normalangriff schadensreduktion",
+        "normalschaden reduktion",
+        "basisangriff schadensreduktion",
+        "normal attack dmg reduction",
+        "basic attack dmg reduction"
+      ]
+    },
+    {
+      "id": "ignore_counter_armor",
+      "de": "Konterrate ignorieren +X%",
+      "en": "Ignore Counter Rate +X%",
+      "pve": 40,
+      "pvp": 55,
+      "cat": "pvp_ignore",
+      "note_de": "Lässt eigene Treffer Gegner-Konter umgehen – stark vs. Konter-Tanks.",
+      "note_en": "Lets your hits bypass enemy counters – strong vs counter tanks.",
+      "match": [
+        "konterrate ignorieren",
+        "konter ignorieren",
+        "ignore counter rate",
+        "ignore counter"
+      ]
+    },
+    {
+      "id": "ignore_ctrl_imm_armor",
+      "de": "Kontrollimmunität ignorieren +X%",
+      "en": "Ignore Control Immunity +X%",
+      "pve": 30,
+      "pvp": 85,
+      "cat": "pvp_ignore",
+      "note_de": "Reiner PvP-Stein – durchbricht gegnerische Kontrollimmunität.",
+      "note_en": "PvP-only gem – breaks enemy control immunity.",
+      "match": [
+        "kontrollimmunitat ignorieren",
+        "ignore control immunity"
+      ]
+    },
+    {
+      "id": "lightning_coef_armor",
+      "de": "Blitzschaden-Koeffizient +X%",
+      "en": "Lightning DMG Coefficient +X%",
+      "pve": 30,
+      "pvp": 28,
+      "cat": "lightning",
+      "note_de": "Koeffizient (uncapped) – nur in Blitz-Builds (Nashir) stark.",
+      "note_en": "Coefficient (uncapped) – only strong in lightning builds (Nashir).",
+      "match": [
+        "blitzschaden koeffizient",
+        "blitz koeffizient",
+        "blitzschaden-koeffizient",
+        "lightning dmg coefficient",
+        "lightning damage coefficient"
+      ]
+    },
+    {
+      "id": "first_turn_fdr",
+      "de": "Erste Runde: Finale Schadensreduktion +X%",
+      "en": "First turn: Final DMG Reduction +X%",
+      "pve": 46,
+      "pvp": 80,
+      "cat": "survival",
+      "note_de": "Sehr stark in PvP/Tower – fängt den ersten gegnerischen Burst ab.",
+      "note_en": "Very strong in PvP/tower – absorbs the enemy's first burst.",
+      "match": [
+        "erste runde finale schadensreduktion",
+        "in der ersten runde finale schaden",
+        "ersten runde schadensreduktion",
+        "first turn final dmg reduction",
+        "on the first turn"
+      ]
+    },
+    {
+      "id": "reflect_dmg_armor",
+      "de": "Reflektiert X% des erlittenen Direktschadens",
+      "en": "Reflects X% of direct DMG taken",
+      "pve": 12,
+      "pvp": 30,
+      "cat": "defensive",
+      "note_de": "Reflexschaden – für Schadens-Builds schwach, Nische.",
+      "note_en": "Reflect damage – weak for damage builds, niche.",
+      "match": [
+        "reflektiert",
+        "schaden zuruck",
+        "zuruckreflektieren",
+        "reflektiert einen teil",
+        "reflects",
+        "reflect damage",
+        "reflects the dmg back"
+      ]
+    },
+    {
+      "id": "global_hp_armor",
+      "de": "Globale LP +X%",
+      "en": "Global HP +X%",
+      "pve": 50,
+      "pvp": 60,
+      "cat": "defensive",
+      "note_de": "Mehr LP – solide Survival, vor allem im PvP/Tower wertvoll.",
+      "note_en": "More HP – solid survival, valuable especially in PvP/tower.",
+      "match": [
+        "globale lp",
+        "globale lebenspunkte",
+        "global hp",
+        "global health"
+      ]
+    },
+    {
+      "id": "speed_armor",
+      "de": "Geschwindigkeit +X",
+      "en": "Speed +X",
+      "pve": 28,
+      "pvp": 80,
+      "cat": "utility",
+      "note_de": "Wer schneller ist, handelt zuerst – im PvP sehr wichtig, im PvE gering.",
+      "note_en": "Acting first matters – very important in PvP, minor in PvE.",
+      "match": [
+        "geschwindigkeit",
+        "tempo",
+        "initiative",
+        "speed plus",
+        "speed +"
+      ]
+    }
+  ],
+  "Ring": [
+    {
+      "id": "combo_rate",
+      "de": "Kombo-Rate +X%",
+      "en": "Combo Rate +X%",
+      "pve": 92,
+      "pvp": 60,
+      "cat": "combo",
+      "note_de": "Essentiell für Dolch-Builds (mehr Dolche).",
+      "note_en": "Essential for dagger builds (more daggers).",
+      "match": [
+        "komborate",
+        "kombo-rate",
+        "combo rate"
+      ]
+    },
+    {
+      "id": "counter_rate",
+      "de": "Konterrate +X%",
+      "en": "Counter Rate +X%",
+      "pve": 58,
+      "pvp": 52,
+      "cat": "utility",
+      "note_de": "Mehr Konter → mehr Angriffe. Kern im Konter-Build.",
+      "note_en": "More counters → more attacks. Core in counter build.",
+      "match": [
+        "konterrate",
+        "konter-rate",
+        "counter rate"
+      ]
+    },
+    {
+      "id": "ign_fdr_dot",
+      "de": "FDR ignorieren bei Brand/Gift",
+      "en": "Ignore FDR on burning/poisoned",
+      "pve": 88,
+      "pvp": 85,
+      "cat": "final",
+      "note_de": "Wirkt wie finaler Schaden, sehr stark.",
+      "note_en": "Acts like final damage, very strong.",
+      "match": [
+        "brennende oder vergiftete",
+        "verbrennung oder vergiftung",
+        "burning or poisoned",
+        "ignore final damage reduction"
+      ]
+    },
+    {
+      "id": "atk_dagger_hit",
+      "de": "ATK +X% bei Dolchtreffer",
+      "en": "ATK +X% on dagger hit",
+      "pve": 85,
+      "pvp": 80,
+      "cat": "dagger",
+      "note_de": "Guter Schadenszuwachs, additiv.",
+      "note_en": "Good additive damage increase.",
+      "match": [
+        "wenn ein dolch trifft",
+        "bei dolchtreffer",
+        "trifft ein dagger",
+        "angriff bis maximal",
+        "dagger hits",
+        "on dagger hit"
+      ]
+    },
+    {
+      "id": "global_atk_r",
+      "de": "Globale ATK +X%",
+      "en": "Global ATK +X%",
+      "pve": 70,
+      "pvp": 66,
+      "cat": "atk",
+      "note_de": "Solider Schadenszuwachs.",
+      "note_en": "Solid damage increase.",
+      "match": [
+        "globale atk",
+        "globaler angriff",
+        "global atk"
+      ]
+    },
+    {
+      "id": "phys_boost_r",
+      "de": "Erhöhter Physischer Schaden +X%",
+      "en": "Increased Physical Damage +X%",
+      "pve": 50,
+      "pvp": 48,
+      "cat": "physical",
+      "note_de": "Solider Schaden, kein Kern-Stein.",
+      "note_en": "Solid damage, not a core gem.",
+      "match": [
+        "erhohter physischer schaden",
+        "physischer schaden-boost",
+        "physischer schaden",
+        "increased physical damage"
+      ]
+    },
+    {
+      "id": "lifesteal",
+      "de": "Lifesteal +X% (wenn HP < Gegner)",
+      "en": "Lifesteal +X% (when HP < enemy)",
+      "pve": 52,
+      "pvp": 45,
+      "cat": "survival",
+      "note_de": "Defensiv, im PvE okay.",
+      "note_en": "Defensive, okay in PvE.",
+      "match": [
+        "lebensraub",
+        "hp niedriger als",
+        "lifesteal",
+        "life steal"
+      ]
+    },
+    {
+      "id": "counter_dmg_red",
+      "de": "Konterschaden-Reduzierung +X%",
+      "en": "Counter DMG Reduction +X%",
+      "pve": 30,
+      "pvp": 44,
+      "cat": "defensive",
+      "note_de": "Defensiver Nischen-Stein.",
+      "note_en": "Niche defensive gem.",
+      "match": [
+        "konterschaden-reduzierung",
+        "konterschaden reduzierung",
+        "konterschadenreduzierung",
+        "konterschadenreduktion",
+        "counter damage reduction",
+        "counter dmg reduction"
+      ]
+    },
+    {
+      "id": "bolt_shield_down",
+      "de": "Blitz: −X% Schildgewinnung des Ziels",
+      "en": "Bolt: −X% target shield gain",
+      "pve": 15,
+      "pvp": 40,
+      "cat": "defensive",
+      "note_de": "Anti-Schild. PvE nutzlos, PvP Nische.",
+      "note_en": "Anti-shield. Useless PvE, niche PvP.",
+      "match": [
+        "schildgewinnung des ziels",
+        "blitz hat eine",
+        "shield gain",
+        "reduce shield"
+      ]
+    },
+    {
+      "id": "global_defense",
+      "de": "Globale Verteidigung +X%",
+      "en": "Global Defense +X%",
+      "pve": 18,
+      "pvp": 28,
+      "cat": "defensive",
+      "note_de": "Reine Defense – für Schadens-Builds schwach.",
+      "note_en": "Pure defense – weak for damage builds.",
+      "match": [
+        "globale verteidigung",
+        "global defense",
+        "globale verteidigung"
+      ]
+    },
+    {
+      "id": "dmg_70hp",
+      "de": "+X% Schaden an Zielen über 70% HP",
+      "en": "+X% DMG to targets above 70% HP",
+      "pve": 32,
+      "pvp": 40,
+      "cat": "conditional",
+      "note_de": "Konditional, zählt gegen 1000%-Cap. Lückenfüller.",
+      "note_en": "Conditional, counts toward 1000% cap. Filler.",
+      "match": [
+        "zielen mit uber 70",
+        "fugt zielen mit 70",
+        "zielen mit 70 hp",
+        "ziele mit 70 hp",
+        "70 hp schaden",
+        "uber 70 hp",
+        "uber 70 leben",
+        "mehr als 70",
+        "mehr als 70 leben",
+        "targets above 70",
+        "over 70 hp",
+        "more than 70"
+      ]
+    },
+    {
+      "id": "light_spear_coef",
+      "de": "Lichtspeer-Schaden-Koeffizient +X%",
+      "en": "Light Spear DMG Coefficient +X%",
+      "pve": 24,
+      "pvp": 22,
+      "cat": "coef_other",
+      "note_de": "Koeffizient (uncapped) – nur bei Lichtspeer-Builds stark.",
+      "note_en": "Coefficient (uncapped) – only strong in light-spear builds.",
+      "match": [
+        "lichtspeer",
+        "lichtspeern",
+        "lichtspeer schaden koeffizient",
+        "light spear",
+        "light spear coefficient"
+      ]
+    },
+    {
+      "id": "rage_silence",
+      "de": "Wut-Schaden +X% + Silence-Chance",
+      "en": "Rage DMG +X% + silence chance",
+      "pve": 25,
+      "pvp": 85,
+      "cat": "pvp_ignore",
+      "note_de": "Stark im PvP gegen Skill-Gegner.",
+      "note_en": "Strong in PvP vs skill enemies.",
+      "match": [
+        "verstummen",
+        "schweigen",
+        "wut-fertigkeitsschaden",
+        "silence",
+        "rage skill damage"
+      ]
+    },
+    {
+      "id": "sword_chi_coef",
+      "de": "Schwertchi-Schaden-Koeffizient +X%",
+      "en": "Sword Chi DMG Coefficient +X%",
+      "pve": 55,
+      "pvp": 52,
+      "cat": "swordchi",
+      "note_de": "Koeffizient (uncapped) – Kern bei Schwert-/Wut-Builds (Skysplitter/Ailoren/Helos).",
+      "note_en": "Coefficient (uncapped) – core for sword/rage builds (Skysplitter/Ailoren/Helos).",
+      "match": [
+        "schwertchi",
+        "schwert-chi",
+        "schwertchi-schaden-koeffizient",
+        "schwertchi koeffizient",
+        "sword chi coefficient",
+        "sword qi",
+        "sword aura",
+        "blood shadow sword qi",
+        "klingen-chi"
+      ]
+    },
+    {
+      "id": "weapon_crit_rate_r",
+      "de": "Waffen-Kritrate +X%",
+      "en": "Weapon Crit Rate +X%",
+      "pve": 80,
+      "pvp": 80,
+      "cat": "crit",
+      "note_de": "Mehr Krits → mehr Dolche/Schaden. Kern in Krit-Builds.",
+      "note_en": "More crits → more daggers/damage. Core in crit builds.",
+      "match": [
+        "waffen kritrate",
+        "waffenkrit",
+        "waffen krit rate",
+        "weapon crit rate",
+        "weapon crit"
+      ]
+    },
+    {
+      "id": "dagger_crit_rate_r",
+      "de": "Dolch-Kritrate +X%",
+      "en": "Dagger Crit Rate +X%",
+      "pve": 12,
+      "pvp": 46,
+      "cat": "crit",
+      "note_de": "Nur Dolch-Krits – im PvE schwach, im PvP situativ.",
+      "note_en": "Dagger crits only – weak in PvE, situational in PvP.",
+      "match": [
+        "dolch kritrate",
+        "dolchkrit",
+        "dolch krit rate",
+        "dagger crit rate"
+      ]
+    },
+    {
+      "id": "sword_qi_crit_rate_r",
+      "de": "Schwertchi-Kritrate +X%",
+      "en": "Sword Qi Crit Rate +X%",
+      "pve": 12,
+      "pvp": 46,
+      "cat": "crit",
+      "note_de": "Nur Schwertchi-Krits – Nische (Schwert-Builds).",
+      "note_en": "Sword-qi crits only – niche (sword builds).",
+      "match": [
+        "schwertchi kritrate",
+        "schwert chi krit",
+        "sword qi crit rate",
+        "sword aura crit"
+      ]
+    },
+    {
+      "id": "lightning_crit_rate_r",
+      "de": "Blitz-Kritrate +X%",
+      "en": "Lightning Crit Rate +X%",
+      "pve": 12,
+      "pvp": 46,
+      "cat": "lightning",
+      "note_de": "Nur Blitz-Krits – Nische (Nashir).",
+      "note_en": "Lightning crits only – niche (Nashir).",
+      "match": [
+        "blitz kritrate",
+        "blitzkrit",
+        "blitz krit rate",
+        "lightning crit rate"
+      ]
+    },
+    {
+      "id": "dot_crit_rate_r",
+      "de": "DoT-Kritrate +X%",
+      "en": "DoT Crit Rate +X%",
+      "pve": 12,
+      "pvp": 12,
+      "cat": "fire",
+      "note_de": "DoT-Krits – sehr schwach, fast nie empfehlenswert.",
+      "note_en": "DoT crits – very weak, almost never recommended.",
+      "match": [
+        "dot kritrate",
+        "dot crit rate",
+        "dot krit"
+      ]
+    },
+    {
+      "id": "combo_boost_r",
+      "de": "Kombo-Schaden-Verstärkung +X% (gedeckelt)",
+      "en": "Combo DMG Boost +X% (capped)",
+      "pve": 55,
+      "pvp": 50,
+      "cat": "combo",
+      "note_de": "Gedeckelte Kombo-Verstärkung – solide in Kombo-Builds.",
+      "note_en": "Capped combo boost – solid in combo builds.",
+      "match": [
+        "kombo-schaden-verstarkung",
+        "kombo schaden verstarkung",
+        "komboschaden verstarkung",
+        "combo dmg boost",
+        "combo damage boost",
+        "combo dmg bonus"
+      ]
+    },
+    {
+      "id": "lightning_boost_r",
+      "de": "Blitzschaden-Verstärkung +X%",
+      "en": "Lightning DMG Boost +X%",
+      "pve": 50,
+      "pvp": 52,
+      "cat": "lightning",
+      "note_de": "Mehr Blitzschaden – stark in Blitz-/Donner-Builds (Nashir).",
+      "note_en": "More lightning damage – strong in lightning/thunder builds (Nashir).",
+      "match": [
+        "blitzschadensverstarkung",
+        "blitzschaden verstarkung",
+        "blitzschaden",
+        "lightning damage",
+        "lightning dmg boost"
+      ]
+    },
+    {
+      "id": "fire_boost_r",
+      "de": "Feuerschaden-Verstärkung +X%",
+      "en": "Fire DMG Boost +X%",
+      "pve": 30,
+      "pvp": 28,
+      "cat": "fire",
+      "note_de": "Nur in Feuer-/Brand-Builds stark, sonst Lückenfüller.",
+      "note_en": "Strong only in fire/burn builds, otherwise filler.",
+      "match": [
+        "feuerschaden",
+        "feuer schaden verstark",
+        "fire dmg",
+        "fire damage boost"
+      ]
+    },
+    {
+      "id": "explosion_boost_r",
+      "de": "Explosionsschaden-Verstärkung +X%",
+      "en": "Explosion DMG Boost +X%",
+      "pve": 20,
+      "pvp": 18,
+      "cat": "explosion",
+      "note_de": "Nische – nur in Explosions-Builds nützlich.",
+      "note_en": "Niche – only useful in explosion builds.",
+      "match": [
+        "explosionsschaden",
+        "explosion schaden",
+        "explosion dmg",
+        "explosion damage"
+      ]
+    },
+    {
+      "id": "normal_boost_r",
+      "de": "Normalschaden-Verstärkung +X%",
+      "en": "Normal ATK DMG Boost +X%",
+      "pve": 48,
+      "pvp": 46,
+      "cat": "normal",
+      "note_de": "Basisangriff-Schaden – für Skill-Builds schwach.",
+      "note_en": "Basic-attack damage – weak for skill builds.",
+      "match": [
+        "normalschaden",
+        "normalschadens",
+        "normalschaden verstarkung",
+        "normalschadensverstarkung",
+        "normalangriffsschaden",
+        "normalangriffsschaden verstarkung",
+        "erhohter normalschaden",
+        "normal attack damage",
+        "normal attack dmg boost",
+        "basic attack damage"
+      ]
+    },
+    {
+      "id": "dmg_shielded_r",
+      "de": "Schaden gegen geschützte Ziele +X%",
+      "en": "DMG to shielded targets +X%",
+      "pve": 25,
+      "pvp": 70,
+      "cat": "conditional",
+      "note_de": "Stark im PvP (Gegner schilden oft), im PvE meist nutzlos.",
+      "note_en": "Strong in PvP (enemies shield often), mostly useless in PvE.",
+      "match": [
+        "schaden an zielen mit schild",
+        "ziele mit schild",
+        "abgeschirmte ziele",
+        "gegen schild",
+        "dmg to shielded",
+        "damage to shielded targets",
+        "shielded targets",
+        "geschutzte ziele",
+        "schaden gegen geschutzte ziele",
+        "gegen geschutzte ziele",
+        "schaden an geschutzten zielen",
+        "dmg to guarded",
+        "guarded targets"
+      ]
+    },
+    {
+      "id": "burn_stack_hp_dmg_r",
+      "de": "Bei X Brand-Stapeln: % max. HP Schaden/Runde",
+      "en": "At X Burn stacks: % max HP DMG per turn",
+      "pve": 12,
+      "pvp": 12,
+      "cat": "fire",
+      "note_de": "Sehr nischig – nur extreme Brand-Stapel-Builds.",
+      "note_en": "Very niche – only extreme burn-stack builds.",
+      "match": [
+        "brand stapel",
+        "verbrennung stapel",
+        "bei brand",
+        "burn stacks",
+        "when burn"
+      ]
+    },
+    {
+      "id": "skill_shield_combo_r",
+      "de": "[Einzigartig] Alle X Kombos: Skill-Schild (% max. HP)",
+      "en": "[Unique] Every X combos: Skill Shield (% max HP)",
+      "pve": 28,
+      "pvp": 90,
+      "cat": "survival",
+      "note_de": "Sehr stark im PvP – regelmäßiger Schild über Kombos.",
+      "note_en": "Very strong in PvP – regular shield from combos.",
+      "match": [
+        "alle 3 kombos schild",
+        "kombo skill schild",
+        "skill schild",
+        "every 3 combos",
+        "combo hits grant a skill shield",
+        "skill shield equal to"
+      ]
+    },
+    {
+      "id": "sword_qi_blade_cyclone_r",
+      "de": "[Einzigartig] Schwertchi-Treffer: Chance auf Klingenwirbel",
+      "en": "[Unique] On Sword Qi hit: chance to release Blade Cyclone",
+      "pve": 50,
+      "pvp": 45,
+      "cat": "swordchi",
+      "note_de": "Stark in Schwertchi-Builds (Ailoren) – zusätzlicher AoE.",
+      "note_en": "Strong in sword-qi builds (Ailoren) – extra AoE.",
+      "match": [
+        "klingenwirbel",
+        "schwertchi treffer chance",
+        "blade cyclone",
+        "blade whirlwind",
+        "sword qi hits",
+        "sword aura hits"
+      ]
+    },
+    {
+      "id": "light_spear_counter_r",
+      "de": "[Einzigartig] Lichtspeer auf brennendes Ziel: Konter-Zusatzschaden",
+      "en": "[Unique] Light spear on burning target: bonus counter DMG",
+      "pve": 22,
+      "pvp": 20,
+      "cat": "coef_other",
+      "note_de": "Nische – nur in Lichtspeer-Builds.",
+      "note_en": "Niche – only in light-spear builds.",
+      "match": [
+        "lichtspeer auf brennendes ziel",
+        "lichtspeer konter",
+        "light spear hits a burning",
+        "light spear burning target"
+      ]
+    },
+    {
+      "id": "hero_skill_dmg_r",
+      "de": "Helden-Skill-Verstärkung +X% (Phönix/Pharao/Tengu/Tiger/Königin)",
+      "en": "Hero skill boost +X% (Phoenix/Pharaoh/Tengu/Tiger/Queen)",
+      "pve": 30,
+      "pvp": 28,
+      "cat": "coef_other",
+      "note_de": "Verstärkt eine bestimmte Helden-Fertigkeit – nur mit dem passenden Helden.",
+      "note_en": "Boosts a specific hero skill – only with the matching hero.",
+      "match": [
+        "phonix",
+        "phoenix dmg",
+        "pharao",
+        "pharaoh dmg",
+        "tengu dmg",
+        "great tengu",
+        "white tiger dmg",
+        "weisser tiger",
+        "fallen queen",
+        "gefallene konigin",
+        "enhances fireball",
+        "enhances wind blade",
+        "verstarkt"
+      ]
+    }
+  ],
+  "Accessory": [
+    {
+      "id": "atk_hit",
+      "de": "ATK bei erlittenem Treffer +X%",
+      "en": "ATK on being hit +X%",
+      "pve": 100,
+      "pvp": 90,
+      "cat": "atk",
+      "note_de": "Bester Halsketten-Stein. Skaliert alles, kein Cap.",
+      "note_en": "Best accessory gem. Scales everything, no cap.",
+      "match": [
+        "erlittenen angriff",
+        "angriffswert des helden",
+        "stapelbar bis zu",
+        "nach jedem erlittenen angriff",
+        "each time the hero is attacked",
+        "upon being attacked",
+        "when attacked",
+        "angriffswert"
+      ]
+    },
+    {
+      "id": "rage_coef_a",
+      "de": "Wuttechnik-Koeffizient +X%",
+      "en": "Rage Skill DMG Coefficient +X%",
+      "pve": 86,
+      "pvp": 80,
+      "cat": "rage",
+      "note_de": "Top-Koeffizient, uncapped.",
+      "note_en": "Top coefficient, uncapped.",
+      "match": [
+        "wuttechnik-schadenskoeffizient",
+        "wuttechnik",
+        "rage skill dmg coefficient",
+        "rage coefficient"
+      ]
+    },
+    {
+      "id": "combo_coef_a",
+      "de": "Kombo-Schadenskoeffizient +X%",
+      "en": "Combo DMG Coefficient +X%",
+      "pve": 84,
+      "pvp": 72,
+      "cat": "combo",
+      "note_de": "Koeffizient, uncapped.",
+      "note_en": "Coefficient, uncapped.",
+      "match": [
+        "kombo-schadenskoeffizient",
+        "komboschaden",
+        "combo dmg coefficient",
+        "combo damage coefficient"
+      ]
+    },
+    {
+      "id": "dagger_coef_a",
+      "de": "Dolchschaden-Koeffizient +X%",
+      "en": "Dagger DMG Coefficient +X%",
+      "pve": 82,
+      "pvp": 70,
+      "cat": "dagger",
+      "note_de": "Koeffizient, uncapped.",
+      "note_en": "Coefficient, uncapped.",
+      "match": [
+        "dolchschaden",
+        "dagger dmg coefficient",
+        "dagger coefficient"
+      ]
+    },
+    {
+      "id": "enemy_atk_down",
+      "de": "Gegner-ATK −X% nach direktem Schaden",
+      "en": "Enemy ATK −X% after direct damage",
+      "pve": 58,
+      "pvp": 75,
+      "cat": "survival",
+      "note_de": "Defensiv, gut zum Überleben.",
+      "note_en": "Defensive, good for survival.",
+      "match": [
+        "angriffskraft des gegners",
+        "reduces enemy atk",
+        "enemy attack"
+      ]
+    },
+    {
+      "id": "phys_dr",
+      "de": "Physischer Schaden-Reduktion +X%",
+      "en": "Physical DMG Reduction +X%",
+      "pve": 46,
+      "pvp": 55,
+      "cat": "defensive",
+      "note_de": "Nur vs. physischen Schaden.",
+      "note_en": "Only vs physical.",
+      "match": [
+        "physischer schaden-reduktion",
+        "physische schadensreduktion",
+        "physical damage reduction"
+      ]
+    },
+    {
+      "id": "pet_heal",
+      "de": "Heilungseffekt der Haustiere +X%",
+      "en": "Pet healing effect +X%",
+      "pve": 35,
+      "pvp": 40,
+      "cat": "defensive",
+      "note_de": "Utility/Heilung – für Schaden schwach.",
+      "note_en": "Utility/healing – weak for damage.",
+      "match": [
+        "heilungseffekt der getragenen haustiere",
+        "heilungseffekt",
+        "heilung der haustiere",
+        "pet healing",
+        "healing effect"
+      ]
+    },
+    {
+      "id": "dmg_70hp",
+      "de": "+X% Schaden an Zielen über 70% HP",
+      "en": "+X% DMG to targets above 70% HP",
+      "pve": 32,
+      "pvp": 40,
+      "cat": "conditional",
+      "note_de": "Konditional, zählt gegen 1000%-Cap. Lückenfüller.",
+      "note_en": "Conditional, counts toward 1000% cap. Filler.",
+      "match": [
+        "zielen mit uber 70",
+        "fugt zielen mit 70",
+        "zielen mit 70 hp",
+        "ziele mit 70 hp",
+        "70 hp schaden",
+        "uber 70 hp",
+        "uber 70 leben",
+        "mehr als 70",
+        "mehr als 70 leben",
+        "targets above 70",
+        "over 70 hp",
+        "more than 70"
+      ]
+    },
+    {
+      "id": "global_defense",
+      "de": "Globale Verteidigung +X%",
+      "en": "Global Defense +X%",
+      "pve": 18,
+      "pvp": 28,
+      "cat": "defensive",
+      "note_de": "Reine Defense – für Schadens-Builds schwach.",
+      "note_en": "Pure defense – weak for damage builds.",
+      "match": [
+        "globale verteidigung",
+        "global defense",
+        "globale verteidigung"
+      ]
+    },
+    {
+      "id": "global_hp",
+      "de": "Globale LP% +X%",
+      "en": "Global HP% +X%",
+      "pve": 48,
+      "pvp": 60,
+      "cat": "defensive",
+      "note_de": "Reine Defense (oft nur Güte-Bonus).",
+      "note_en": "Pure defense (often just a grade bonus).",
+      "match": [
+        "globale lebenspunkte",
+        "globale lp",
+        "global hp",
+        "global health"
+      ]
+    },
+    {
+      "id": "light_spear_coef",
+      "de": "Lichtspeer-Schaden-Koeffizient +X%",
+      "en": "Light Spear DMG Coefficient +X%",
+      "pve": 24,
+      "pvp": 22,
+      "cat": "coef_other",
+      "note_de": "Koeffizient (uncapped) – nur bei Lichtspeer-Builds stark.",
+      "note_en": "Coefficient (uncapped) – only strong in light-spear builds.",
+      "match": [
+        "lichtspeer",
+        "lichtspeern",
+        "lichtspeer schaden koeffizient",
+        "light spear",
+        "light spear coefficient"
+      ]
+    },
+    {
+      "id": "ctrl_imm",
+      "de": "Kontrollimmunitätsrate +X%",
+      "en": "Control Immunity Rate +X%",
+      "pve": 22,
+      "pvp": 60,
+      "cat": "control",
+      "note_de": "PvP-orientiert.",
+      "note_en": "PvP-oriented.",
+      "match": [
+        "kontrollimmunitatsrate",
+        "control immunity rate"
+      ]
+    },
+    {
+      "id": "ign_ctrl_a",
+      "de": "Kontrollimmunität ignorieren +X%",
+      "en": "Ignore Control Immunity +X%",
+      "pve": 18,
+      "pvp": 85,
+      "cat": "pvp_ignore",
+      "note_de": "Reiner PvP-Stein.",
+      "note_en": "PvP-only gem.",
+      "match": [
+        "kontrollimmunitat ignorieren",
+        "ignore control immunity"
+      ]
+    },
+    {
+      "id": "ign_combo_a",
+      "de": "Kombo ignorieren +X%",
+      "en": "Ignore Combo +X%",
+      "pve": 16,
+      "pvp": 80,
+      "cat": "pvp_ignore",
+      "note_de": "Reiner PvP-Stein.",
+      "note_en": "PvP-only gem.",
+      "match": [
+        "komborate ignorieren",
+        "kombo ignorieren",
+        "ignore combo"
+      ]
+    },
+    {
+      "id": "ign_crit_a",
+      "de": "Krit ignorieren +X%",
+      "en": "Ignore Crit +X%",
+      "pve": 16,
+      "pvp": 80,
+      "cat": "pvp_ignore",
+      "note_de": "Reiner PvP-Stein.",
+      "note_en": "PvP-only gem.",
+      "match": [
+        "kritrate ignorieren",
+        "krit ignorieren",
+        "ignore crit"
+      ]
+    },
+    {
+      "id": "sword_chi_coef",
+      "de": "Schwertchi-Schaden-Koeffizient +X%",
+      "en": "Sword Chi DMG Coefficient +X%",
+      "pve": 55,
+      "pvp": 52,
+      "cat": "swordchi",
+      "note_de": "Koeffizient (uncapped) – Kern bei Schwert-/Wut-Builds (Skysplitter/Ailoren/Helos).",
+      "note_en": "Coefficient (uncapped) – core for sword/rage builds (Skysplitter/Ailoren/Helos).",
+      "match": [
+        "schwertchi",
+        "schwert-chi",
+        "schwertchi-schaden-koeffizient",
+        "schwertchi koeffizient",
+        "sword chi coefficient",
+        "sword qi",
+        "sword aura",
+        "blood shadow sword qi",
+        "klingen-chi"
+      ]
+    },
+    {
+      "id": "combo_dmg_reduction_a",
+      "de": "Kombo-Schadensreduzierung +X%",
+      "en": "Combo DMG Reduction +X%",
+      "pve": 16,
+      "pvp": 70,
+      "cat": "defensive",
+      "note_de": "Defensiv gegen Kombo-Gegner – stark im PvP gegen Dolch-/Kombo-Builds.",
+      "note_en": "Defensive vs combo enemies – strong in PvP against dagger/combo builds.",
+      "match": [
+        "kombo-schadensreduzierung",
+        "komboschaden reduzierung",
+        "kombo schaden reduktion",
+        "combo dmg reduction",
+        "combo damage reduction"
+      ]
+    },
+    {
+      "id": "counter_dmg_reduction_a",
+      "de": "Konterschaden-Reduzierung +X%",
+      "en": "Counter DMG Reduction +X%",
+      "pve": 16,
+      "pvp": 44,
+      "cat": "defensive",
+      "note_de": "Defensiver Nischen-Stein gegen Konter-Gegner.",
+      "note_en": "Niche defensive gem vs counter enemies.",
+      "match": [
+        "konterschaden-reduzierung",
+        "konterschaden reduzierung",
+        "konterschadenreduzierung",
+        "counter damage reduction",
+        "counter dmg reduction"
+      ]
+    },
+    {
+      "id": "counter_coef_a",
+      "de": "Konterschaden-Koeffizient +X%",
+      "en": "Counter DMG Coefficient +X%",
+      "pve": 40,
+      "pvp": 40,
+      "cat": "utility",
+      "note_de": "Koeffizient (uncapped) – nur in Konter-Builds stark.",
+      "note_en": "Coefficient (uncapped) – only strong in counter builds.",
+      "match": [
+        "konterschaden koeffizient",
+        "konter koeffizient",
+        "konterschaden-koeffizient",
+        "counter dmg coefficient",
+        "counter damage coefficient"
+      ]
+    },
+    {
+      "id": "burn_coef_a",
+      "de": "Brandschaden-Koeffizient +X%",
+      "en": "Burn DMG Coefficient +X%",
+      "pve": 35,
+      "pvp": 30,
+      "cat": "fire",
+      "note_de": "Koeffizient (uncapped) – nur in Brand-/DoT-Builds stark.",
+      "note_en": "Coefficient (uncapped) – only strong in burn/DoT builds.",
+      "match": [
+        "brandschaden koeffizient",
+        "brand koeffizient",
+        "verbrennung koeffizient",
+        "burn dmg coefficient",
+        "burn damage coefficient"
+      ]
+    },
+    {
+      "id": "fire_reduction_a",
+      "de": "Feuerschaden-Reduktion +X%",
+      "en": "Fire DMG Reduction +X%",
+      "pve": 20,
+      "pvp": 30,
+      "cat": "defensive",
+      "note_de": "Nur gegen Feuer-/Brand-Schaden – Nische.",
+      "note_en": "Only vs fire/burn damage – niche.",
+      "match": [
+        "feuerschaden reduktion",
+        "feuer schadensreduktion",
+        "fire dmg reduction",
+        "fire damage reduction"
+      ]
+    },
+    {
+      "id": "lightning_reduction_a",
+      "de": "Blitzschaden-Reduktion +X%",
+      "en": "Lightning DMG Reduction +X%",
+      "pve": 20,
+      "pvp": 35,
+      "cat": "defensive",
+      "note_de": "Nur gegen Blitzschaden – Nische (vs. Nashir im PvP).",
+      "note_en": "Only vs lightning damage – niche (vs Nashir in PvP).",
+      "match": [
+        "blitzschaden reduktion",
+        "blitz schadensreduktion",
+        "lightning dmg reduction",
+        "lightning damage reduction"
+      ]
+    },
+    {
+      "id": "lightning_coef_a",
+      "de": "Blitzschaden-Koeffizient +X%",
+      "en": "Lightning DMG Coefficient +X%",
+      "pve": 30,
+      "pvp": 28,
+      "cat": "lightning",
+      "note_de": "Koeffizient (uncapped) – nur in Blitz-Builds (Nashir) stark.",
+      "note_en": "Coefficient (uncapped) – only strong in lightning builds (Nashir).",
+      "match": [
+        "blitzschaden koeffizient",
+        "blitz koeffizient",
+        "lightning dmg coefficient",
+        "lightning damage coefficient"
+      ]
+    },
+    {
+      "id": "normal_atk_reduction_a",
+      "de": "Normalangriff-Schadensreduktion +X%",
+      "en": "Normal ATK DMG Reduction +X%",
+      "pve": 46,
+      "pvp": 28,
+      "cat": "defensive",
+      "note_de": "Reduziert Basisangriff-Schaden – okay gegen Basisangriff-Gegner.",
+      "note_en": "Reduces basic-attack damage – okay vs basic-attack enemies.",
+      "match": [
+        "normalangriff schadensreduktion",
+        "normalschaden reduktion",
+        "basisangriff schadensreduktion",
+        "normal attack dmg reduction",
+        "basic attack dmg reduction"
+      ]
+    },
+    {
+      "id": "ignore_counter_a",
+      "de": "Konterrate ignorieren +X%",
+      "en": "Ignore Counter Rate +X%",
+      "pve": 40,
+      "pvp": 55,
+      "cat": "pvp_ignore",
+      "note_de": "Lässt eigene Treffer Gegner-Konter umgehen – stark vs. Konter-Tanks.",
+      "note_en": "Lets your hits bypass enemy counters – strong vs counter tanks.",
+      "match": [
+        "konterrate ignorieren",
+        "konter ignorieren",
+        "ignore counter rate",
+        "ignore counter"
+      ]
+    },
+    {
+      "id": "dmg_shielded_a",
+      "de": "Schaden gegen geschützte Ziele +X%",
+      "en": "DMG to shielded targets +X%",
+      "pve": 25,
+      "pvp": 72,
+      "cat": "conditional",
+      "note_de": "Stark im PvP (Gegner schilden oft), im PvE meist nutzlos.",
+      "note_en": "Strong in PvP (enemies shield often), mostly useless in PvE.",
+      "match": [
+        "schaden an zielen mit schild",
+        "ziele mit schild",
+        "abgeschirmte ziele",
+        "gegen schild",
+        "dmg to shielded",
+        "damage to shielded targets",
+        "shielded targets",
+        "geschutzte ziele",
+        "schaden gegen geschutzte ziele",
+        "gegen geschutzte ziele",
+        "schaden an geschutzten zielen",
+        "dmg to guarded",
+        "guarded targets"
+      ]
+    },
+    {
+      "id": "speed_a",
+      "de": "Geschwindigkeit +X",
+      "en": "Speed +X",
+      "pve": 28,
+      "pvp": 80,
+      "cat": "utility",
+      "note_de": "Wer schneller ist, handelt zuerst – im PvP sehr wichtig, im PvE gering.",
+      "note_en": "Acting first matters – very important in PvP, minor in PvE.",
+      "match": [
+        "geschwindigkeit",
+        "tempo",
+        "initiative",
+        "speed plus",
+        "speed +"
+      ]
+    },
+    {
+      "id": "crit_hp_dmg_a",
+      "de": "Krit: Zusatzschaden (% max. HP des Ziels, gedeckelt)",
+      "en": "Crit: bonus DMG (% target max HP, capped)",
+      "pve": 30,
+      "pvp": 40,
+      "cat": "crit",
+      "note_de": "Zusatzschaden bei Krits – situativ, gegen Bosse mit viel HP okay.",
+      "note_en": "Bonus damage on crits – situational, okay vs high-HP bosses.",
+      "match": [
+        "bei einem kritischen treffer",
+        "bei kritischem treffer",
+        "kritischen treffer zusatzlicher schaden",
+        "kritischer treffer zusatzlicher schaden",
+        "krit zusatzlicher schaden max hp",
+        "on critical hit deal additional",
+        "on critical hit deals additional",
+        "critical hit additional dmg max hp"
+      ]
+    },
+    {
+      "id": "pet_crit_down_a",
+      "de": "[Einzigartig] Nach Pet-Skill: Gegner-Kritrate −X%",
+      "en": "[Unique] After pet skill: enemy Crit rate −X%",
+      "pve": 28,
+      "pvp": 100,
+      "cat": "survival",
+      "note_de": "Top im PvP – senkt gegnerische Krit-Rate stark (Anti-Krit).",
+      "note_en": "Top in PvP – strongly lowers enemy crit rate (anti-crit).",
+      "match": [
+        "nach pet fertigkeit",
+        "haustier fertigkeit gegner krit",
+        "pet casts a skill reduces",
+        "reduces the enemys crit rate",
+        "enemy crit rate"
+      ]
+    },
+    {
+      "id": "hero_skill_dmg_a",
+      "de": "Helden-Skill-Verstärkung +X% (Clown/Drache/Auge/Panda/Magier)",
+      "en": "Hero skill boost +X% (Clown/Dragon/Eye/Panda/Mage)",
+      "pve": 30,
+      "pvp": 28,
+      "cat": "coef_other",
+      "note_de": "Verstärkt eine bestimmte Helden-Fertigkeit – nur mit dem passenden Helden.",
+      "note_en": "Boosts a specific hero skill – only with the matching hero.",
+      "match": [
+        "clown dmg",
+        "electro dragon",
+        "elektrodrache",
+        "evil eye",
+        "boses auge",
+        "pandaman",
+        "panda dmg",
+        "white robed mage",
+        "weisser magier",
+        "enhances",
+        "verstarkt"
+      ]
+    }
+  ]
+}

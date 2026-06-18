@@ -1,0 +1,876 @@
+{
+  "_meta": {
+    "version": 1,
+    "note": "Capybara Go Skill-Tierliste. Community-Quelle: allclash (S+..D) + meowdb (Skills nach Waffentyp) + game-vault. cat nutzt die Build-prefs (builds.json), damit der gewählte Build die Bewertung anpasst. Tier->Score: S+=100,S=92,A=78,B=58,C=40,D=18. match = Such-Phrasen DE+EN (deutsche Skill-Namen teils best-effort; Effekt-Stichwörter fangen den Rest).",
+    "tiers": {
+      "S+": 100,
+      "S": 92,
+      "A": 78,
+      "B": 58,
+      "C": 40,
+      "D": 18
+    }
+  },
+  "skills": [
+    {
+      "id": "war_veteran",
+      "en": "War Veteran",
+      "de": "Kriegsveteran",
+      "tier": "S+",
+      "cat": "atk",
+      "pve": 100,
+      "pvp": 96,
+      "match": [
+        "kriegsveteran",
+        "war veteran",
+        "jede runde angriff",
+        "angriff steigt jede runde",
+        "atk increases by 15",
+        "each round atk increases",
+        "pro runde angriff"
+      ],
+      "note_de": "Top-Skill: +ATK pro Runde, skaliert in langen Kämpfen. Fast immer lernen.",
+      "note_en": "Top skill: +ATK each round, scales in long fights. Almost always learn."
+    },
+    {
+      "id": "battle_hardened",
+      "en": "Battle-Hardened",
+      "de": "Kampferprobt",
+      "tier": "S+",
+      "cat": "survival",
+      "pve": 100,
+      "pvp": 100,
+      "match": [
+        "kampferprobt",
+        "battle hardened",
+        "schadensreduktion pro runde",
+        "damage reduction each round",
+        "bis zu 75",
+        "stapelt schadensreduktion"
+      ],
+      "note_de": "Stapelt Schadensreduktion (bis 75%). Top, vor allem früh/mittel.",
+      "note_en": "Stacks damage reduction (up to 75%). Top, especially early/mid."
+    },
+    {
+      "id": "super_life",
+      "en": "Super Life",
+      "de": "Super-Leben",
+      "tier": "S+",
+      "cat": "survival",
+      "pve": 100,
+      "pvp": 100,
+      "match": [
+        "super leben",
+        "super life",
+        "lebenspunkte stark erhoht",
+        "max hp",
+        "deutlich mehr lp",
+        "hp boost"
+      ],
+      "note_de": "Viel mehr LP -> stärkere Heilung/Schilde. Sehr solide.",
+      "note_en": "Big HP boost -> stronger heal/shield. Very solid."
+    },
+    {
+      "id": "combo_mastery",
+      "en": "Combo Mastery",
+      "de": "Kombo-Meisterschaft",
+      "tier": "S+",
+      "cat": "combo",
+      "pve": 100,
+      "pvp": 98,
+      "match": [
+        "kombo meisterschaft",
+        "combo mastery",
+        "zusatzliche basisangriffe",
+        "bei kombo angriff",
+        "atk bei kombo"
+      ],
+      "note_de": "Top in Kombo-/Basisangriff-Builds. Extra Basisangriffe + ATK bei Kombo.",
+      "note_en": "Top in combo/basic-attack builds. Bonus basic attacks + ATK on combo."
+    },
+    {
+      "id": "crit_mastery",
+      "en": "Crit Mastery",
+      "de": "Krit-Meisterschaft",
+      "tier": "S+",
+      "cat": "crit",
+      "pve": 100,
+      "pvp": 98,
+      "match": [
+        "krit meisterschaft",
+        "crit mastery",
+        "zusatzliche basisangriffe bei krit",
+        "atk bei kritischem treffer",
+        "crit grants additional"
+      ],
+      "note_de": "Top in Krit-Builds. Extra Angriffe + ATK bei Krits.",
+      "note_en": "Top in crit builds. Bonus attacks + ATK on crits."
+    },
+    {
+      "id": "shock_discharge",
+      "en": "Shock Discharge",
+      "de": "Schockentladung",
+      "tier": "S+",
+      "cat": "lightning",
+      "pve": 100,
+      "pvp": 98,
+      "match": [
+        "schockentladung",
+        "shock discharge",
+        "gegner wut reduzieren",
+        "reduces enemy rage",
+        "blitze gegner wut"
+      ],
+      "note_de": "Stark in Blitz-Builds (Nashir): senkt Gegner-Wut. Sonst Nische.",
+      "note_en": "Strong in lightning builds (Nashir): cuts enemy rage. Niche otherwise."
+    },
+    {
+      "id": "trinity_force",
+      "en": "Trinity Force",
+      "de": "Dreifaltigkeit",
+      "tier": "S",
+      "cat": "atk",
+      "pve": 92,
+      "pvp": 88,
+      "match": [
+        "dreifaltigkeit",
+        "trinity force",
+        "krit kombo konter rate",
+        "crit combo counter",
+        "rate fur krit kombo"
+      ],
+      "note_de": "Gibt Krit-, Kombo- und Konter-Rate. Breit nützlich.",
+      "note_en": "Grants crit, combo and counter rate. Broadly useful."
+    },
+    {
+      "id": "combo_dagger",
+      "en": "Combo Dagger",
+      "de": "Kombo-Dolch",
+      "tier": "S",
+      "cat": "dagger",
+      "pve": 92,
+      "pvp": 90,
+      "match": [
+        "kombo dolch",
+        "combo dagger",
+        "verdoppelt dolche",
+        "doubles daggers",
+        "dolche aus allen quellen"
+      ],
+      "note_de": "Verdoppelt Dolche. Top in Dolch-/Kombo-Builds (Whisperer).",
+      "note_en": "Doubles daggers. Top in dagger/combo builds (Whisperer)."
+    },
+    {
+      "id": "dagger_cooldown",
+      "en": "Dagger Cooldown",
+      "de": "Dolch-Abklingzeit",
+      "tier": "S",
+      "cat": "dagger",
+      "pve": 92,
+      "pvp": 90,
+      "match": [
+        "dolch abklingzeit",
+        "dagger cooldown",
+        "dolch ladt schneller",
+        "dagger recharge"
+      ],
+      "note_de": "Dolche laden schneller. Stark in Dolch-Builds.",
+      "note_en": "Daggers recharge faster. Strong in dagger builds."
+    },
+    {
+      "id": "frostbite",
+      "en": "Frostbite",
+      "de": "Erfrierung",
+      "tier": "S",
+      "cat": "control",
+      "pve": 92,
+      "pvp": 100,
+      "match": [
+        "erfrierung",
+        "frostbite",
+        "senkt gegner angriff",
+        "reduces enemy atk",
+        "gegner ang um"
+      ],
+      "note_de": "Senkt Gegner-ATK (20-35%). Stark defensiv/Kontrolle.",
+      "note_en": "Reduces enemy ATK (20-35%). Strong defensive/control."
+    },
+    {
+      "id": "combo_rate",
+      "en": "Combo",
+      "de": "Kombo",
+      "tier": "S",
+      "cat": "combo",
+      "pve": 92,
+      "pvp": 90,
+      "match": [
+        "kombo rate",
+        "combo rate",
+        "erhoht kombo",
+        "mehr kombo",
+        "increases combo rate"
+      ],
+      "note_de": "Mehr Kombo-Rate = mehr Basisangriffe. Top in Kombo-Builds.",
+      "note_en": "More combo rate = more basic attacks. Top in combo builds."
+    },
+    {
+      "id": "rage_dagger_skill",
+      "en": "Rage Dagger",
+      "de": "Wut-Dolch",
+      "tier": "S",
+      "cat": "dagger",
+      "pve": 92,
+      "pvp": 90,
+      "match": [
+        "wutdolch",
+        "wut dolch",
+        "rage dagger",
+        "wirft alle 2 runden 1 dolch",
+        "dolch mit einer chance die wut",
+        "throws 1 dagger every 2",
+        "alle 2 runden 1 dolch"
+      ],
+      "note_de": "Wirft Dolche (+Wut) -> mehr Dolche = mehr Angriffe. Top in Dolch-Builds (Whisperer); auch in Wut-Builds gut.",
+      "note_en": "Throws daggers (+rage) -> more daggers = more attacks. Top in dagger builds (Whisperer); also good in rage builds."
+    },
+    {
+      "id": "deadly_spikes",
+      "en": "Deadly Spikes",
+      "de": "Tödliche Eisstacheln",
+      "tier": "S",
+      "cat": "control",
+      "pve": 92,
+      "pvp": 100,
+      "match": [
+        "todliche stacheln",
+        "deadly spikes",
+        "eisstacheln",
+        "icy spike",
+        "stun lock"
+      ],
+      "note_de": "Eisstachel-Kontrolle (Stun-Lock) bei vielen Stacheln. Nische.",
+      "note_en": "Icy-spike control (stun-lock) with many spikes. Niche."
+    },
+    {
+      "id": "indestructible",
+      "en": "Indestructible",
+      "de": "Unzerstörbar",
+      "tier": "A",
+      "cat": "defensive",
+      "pve": 78,
+      "pvp": 86,
+      "match": [
+        "unzerstorbar",
+        "indestructible",
+        "starke schadensreduktion",
+        "heavy damage reduction"
+      ],
+      "note_de": "Starke Schadensreduktion (weniger Schaden). Mit Kriegsveteran top.",
+      "note_en": "Heavy damage reduction (less damage). Great with War Veteran."
+    },
+    {
+      "id": "combo_spirit",
+      "en": "Combo Spirit",
+      "de": "Kombo-Geist",
+      "tier": "A",
+      "cat": "combo",
+      "pve": 78,
+      "pvp": 76,
+      "match": [
+        "kombo geist",
+        "combo spirit",
+        "kombo rate stapelt",
+        "2 kombos hintereinander"
+      ],
+      "note_de": "Stapelt Kombo-Rate (bis 2 Kombos). Stark in Kombo-Builds.",
+      "note_en": "Stacks combo rate (up to 2 combos). Strong in combo builds."
+    },
+    {
+      "id": "royal_crown",
+      "en": "Royal Crown",
+      "de": "Königskrone",
+      "tier": "A",
+      "cat": "atk",
+      "pve": 78,
+      "pvp": 74,
+      "match": [
+        "konigskrone",
+        "royal crown",
+        "ang lp vtdg bonus",
+        "atk hp def bonus"
+      ],
+      "note_de": "ATK/LP/VTDG-Bonus (15-25%). Breit nützlich.",
+      "note_en": "ATK/HP/DEF bonus (15-25%). Broadly useful."
+    },
+    {
+      "id": "counter_mastery",
+      "en": "Counter Mastery",
+      "de": "Konter-Meisterschaft",
+      "tier": "A",
+      "cat": "utility",
+      "pve": 78,
+      "pvp": 82,
+      "match": [
+        "konter meisterschaft",
+        "counter mastery",
+        "mehr konter lebensraub",
+        "counters and lifesteal"
+      ],
+      "note_de": "Mehr Konter + Lebensraub. Top in Konter-Builds (Mushroom).",
+      "note_en": "More counters + lifesteal. Top in counter builds (Mushroom)."
+    },
+    {
+      "id": "multiple_bolt",
+      "en": "Multiple Bolt",
+      "de": "Mehrfach-Blitz",
+      "tier": "A",
+      "cat": "lightning",
+      "pve": 78,
+      "pvp": 76,
+      "match": [
+        "mehrfach blitz",
+        "multiple bolt",
+        "verdoppelt blitze",
+        "doubles all lightning"
+      ],
+      "note_de": "Verdoppelt Blitze. Nur Blitz-Builds (Nashir).",
+      "note_en": "Doubles lightning. Lightning builds only (Nashir)."
+    },
+    {
+      "id": "shrink_spell",
+      "en": "Shrink Spell",
+      "de": "Schrumpf-Zauber",
+      "tier": "A",
+      "cat": "control",
+      "pve": 78,
+      "pvp": 88,
+      "match": [
+        "schrumpf",
+        "shrink spell",
+        "senkt gegnerschaden",
+        "lowers enemy damage"
+      ],
+      "note_de": "Senkt Gegnerschaden (eigener Multiplikator). Defensiv stark.",
+      "note_en": "Lowers enemy damage (separate multiplier). Strong defensive."
+    },
+    {
+      "id": "rage_proficiency",
+      "en": "Rage Proficiency",
+      "de": "Wut-Routine",
+      "tier": "A",
+      "cat": "rage",
+      "pve": 78,
+      "pvp": 78,
+      "match": [
+        "wut routine",
+        "rage proficiency",
+        "wut baut sich schneller",
+        "accelerates rage"
+      ],
+      "note_de": "Schnellerer Wut-Aufbau. Stark in Wut-Builds.",
+      "note_en": "Faster rage buildup. Strong in rage builds."
+    },
+    {
+      "id": "hardened",
+      "en": "Hardened",
+      "de": "Gehärtet",
+      "tier": "A",
+      "cat": "defensive",
+      "pve": 78,
+      "pvp": 86,
+      "match": [
+        "gehartet",
+        "hardened",
+        "25-40 schadensreduktion",
+        "damage reduction"
+      ],
+      "note_de": "Schadensreduktion (25-40%). Solide defensiv.",
+      "note_en": "Damage reduction (25-40%). Solid defensive."
+    },
+    {
+      "id": "heavy_attack",
+      "en": "Heavy Attack",
+      "de": "Schwerer Schlag",
+      "tier": "A",
+      "cat": "crit",
+      "pve": 78,
+      "pvp": 76,
+      "match": [
+        "schwerer schlag",
+        "heavy attack",
+        "krit rate",
+        "adds critical rate"
+      ],
+      "note_de": "Krit-Rate. Gut für Krit-Builds.",
+      "note_en": "Crit rate. Good for crit builds."
+    },
+    {
+      "id": "dodge",
+      "en": "Dodge",
+      "de": "Ausweichen",
+      "tier": "A",
+      "cat": "survival",
+      "pve": 78,
+      "pvp": 86,
+      "match": [
+        "ausweichen",
+        "dodge",
+        "weicht angriffen aus",
+        "negates incoming"
+      ],
+      "note_de": "Weicht manchmal Angriffen aus. Solider Survival-Skill.",
+      "note_en": "Sometimes negates attacks. Solid survival skill."
+    },
+    {
+      "id": "basic_attack_shield",
+      "en": "Basic Attack Shield",
+      "de": "Basisangriff-Schild",
+      "tier": "A",
+      "cat": "survival",
+      "pve": 78,
+      "pvp": 86,
+      "match": [
+        "basisangriff schild",
+        "basic attack shield",
+        "schild bei basisangriff",
+        "shields on basic"
+      ],
+      "note_de": "Schild bei Basisangriffen (5% LP). Gut für Basisangriff-Builds.",
+      "note_en": "Shield on basic attacks (5% HP). Good for basic-attack builds."
+    },
+    {
+      "id": "rage_shield",
+      "en": "Rage Shield",
+      "de": "Wut-Schild",
+      "tier": "A",
+      "cat": "survival",
+      "pve": 78,
+      "pvp": 86,
+      "match": [
+        "wut schild",
+        "rage shield",
+        "schild aus wut",
+        "shield from rage"
+      ],
+      "note_de": "Schild aus Wut (10% LP). Stark in Wut-Builds + Survival.",
+      "note_en": "Shield from rage (10% HP). Strong in rage builds + survival."
+    },
+    {
+      "id": "rage_combo",
+      "en": "Rage Combo",
+      "de": "Wut-Kombo",
+      "tier": "B",
+      "cat": "rage",
+      "pve": 58,
+      "pvp": 58,
+      "match": [
+        "wut kombo",
+        "rage combo",
+        "zweite wut",
+        "second rage activation"
+      ],
+      "note_de": "Zweite Wut-Auslösung (braucht viel Wut). Situativ.",
+      "note_en": "Second rage activation (needs lots of rage). Situational."
+    },
+    {
+      "id": "counter_rate",
+      "en": "Counter Rate",
+      "de": "Konterrate",
+      "tier": "B",
+      "cat": "utility",
+      "pve": 58,
+      "pvp": 62,
+      "match": [
+        "konterrate",
+        "counter rate",
+        "mehr konter chance",
+        "additional counter"
+      ],
+      "note_de": "Mehr Konter-Chance. Mit anderen Konter-Skills.",
+      "note_en": "More counter chance. With other counter skills."
+    },
+    {
+      "id": "enhanced_basic",
+      "en": "Enhanced Basic Attack",
+      "de": "Verstärkter Basisangriff",
+      "tier": "B",
+      "cat": "atk",
+      "pve": 58,
+      "pvp": 54,
+      "match": [
+        "verstarkter basisangriff",
+        "enhanced basic attack",
+        "basisangriff schaden 25",
+        "basic attack damage increase"
+      ],
+      "note_de": "+25-40% Basisangriff-Schaden. Gut für Basisangriff-Builds.",
+      "note_en": "+25-40% basic attack damage. Good for basic-attack builds."
+    },
+    {
+      "id": "spell_master",
+      "en": "Spell Master",
+      "de": "Zaubermeister",
+      "tier": "B",
+      "cat": "coef_other",
+      "pve": 58,
+      "pvp": 56,
+      "match": [
+        "zaubermeister",
+        "spell master",
+        "skillschaden aber kombo konter sinkt",
+        "boosts skill damage"
+      ],
+      "note_de": "Mehr Skill-Schaden, aber Kombo/Konter-Rate sinkt. Nur Skill-Builds.",
+      "note_en": "More skill damage but lowers combo/counter. Skill builds only."
+    },
+    {
+      "id": "healing_dagger",
+      "en": "Healing Dagger",
+      "de": "Heil-Dolch",
+      "tier": "B",
+      "cat": "survival",
+      "pve": 58,
+      "pvp": 66,
+      "match": [
+        "heil dolch",
+        "healing dagger",
+        "heilung bei dolch",
+        "hp healing chance"
+      ],
+      "note_de": "Heilung bei Dolchtreffer. Gut mit vielen Dolchen.",
+      "note_en": "Heal on dagger hit. Good with many daggers."
+    },
+    {
+      "id": "enhanced_rage_skill",
+      "en": "Enhanced Rage Skill",
+      "de": "Verstärkter Wut-Skill",
+      "tier": "B",
+      "cat": "rage",
+      "pve": 58,
+      "pvp": 58,
+      "match": [
+        "verstarkter wut skill",
+        "enhanced rage skill",
+        "wut skill schaden 30",
+        "rage skill damage"
+      ],
+      "note_de": "+30% Wut-Skill-Schaden. Gut in Wut-Builds.",
+      "note_en": "+30% rage skill damage. Good in rage builds."
+    },
+    {
+      "id": "tyrant",
+      "en": "Tyrant",
+      "de": "Tyrann",
+      "tier": "B",
+      "cat": "atk",
+      "pve": 58,
+      "pvp": 54,
+      "match": [
+        "tyrann",
+        "tyrant",
+        "ang stark auf lp kosten",
+        "atk boost at hp cost"
+      ],
+      "note_de": "Großer ATK-Schub auf LP-Kosten. Nur wenn Survival passt.",
+      "note_en": "Big ATK at HP cost. Only when survival is fine."
+    },
+    {
+      "id": "critical_shield",
+      "en": "Critical Shield",
+      "de": "Kritischer Schild",
+      "tier": "B",
+      "cat": "survival",
+      "pve": 58,
+      "pvp": 66,
+      "match": [
+        "kritischer schild",
+        "critical shield",
+        "einmaliger schild bei wenig lp",
+        "shield when hp drops"
+      ],
+      "note_de": "Einmaliger Schild bei wenig LP. Mittendrin unzuverlässig.",
+      "note_en": "One-time shield at low HP. Unreliable mid-fight."
+    },
+    {
+      "id": "berserker",
+      "en": "Berserker",
+      "de": "Berserker",
+      "tier": "B",
+      "cat": "atk",
+      "pve": 58,
+      "pvp": 54,
+      "match": [
+        "berserker",
+        "basisangriff schaden erhoht",
+        "enhances basic attack damage"
+      ],
+      "note_de": "Mehr Basisangriff-Schaden. Okay, aber rundenbasierte Boosts sind besser.",
+      "note_en": "More basic attack damage. Okay, but per-turn boosts are better."
+    },
+    {
+      "id": "critical_recovery",
+      "en": "Critical Recovery",
+      "de": "Kritische Heilung",
+      "tier": "B",
+      "cat": "survival",
+      "pve": 58,
+      "pvp": 66,
+      "match": [
+        "kritische heilung",
+        "critical recovery",
+        "heilung bei krit",
+        "healing on critical"
+      ],
+      "note_de": "Heilung bei Krits. Solide in Krit-Builds.",
+      "note_en": "Healing on crits. Solid in crit builds."
+    },
+    {
+      "id": "critical_frenzy",
+      "en": "Critical Frenzy",
+      "de": "Kritische Raserei",
+      "tier": "C",
+      "cat": "conditional",
+      "pve": 40,
+      "pvp": 40,
+      "match": [
+        "kritische raserei",
+        "critical frenzy",
+        "wenn lp unter 50",
+        "wenn lp 50",
+        "below 50 hp",
+        "ang vtdg wenn lp"
+      ],
+      "note_de": "Bonus erst unter 50% LP – unzuverlässig (man will nicht low-HP sein). Eher meiden.",
+      "note_en": "Bonus only below 50% HP – unreliable (you don't want to be low). Rather avoid."
+    },
+    {
+      "id": "poison_weapon",
+      "en": "Poisoned Weapon",
+      "de": "Vergiftete Waffe",
+      "tier": "C",
+      "cat": "fire",
+      "pve": 40,
+      "pvp": 36,
+      "match": [
+        "vergiftete waffe",
+        "poisoned weapon",
+        "feinde zu vergiften",
+        "chance zu vergiften",
+        "chance feinde zu vergiften",
+        "feindezuvergiften",
+        "bei angriffen besteht die chance",
+        "chance to poison"
+      ],
+      "note_de": "Gift bei Angriffen – skaliert nur in Gift-/DoT-Builds, sonst schwach (z. B. Whisperer).",
+      "note_en": "Poison on attack – scales only in poison/DoT builds, weak otherwise (e.g. Whisperer)."
+    },
+    {
+      "id": "battle_cry",
+      "en": "Battle Cry",
+      "de": "Kampfschrei",
+      "tier": "C",
+      "cat": "rage",
+      "pve": 40,
+      "pvp": 40,
+      "match": [
+        "kampfschrei",
+        "battle cry",
+        "zu beginn des kampfes wut",
+        "wut zu beginn des kampfes",
+        "wut 50 zu beginn",
+        "beginn des kampfes wut"
+      ],
+      "note_de": "Wut zu Kampfbeginn – nur in Wut-Builds nützlich, sonst Lückenfüller.",
+      "note_en": "Rage at battle start – only useful in rage builds, otherwise filler."
+    },
+    {
+      "id": "rage_bolt",
+      "en": "Rage Bolt",
+      "de": "Wutblitz",
+      "tier": "C",
+      "cat": "lightning",
+      "pve": 40,
+      "pvp": 38,
+      "match": [
+        "wutblitz",
+        "rage bolt",
+        "aktivierung der wutfahigkeit",
+        "wutfahigkeit 2 blitze",
+        "bei aktivierung der wut blitze",
+        "blitze bei wut"
+      ],
+      "note_de": "Blitze bei Wut-Auslösung – nur in Blitz-/Wut-Builds (Nashir), sonst meiden.",
+      "note_en": "Bolts on rage activation – only in lightning/rage builds (Nashir), avoid otherwise."
+    },
+    {
+      "id": "werewolf",
+      "en": "Werewolf",
+      "de": "Werwolf",
+      "tier": "C",
+      "cat": "atk",
+      "pve": 40,
+      "pvp": 36,
+      "match": [
+        "werwolf",
+        "werewolf",
+        "kombo konter schaden",
+        "combo counter damage"
+      ],
+      "note_de": "Nur in reinen Basisangriff-Builds. Sonst schwach.",
+      "note_en": "Only in pure basic-attack builds. Weak otherwise."
+    },
+    {
+      "id": "tamer",
+      "en": "Tamer",
+      "de": "Zähmer",
+      "tier": "C",
+      "cat": "utility",
+      "pve": 40,
+      "pvp": 44,
+      "match": [
+        "zahmer",
+        "tamer",
+        "haustier schaden auf krit kosten",
+        "pet damage at crit cost"
+      ],
+      "note_de": "Pet-Schaden auf Krit-Kosten. Nische.",
+      "note_en": "Pet damage at crit-rate cost. Niche."
+    },
+    {
+      "id": "orc",
+      "en": "Orc",
+      "de": "Ork",
+      "tier": "C",
+      "cat": "crit",
+      "pve": 40,
+      "pvp": 38,
+      "match": [
+        "ork",
+        "orc",
+        "krit aber keine wut",
+        "crit but no rage"
+      ],
+      "note_de": "Krit hoch, aber KEINE Wut mehr. Nur Nicht-Wut-Builds.",
+      "note_en": "High crit but NO rage. Non-rage builds only."
+    },
+    {
+      "id": "lifesteal_skill",
+      "en": "Lifesteal",
+      "de": "Lebensraub",
+      "tier": "C",
+      "cat": "survival",
+      "pve": 40,
+      "pvp": 48,
+      "match": [
+        "lebensraub",
+        "lifesteal",
+        "life steal"
+      ],
+      "note_de": "Lebensraub – ohne mehrere Stapel unzuverlässig.",
+      "note_en": "Lifesteal – unreliable without multiple stacks."
+    },
+    {
+      "id": "doubled_atk",
+      "en": "Doubled ATK",
+      "de": "Verdoppelter ANG",
+      "tier": "C",
+      "cat": "conditional",
+      "pve": 40,
+      "pvp": 40,
+      "match": [
+        "verdoppelter angriff",
+        "doubled atk",
+        "erste runde",
+        "first round only"
+      ],
+      "note_de": "Nur erste Runde – schwach für lange Boss-Kämpfe.",
+      "note_en": "First round only – weak for long boss fights."
+    },
+    {
+      "id": "rage_mastery",
+      "en": "Rage Mastery",
+      "de": "Wut-Meisterschaft",
+      "tier": "D",
+      "cat": "rage",
+      "pve": 18,
+      "pvp": 18,
+      "match": [
+        "wut meisterschaft",
+        "rage mastery",
+        "schwacher nach 5 wut",
+        "diminishes after 5 rage"
+      ],
+      "note_de": "Wird nach 5 Wut-Auslösungen schwach. Für lange Kämpfe schlecht.",
+      "note_en": "Weak after 5 rage activations. Bad for long fights."
+    },
+    {
+      "id": "glass_cannon",
+      "en": "Glass Cannon",
+      "de": "Glaskanone",
+      "tier": "D",
+      "cat": "conditional",
+      "pve": 18,
+      "pvp": 18,
+      "match": [
+        "glaskanone",
+        "glass cannon",
+        "mehr schaden unter 30",
+        "more damage below 30",
+        "aber mehr erlittener schaden"
+      ],
+      "note_de": "MEIDEN: viel Schaden unter 30% LP, aber du nimmst auch mehr Schaden.",
+      "note_en": "AVOID: big damage below 30% HP, but you take more damage too."
+    },
+    {
+      "id": "revive",
+      "en": "Revive",
+      "de": "Wiederbelebung",
+      "tier": "D",
+      "cat": "survival",
+      "pve": 18,
+      "pvp": 26,
+      "match": [
+        "wiederbelebung",
+        "revive",
+        "einmal wiederbeleben",
+        "one-time revival"
+      ],
+      "note_de": "Einmalige Wiederbelebung mit wenig LP – zu schwach.",
+      "note_en": "One-time revival at low HP – too weak."
+    },
+    {
+      "id": "swift_revenge",
+      "en": "Swift Revenge",
+      "de": "Schnelle Rache",
+      "tier": "D",
+      "cat": "utility",
+      "pve": 18,
+      "pvp": 22,
+      "match": [
+        "schnelle rache",
+        "swift revenge",
+        "ein garantierter konter",
+        "single guaranteed counter"
+      ],
+      "note_de": "Nur ein garantierter Konter pro Kampf. Schwach.",
+      "note_en": "Only one guaranteed counter per fight. Weak."
+    },
+    {
+      "id": "magic_spear",
+      "en": "Magic Spear",
+      "de": "Magischer Speer",
+      "tier": "D",
+      "cat": "coef_other",
+      "pve": 18,
+      "pvp": 16,
+      "match": [
+        "magischer speer",
+        "magic spear",
+        "lichtspeer",
+        "light spear synergy"
+      ],
+      "note_de": "Lichtspeer-Synergie – wird kaum gebaut.",
+      "note_en": "Light-spear synergy – rarely built."
+    }
+  ]
+}

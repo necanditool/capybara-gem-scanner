@@ -1,0 +1,192 @@
+=========================================================
+  Capybara Gem Scanner  -  Community Edition (v41)
+  PATCHNOTES  (Deutsch)
+=========================================================
+
+START (ein Klick)
+  - Alle Dateien in EINEM Ordner lassen.
+  - Doppelklick auf "Edelstein-Scanner starten.bat".
+  - Erster Start installiert alles automatisch (kurz warten).
+  - Falls Python frisch installiert wurde: die .bat NOCH EINMAL doppelklicken.
+
+BEDIENUNG (kurz)
+  - Oben rechts: Sprache (DE <-> EN) und der Hell/Dunkel-Schalter (Mond/Sonne).
+    Darunter den Build waehlen - das aendert die Bewertung in allen Tabs.
+  - Schnell-Scan: einen Bereich markieren -> liest ALLE Steine, bewertet sie
+    fuer deinen Build und zeigt oben den Build-Doktor (Behalten / Tauschen).
+  - Slot: PvE/PvP und Slot waehlen, zwei Bereiche festlegen (Ausgeruestet
+    rechts, Auswahl links), Stein anwaehlen, "Scannen & vergleichen" -> Urteil.
+  - Held: Region einmal festlegen (ganzer Spiel-Screen reicht), dann
+    ausgeruestete + Reserve-Helden scannen -> Vergleich + Wechsel-Empfehlung.
+  - Skills: Bereich der angebotenen Skills markieren, "Skills pruefen" ->
+    das Tool sagt pro Build, was du LERNEN und was du MEIDEN solltest.
+  - Loadout: alle Slots auf einen Blick. Guide: komplette Build-Specs.
+
+---------------------------------------------------------
+  ANTIVIRUS-HINWEIS (Fehlalarm)
+---------------------------------------------------------
+  Manche Virenscanner schlagen evtl. an. Das ist ein FALSCH-ALARM, keine
+  Schadsoftware. Grund: Das Tool macht Bildschirmfotos (um die Edelsteine zu
+  lesen) und die Start-Datei (.bat) installiert beim ersten Start automatisch
+  Python-Pakete - dieses Verhalten melden Scanner vorsichtshalber.
+  Es werden KEINE Daten gesendet (nur das optionale Online-Update laedt von
+  einer URL, die DU selbst eingibst). Der Quellcode "capybara_gem_scanner.py"
+  ist offen und lesbar.
+  Loesung: den Tool-Ordner als Ausnahme/Whitelist hinzufuegen. Windows
+  Defender -> "Viren- & Bedrohungsschutz" -> "Einstellungen verwalten" ->
+  "Ausschluesse" -> "Ausschluss hinzufuegen" -> Ordner. (Oder nach einer
+  Blockierung im Schutzverlauf auf "Aktion zulassen" klicken.)
+
+=========================================================
+  WAS IST NEU
+=========================================================
+
+v41 (weniger CPU-Last):
+  - Der Auto-Scan (Edelsteine & Skills) braucht jetzt deutlich weniger CPU. Die
+    Texterkennung (OCR) nutzte bisher ALLE Prozessorkerne pro Scan und liess die
+    CPU kurz auf ~100% springen; jetzt ist sie auf wenige Kerne begrenzt -> der
+    Ausschlag faellt drastisch (Test: von 30+% auf unter 10%), bei praktisch
+    gleicher Erkennungsgeschwindigkeit.
+  - Zusaetzlich wird der Screenshot-Greifer wiederverwendet statt bei jeder
+    Pruefung neu erzeugt (weniger Grundlast im Dauerbetrieb).
+
+v40 (Stein-Erkennung-Fix):
+  - "Schaden gegen geschuetzte Ziele" wird jetzt erkannt. Die echte
+    Spiel-Formulierung wurde ergaenzt - vorher kannte das Tool nur "Ziele mit
+    Schild", darum kam "Stein unklar".
+  TIPP: Falls ein Stein "unklar" bleibt: "Details anzeigen" an, Text kopieren
+  und melden - dann nehme ich die genaue Formulierung auf.
+
+v39 (Fenster-/Layout-Fix):
+  - Der Slot-Tab ist jetzt SCROLLBAR -> "Angewaehlter Stein (Kandidat)" und
+    "Ideal" werden nicht mehr abgeschnitten (alle Tabs scrollen jetzt).
+  - Die Fensterhoehe passt sich an die Bildschirmhoehe an (Taskleiste bleibt
+    frei), kleinere Mindestgroesse -> passt auch auf kleinere Bildschirme.
+    TIPP: Fenster am Rand kleiner ziehen geht jetzt auch; Inhalt scrollt.
+
+v38 (Auto-Scan CPU-Optimierung):
+  - Der Auto-Scan (Slot & Skills) startet OCR jetzt NUR bei deutlicher UND
+    ruhiger Aenderung (Schwellenwert-Differenz statt exaktem Hash). Glitzern
+    und Animationen loesen KEINEN Scan mehr aus -> drastisch weniger CPU.
+  - Es wird gewartet, bis das Bild ruhig ist (nicht mitten in einer
+    Einblendung), bevor gescannt wird. Pruef-Takt ~1,3 s, sehr leichtgewichtig.
+
+v37 (Uebersetzung + Multi-Monitor):
+  - Build-Namen werden im EN-Modus jetzt uebersetzt (Bogen->Bow, Schwert->Sword,
+    Blitz-Stab->Lightning staff, ...). Bewertung bleibt gleich.
+  - Der Bereichs-Waehler spannt jetzt ueber ALLE Monitore -> Markieren auf
+    Monitor 1-4 moeglich (z. B. BlueStacks auf dem 2. Bildschirm). Das Abgreifen
+    lief schon monitoruebergreifend.
+  HINWEIS: Vollautomatisch (ohne Markieren) die Spiel-Innenbereiche finden ist
+  nicht zuverlaessig. Jeden Bereich EINMAL markieren, dann laeuft alles (auch
+  Auto-Scan) ueber alle Monitore.
+
+v36 (Edelstein-Auto-Scan):
+  - Auch der Slot-Tab hat jetzt "Auto-Scan": ueberwacht Bereich 1 (Ausgeruestet,
+    rechts) und Bereich 2 (Auswahl, links) und vergleicht automatisch, sobald
+    du im Spiel einen Edelstein anzeigst - kein Knopfdruck. Scannt nur bei
+    Bild-Aenderung (schont CPU). Wieder ausschalten ueber denselben Haken.
+
+v35 (Skill-Namen im EN-Modus uebersetzt):
+  - Beim Wechsel auf Englisch werden Skill-Namen jetzt englisch angezeigt.
+    Mehr Skills sind kuratiert (DE+EN) und werden auch bei verklebter OCR
+    erkannt - keine deutschen Doppel-Eintraege mehr.
+  - Unbekannte Skills bekommen eine grobe Wort-fuer-Wort-Uebersetzung.
+
+v34 (Skill: Lauf-Tracking, Synergie & Fixes):
+  - Dolch-Skills (z. B. Wut-Dolch) zaehlen jetzt als DOLCH-Skill -> stark in
+    Dolch-Builds (Whisperer: mehr Dolche = mehr Angriffe). Gift-Skills zaehlen
+    nur in Gift-/DoT-Builds, sonst MEIDEN.
+  - "Dein Lauf": merk dir die gewaehlten Skills (Knopf "+ Lauf") - auch andere
+    als die vorgeschlagenen. Das Tool erkennt Synergien (z. B. Kombo-Dolch +
+    Wut-Dolch) und wertet passende Skills hoeher.
+  - "Neuer Lauf" loescht den Lauf-Inhalt (am Ende eines Laufs druecken).
+
+v33 (Skill-Auto-Scan):
+  - Im Skills-Tab gibt es "Auto-Scan": nach dem Markieren ueberwacht das Tool
+    den Bereich selbst und erkennt automatisch, sobald die Skill-Auswahl
+    erscheint - kein Knopfdruck noetig. Es scannt nur bei Bild-Aenderung
+    (schont CPU). Wieder ausschalten ueber denselben Haken.
+
+v32 (NEU: Skill-Berater):
+  - Neuer Tab "Skills": markiere die angebotenen Skills (beim Level-Up /
+    in der Auswahl) -> das Tool sagt dir PRO BUILD, welche du LERNEN und
+    welche du MEIDEN solltest (Skill-Doktor mit klarer Empfehlung).
+  - Eigene Datenbank skills.json (45 Skills, Tier S+..D; Quellen allclash,
+    meowdb, game-vault) + Wort-Verstaendnis fuer unbekannte Skills.
+  - Build-abhaengig: z. B. "Mehrfach-Blitz" = LERNEN bei Nashir, MEIDEN
+    bei Whisperer.
+
+v31 (Dunkel-Modus ohne Pink):
+  - Der Dunkel-Modus passt jetzt zum Capybara-Bild: Nachthimmel-Navy mit
+    HIMMELBLAU-Buttons, Gold, Tuerkis und Gras-Gruen. Kein Pink mehr.
+
+v30 (Hell/Dunkel-Schalter):
+  - Neuer Button oben (Mond/Sonne) schaltet zwischen HELLEM und DUNKLEM Look.
+    Die Wahl wird gemerkt.
+
+v29 (Capybara-Bild-Theme):
+  - Dein Capybara-Koenig-Bild ist das Kopf-Banner (capybara_banner.png liegt
+    im Ordner). Eigenes Bild? Datei einfach ersetzen.
+  - KOMPLETTE Oberflaeche in den Bild-Farben: helles Himmelblau, weisse
+    Karten, dunkelbrauner Text, Gold/Cyan/Gruen-Akzente.
+
+v28 (Capybara-Banner + Erkennungs-Fixes):
+  - Banner: dein Capybara-Bild als "capybara_banner.png" in den Ordner legen.
+  - Krit-/Konter-/Kombo-"% der max HP"-Steine werden sicher (100%) erkannt
+    und nicht mehr verwechselt.
+  - Fix: "endschaden" war zu kurz und klaute fremde Texte -> entfernt;
+    "Endschadensbonus" wird weiter sicher erkannt.
+
+v27 (Schaerfe + Helden-Vergleich):
+  - SCHAERFE: App ist DPI-aware -> keine unscharfe Windows-Skalierung mehr.
+  - Held-Seite: mehrere Scans! Region EINMAL festlegen (ganzer Screen ok),
+    dann 2 ausgeruestete + bis zu 4 Reserve-Helden scannen. Das Tool
+    vergleicht Rang + Build-Eignung und empfiehlt Wechsel.
+
+v26 (Erkennungs-Fixes):
+  - Kein falsches "Schon ausgeruestet" mehr: die Eigenschaft des ANGEWAEHLTEN
+    Steins (Detailkarte, ab "Edelstein-Attribut") zaehlt nie als ausgeruestet.
+    Erfasst Bereich 1 die Auswahl-Karte, warnt das Tool.
+  - "Waffe" wird nicht mehr als "Waffenkrit" gelesen; "Globaler Angriff"
+    wird wieder zuverlaessig erkannt.
+  TIPP: Bereich 1 "Ausgeruestet" = die RECHTE Spalte mit den Effekt-Kaesten,
+  NICHT die Detailkarte des angewaehlten Steins in der Mitte.
+
+v25 (Build-Doktor):
+  - Der Schnell-Scan zeigt oben ein klares Urteil: BEHALTEN / TAUSCHEN fuer
+    deinen Build, jeder schwache Stein mit Grund, plus "Ideal fuer diesen
+    Build: ..." (die besten Steine als Ziel).
+
+v24 (jeder Build versteht gut vs. schlecht):
+  - Blitz/Feuer/Explosion/Normalangriff/Physisch sind eigene Kategorien,
+    getrennt von "globale ATK". -> Blitzschaden ist NUR bei Nashir gut.
+  - Alle 8 Builds neu eingestellt (Dolch/Krit bei Whisperer, Wut/Schwertchi
+    bei Skysplitter, Blitz bei Nashir, Konter/Survival bei Mushroom usw.).
+
+v22-v23 (Datenbank + echte Spieltexte):
+  - GROSSER DB-Ausbau: 122 statt 64 Effekte aus der kompletten meowdb-Liste
+    (986 Steine / 199 Familien). Neu u. a.: Schaden gegen Bosse,
+    Geschwindigkeit, Schaden an Schild-Zielen, Skill-Wahl beim Stage-Start,
+    Feuer-/Blitz-/Explosions-Boosts und -Reduktionen, Krit-Raten, Pet-Anti-
+    Krit u. v. m.
+  - Werte mit den meowdb-Tiers abgeglichen.
+  - "Normalangriff mit X% Chance auf 2x Schaden" und "Beim Einsatz einer
+    Faehigkeit ... ignorieren" werden korrekt erkannt; robuster gegen
+    verklebte OCR-Zeilen.
+
+v10-v21 (Grundlagen):
+  - Schnell-Scan, Held-Lesen, Loadout-Gesamtanalyse, 8 Build-Guides,
+    Online-Update-Knopf, sprachsichere Erkennung (DE+EN), strengere
+    Trefferschwellen gegen Fehltreffer.
+
+=========================================================
+  WICHTIG
+=========================================================
+  - Alle Dateien im selben Ordner lassen
+    (bat, capybara_gem_scanner.py, gems.json, builds.json, capybara_banner.png).
+  - Werte sind Community-Einschaetzungen (meowdb u. a.), keine offiziellen
+    Spielzahlen.
+  - Englische Version: "Patchnotes English.txt". Schoen gestaltet als PDF:
+    "Lies mich (Deutsch).pdf" und "Read Me (English).pdf".
+=========================================================
