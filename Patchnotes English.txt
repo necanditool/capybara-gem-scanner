@@ -1,5 +1,5 @@
 =========================================================
-  Capybara Gem Scanner  -  Community Edition (v41)
+  Capybara Gem Scanner  -  Community Edition (v43)
   PATCHNOTES  (English)
 =========================================================
 
@@ -39,6 +39,23 @@ HOW TO USE (short)
 =========================================================
   WHAT'S NEW
 =========================================================
+
+v43 (Hero tab = equipment view):
+  - The Hero tab now shows your EQUIPMENT vs the build, with real slots:
+    Main weapon, Armor, Ring 1, Ring 2, Necklace 1, Necklace 2.
+  - Each slot shows the target gems for your chosen build.
+  - The weapon still sets the build automatically (Auto-Build).
+  - The actual gems in your items are still read by the Quick/Slot scanner.
+
+v42 (Hero: automatic build detection):
+  - New "Auto-Build" in the Hero tab: it recognizes your equipped WEAPON by its
+    icon and sets the matching build AUTOMATICALLY.
+  - Self-learning: for an unknown weapon, pick the correct build once and press
+    "Learn current weapon" -> from then on it is recognized reliably.
+  - Optional BlueStacks window detection (no region marking needed).
+  - Auto-scan works like the skills tab (only re-checks on a real change -> low CPU).
+  TIP: open the Equipment screen, set the weapon area once (or "Find BlueStacks"),
+  turn on Auto-Build -> the build switches by itself when you change weapon.
 
 v41 (lower CPU usage):
   - Auto-scan (gems & skills) now uses far less CPU. Text recognition (OCR)

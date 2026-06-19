@@ -1,6 +1,17 @@
-# 💎 Capybara Gem Scanner — Community Edition (v41)
+# 💎 Capybara Gem Scanner — Community Edition (v43)
 
 **Deutsch unten / German below.**
+
+## New in v43 — Hero tab is now an equipment view
+- The **Hero tab shows your equipment vs the build**: real slots (**Main weapon · Armor · Ring 1/2 ·
+  Necklace 1/2**). Each slot shows the **target gems for your build**. The weapon still sets the
+  build automatically (Auto-Build). Actual gem values still come from the Quick/Slot scan.
+
+## New in v42 — Hero: automatic build detection
+- **New "🤖 Auto-Build" in the Hero tab:** it recognizes your equipped weapon by its icon and
+  **sets the build automatically**. Self-learning — for an unknown weapon, pick the build once
+  and press "Learn current weapon", then it's recognized reliably. Optional **BlueStacks window
+  detection** (no marking). Auto-scan like the skills tab, easy on the CPU.
 
 ## New in v41 — lower CPU usage
 - **Auto-scan (gems & skills) now uses far less CPU.** Text recognition (OCR) previously
@@ -287,7 +298,19 @@ Bundled open-source components: see `THIRD-PARTY-LICENSES.txt`. Full text: `DISC
 
 ---
 
-# 💎 Capybara Gem Scanner — Community Edition (v41)  [Deutsch]
+# 💎 Capybara Gem Scanner — Community Edition (v43)  [Deutsch]
+
+## Neu in v43 — Held-Tab ist jetzt eine Ausrüstungs-Ansicht
+- Der **Held-Tab zeigt deine Ausrüstung gegen den Build**: echte Slots (**Hauptwaffe · Rüstung ·
+  Ring 1/2 · Halskette 1/2**). Je Slot werden die **Ziel-Steine für deinen Build** angezeigt. Die
+  Waffe setzt den Build weiterhin automatisch (Auto-Build). Die echten Stein-Werte kommen aus dem
+  Schnell-/Slot-Scan.
+
+## Neu in v42 — Held: automatische Build-Erkennung
+- **Neuer „🤖 Auto-Build" im Held-Tab:** erkennt die **ausgerüstete Waffe am Icon** und **setzt
+  den Build automatisch**. Selbstlernend — bei unbekannter Waffe einmal den Build wählen und
+  „Aktuelle Waffe merken" drücken, danach sichere Erkennung. Optional **BlueStacks-Fenster-
+  Erkennung** (ohne Markieren). Auto-Scan wie im Skills-Tab, CPU-schonend.
 
 ## Neu in v41 — weniger CPU-Last
 - **Der Auto-Scan (Edelsteine & Skills) braucht jetzt deutlich weniger CPU.** Die

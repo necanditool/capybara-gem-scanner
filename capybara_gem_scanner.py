@@ -2,11 +2,23 @@
 # -*- coding: utf-8 -*-
 """
 ================================================================================
- Capybara Gem Scanner  ·  Capybara Go            (v41 – Community Edition)
+ Capybara Gem Scanner  ·  Capybara Go            (v43 – Community Edition)
 ================================================================================
  Erkennt ausgerüstete + angewählte Edelsteine vom Bildschirm und bewertet sie
  für den jeweiligen Build. / Reads equipped + selected gems from screen and
  rates them for the chosen build.
+
+ Features (v43 – Held = Ausrüstungs-Ansicht):
+  • Der Held-Tab zeigt jetzt die Ausrüstung gegen den Build: echte Slots
+    (Hauptwaffe · Rüstung · Ring 1/2 · Halskette 1/2). Je Slot die Ziel-Steine
+    für den gewählten Build. Waffe→Build weiter automatisch (Auto-Build).
+    Edelstein-Werte kommen weiter aus Schnell-/Slot-Scan.
+
+ Features (v42 – Held: Auto-Build-Erkennung):
+  • Neuer „🤖 Auto-Build" im Held-Tab: erkennt die ausgerüstete Waffe am Icon und
+    setzt den Build automatisch. Selbstlernend (unbekannte Waffe einmal „merken"
+    -> danach sichere Erkennung). Optional BlueStacks-Fenster-Erkennung (ohne
+    Markieren). Auto-Scan wie bei den Skills, CPU-schonend.
 
  Features (v41 – weniger CPU-Last):
   • Auto-Scan (Edelsteine & Skills) braucht jetzt deutlich weniger CPU: die OCR
@@ -315,9 +327,20 @@ HERO_SLOTS = [
     ("res3", "reserve", "Reserve 3", "Reserve 3"),
     ("res4", "reserve", "Reserve 4", "Reserve 4"),
 ]
+# Ausrüstungs-Slots (Held-Tab, v43): (de, en, gem-DB-Slot). Ring 1/2 teilen den
+# Ring-Pool, Halskette 1/2 den Accessory-Pool (gleiche Ziel-Steine je Paar).
+EQUIP_SLOTS = [
+    ("Hauptwaffe", "Main weapon", "Weapon"),
+    ("Rüstung", "Armor", "Armor"),
+    ("Ring 1", "Ring 1", "Ring"),
+    ("Ring 2", "Ring 2", "Ring"),
+    ("Halskette 1", "Necklace 1", "Accessory"),
+    ("Halskette 2", "Necklace 2", "Accessory"),
+]
 DEFAULT_FREE = {"Weapon": 0, "Armor": 0, "Ring": 0, "Accessory": 0}  # freie (leere) Slots
 IDEAL_SHOW = 4  # wie viele "ideale" Steine pro Slot angezeigt werden
 DETECT_THRESHOLD = 70
+AB_THRESHOLD = 0.80   # Mindest-Ähnlichkeit (0-1) für sichere Waffen->Build-Erkennung
 CATS = GEMS.get("_meta", {}).get("cats") or [
     "final", "rage", "dagger", "combo", "crit", "atk", "survival", "control",
     "pvp_ignore", "defensive", "coef_other", "conditional", "utility", "swordchi"]
@@ -1060,6 +1083,47 @@ def ocr_detailed(region):
     return items, " ".join(t[0] for t in items)
 
 
+def _find_window_rect(name_substrings):
+    """Sucht ein sichtbares Fenster, dessen Titel eine der Teilzeichenketten enthält,
+    und gibt (left, top, right, bottom) der Client-Fläche in Bildschirmkoordinaten
+    zurück (nur Windows). Sonst None. Für die automatische BlueStacks-Erkennung."""
+    try:
+        import ctypes
+        from ctypes import wintypes
+        user32 = ctypes.windll.user32
+        found = []
+
+        def _cb(hwnd, lparam):
+            try:
+                if not user32.IsWindowVisible(hwnd):
+                    return True
+                ln = user32.GetWindowTextLengthW(hwnd)
+                if ln <= 0:
+                    return True
+                buf = ctypes.create_unicode_buffer(ln + 1)
+                user32.GetWindowTextW(hwnd, buf, ln + 1)
+                title = (buf.value or "").lower()
+                if any(s in title for s in name_substrings):
+                    found.append(hwnd)
+            except Exception:
+                pass
+            return True
+
+        EnumProc = ctypes.WINFUNCTYPE(ctypes.c_bool, wintypes.HWND, wintypes.LPARAM)
+        user32.EnumWindows(EnumProc(_cb), 0)
+        if not found:
+            return None
+        hwnd = found[0]
+        rect = wintypes.RECT()
+        if not user32.GetClientRect(hwnd, ctypes.byref(rect)):
+            return None
+        pt = wintypes.POINT(0, 0)
+        user32.ClientToScreen(hwnd, ctypes.byref(pt))
+        return (pt.x, pt.y, pt.x + rect.right, pt.y + rect.bottom)
+    except Exception:
+        return None
+
+
 # ================================================================== #
 #  APP                                                               #
 # ================================================================== #
@@ -1113,6 +1177,15 @@ class App:
         self._skill_loop_running = False               # läuft die Überwachungsschleife?
         self._skill_busy = False                       # gerade ein (Auto-)Scan aktiv?
         self._skill_prev = self._skill_scanned = None
+        # ----- Auto-Build (v42): Waffe -> Build automatisch erkennen -----
+        self.region_weapon = self.cfg.get("region_weapon")        # Waffenfeld (oben links)
+        self.weapon_refs = self.cfg.get("weapon_refs", {}) or {}   # build_key -> [Signatur(en)]
+        self.auto_build = tk.BooleanVar(value=False)
+        self._ab_loop_running = False
+        self._ab_busy = False
+        self._ab_prev = self._ab_scanned = None
+        self._weapon_unknown = False
+        self._weapon_status = ""
 
         root.title("Capybara Gem Scanner")
         root.configure(bg=BG)
@@ -1493,25 +1566,31 @@ class App:
         self.btn_reg_hero.pack(fill="x", pady=(10, 0))
         self.lbl_prev_hero = tk.Label(ht, text="", bg=BG, fg=DIM, font=("Consolas", 8), anchor="w",
                                       justify="left", wraplength=500); self.lbl_prev_hero.pack(fill="x", padx=4)
-        # Mehrfach-Scan: 2 ausgerüstete + 4 Reserve-Helden. Region einmal setzen,
-        # dann je Held im Spiel anvisieren und den passenden Knopf drücken.
-        grid = tk.Frame(ht, bg=BG); grid.pack(fill="x", pady=(10, 0))
-        for c in range(2):
-            grid.columnconfigure(c, weight=1, uniform="hero")
-        for i, (key, role, _de, _en) in enumerate(HERO_SLOTS):
-            b = tk.Button(grid, command=lambda k=key: self._scan_hero(k), relief="flat", bd=0,
-                          fg="#fff" if role == "equipped" else TEXT,
-                          bg=PURPLE if role == "equipped" else PANEL2,
-                          font=("Segoe UI", 9, "bold"), pady=8)
-            b.grid(row=i // 2, column=i % 2, sticky="ew", padx=3, pady=3)
-            self.hero_btns[key] = b
-        self.btn_hero_reset = tk.Button(ht, command=self._reset_hero, bg=PANEL, fg=DIM, relief="flat",
-                                        bd=0, font=("Segoe UI", 8), pady=4)
-        self.btn_hero_reset.pack(fill="x", pady=(4, 0))
-        self.chk_dbg_h = tk.Checkbutton(ht, variable=self.show_debug, command=self._render, bg=BG, fg=DIM,
-                                        selectcolor=PANEL, activebackground=BG, activeforeground=TEXT,
-                                        font=("Segoe UI", 8), bd=0, highlightthickness=0)
-        self.chk_dbg_h.pack(anchor="w", pady=(6, 0))
+        # ---- Auto-Build (v42): Waffe -> Build automatisch erkennen ----
+        ab = tk.Frame(ht, bg=PANEL, highlightthickness=1, highlightbackground=BORDER)
+        ab.pack(fill="x", pady=(10, 0))
+        self.lbl_ab_title = tk.Label(ab, bg=PANEL, fg=GOLD, font=("Segoe UI", 9, "bold"))
+        self.lbl_ab_title.pack(anchor="w", padx=8, pady=(6, 0))
+        abr = tk.Frame(ab, bg=PANEL); abr.pack(fill="x", padx=8, pady=(4, 0))
+        self.btn_reg_weapon = tk.Button(abr, command=self._set_region_weapon, bg=PANEL2, fg=TEXT,
+                                        relief="flat", bd=0, font=("Segoe UI", 8, "bold"), padx=8, pady=4)
+        self.btn_reg_weapon.pack(side="left")
+        self.btn_bluestacks = tk.Button(abr, command=self._find_bluestacks_weapon_region, bg=PANEL2, fg=TEXT,
+                                        relief="flat", bd=0, font=("Segoe UI", 8), padx=8, pady=4)
+        self.btn_bluestacks.pack(side="left", padx=(6, 0))
+        self.chk_auto_build = tk.Checkbutton(ab, variable=self.auto_build, command=self._toggle_auto_build,
+                                             bg=PANEL, fg=GREEN, selectcolor=PANEL, activebackground=PANEL,
+                                             activeforeground=GREEN, font=("Segoe UI", 9, "bold"), bd=0,
+                                             highlightthickness=0)
+        self.chk_auto_build.pack(anchor="w", padx=6, pady=(4, 0))
+        self.btn_learn_weapon = tk.Button(ab, command=self._learn_current_weapon, bg=PANEL2, fg=GOLD,
+                                          relief="flat", bd=0, font=("Segoe UI", 8, "bold"), padx=8, pady=4)
+        self.btn_learn_weapon.pack(anchor="w", padx=8, pady=(2, 0))
+        self.lbl_auto_build = tk.Label(ab, text="", bg=PANEL, fg=DIM, font=("Segoe UI", 8), anchor="w",
+                                       justify="left", wraplength=500)
+        self.lbl_auto_build.pack(fill="x", padx=8, pady=(2, 7))
+        # (Held-Tab ist jetzt eine Ausrüstungs-Ansicht; der frühere Companion-
+        #  Scanner mit Ausgerüstet/Reserve wurde durch die Slot-Ansicht ersetzt.)
         hres = tk.Frame(self.hero_view, bg=BG); hres.pack(fill="both", expand=True, padx=(14, 0))
         _hc = tk.Canvas(hres, bg=BG, highlightthickness=0)
         _hscb = tk.Scrollbar(hres, command=_hc.yview); _hc.configure(yscrollcommand=_hscb.set)
@@ -1913,6 +1992,173 @@ class App:
         self.dbg_skill = dbg
         if self.view == "skill":
             self._render()
+
+    # ===== Auto-Build (v42): Waffe -> Build automatisch erkennen =====
+    def _weapon_sig(self, region):
+        """Normalisierte Graustufen-Signatur (32x32) des Waffenfelds als 1D-Vektor
+        (Länge 1024) – mittelwertfrei + auf Länge 1 normiert. Oder None."""
+        try:
+            shot = _thread_sct().grab(region)
+            img = Image.frombytes("RGB", shot.size, shot.bgra, "raw", "BGRX")
+            img = img.convert("L").resize((32, 32))
+            a = np.asarray(img, dtype=np.float32).reshape(-1)
+            a = a - a.mean()
+            n = float(np.sqrt((a * a).sum()))
+            return (a / n) if n > 1e-6 else a
+        except Exception:
+            return None
+
+    def _match_weapon(self, sig):
+        """Bester Build-Treffer für die Signatur -> (build_key | None, score 0-1)."""
+        best_key, best = None, -1.0
+        for key, refs in (self.weapon_refs or {}).items():
+            for ref in refs:
+                try:
+                    r = np.asarray(ref, dtype=np.float32)
+                    if r.shape != sig.shape:
+                        continue
+                    s = float((sig * r).sum())
+                except Exception:
+                    continue
+                if s > best:
+                    best, best_key = s, key
+        return best_key, best
+
+    def _detect_build_once(self):
+        """Erfasst das Waffenfeld, gleicht mit den gelernten Referenzen ab und setzt
+        den Build automatisch (oder bietet 'merken' an, wenn die Waffe unbekannt ist)."""
+        if not self.region_weapon:
+            return
+        sig = self._weapon_sig(self.region_weapon)
+        if sig is None:
+            return
+        key, score = self._match_weapon(sig)
+        if key is not None and key in BUILD_NAMES and score >= AB_THRESHOLD:
+            self._weapon_unknown = False
+            self._weapon_status = (self._t("Erkannt: ", "Detected: ") + self._bname(key)
+                                   + "  (%d%%)" % int(max(0.0, min(1.0, score)) * 100))
+            if key != self.build:
+                self._set_build(key)            # ruft _render -> aktualisiert auch das Label
+            else:
+                self._update_auto_build_label()
+        else:
+            self._weapon_unknown = True
+            self._weapon_status = self._t(
+                "Neue/unbekannte Waffe — oben den richtigen Build wählen und „✚ Aktuelle Waffe merken“ drücken.",
+                "New/unknown weapon — pick the correct build above and click “✚ Learn current weapon”.")
+            self._update_auto_build_label()
+
+    def _learn_current_weapon(self):
+        """Speichert die aktuelle Waffen-Signatur unter dem aktuell gewählten Build
+        (Selbstlernen) – danach wird genau diese Waffe sicher erkannt."""
+        if not self.region_weapon:
+            messagebox.showinfo(self._t("Waffenfeld", "Weapon area"), self._t(
+                "Erst das Waffenfeld festlegen (Knopf darüber) oder „BlueStacks finden“.",
+                "Set the weapon area first (button above) or “Find BlueStacks”."))
+            return
+        sig = self._weapon_sig(self.region_weapon)
+        if sig is None:
+            return
+        refs = self.weapon_refs.setdefault(self.build, [])
+        refs.append([round(float(x), 4) for x in sig.tolist()])
+        if len(refs) > 4:        # max 4 Referenzen je Build (S/SS + Varianten)
+            del refs[0]
+        self.cfg["weapon_refs"] = self.weapon_refs
+        save_config(self.cfg)
+        self._weapon_unknown = False
+        self._weapon_status = self._t("Gemerkt als: ", "Learned as: ") + self._bname(self.build)
+        self._update_auto_build_label()
+
+    def _update_auto_build_label(self):
+        try:
+            if self._weapon_status:
+                self.lbl_auto_build.configure(
+                    text=self._weapon_status, fg=(AMBER if self._weapon_unknown else GREEN))
+            else:
+                self.lbl_auto_build.configure(fg=DIM, text=self._t(
+                    "1) Waffenfeld festlegen (oder BlueStacks finden)  2) Auto-Build an  → der Build "
+                    "wird automatisch erkannt. Unbekannte Waffe? Build oben wählen + merken.",
+                    "1) Set the weapon area (or Find BlueStacks)  2) turn on Auto-Build  → the build "
+                    "is detected automatically. Unknown weapon? Pick the build above + learn."))
+        except Exception:
+            pass
+
+    def _set_region_weapon(self):
+        self.root.withdraw()
+        self.root.after(250, lambda: RegionSelector(self.root, self._t(
+            "Rechteck NUR über das Waffen-Symbol ziehen (oben links in der Ausrüstung) · Esc = Abbruch",
+            "Drag a box over JUST the weapon icon (top-left in Equipment) · Esc = cancel"), self._reg_weapon_done))
+
+    def _reg_weapon_done(self, region):
+        self.region_weapon = region
+        self.cfg["region_weapon"] = region
+        save_config(self.cfg)
+        self._weapon_status = ""
+        self.root.deiconify()
+        self._render()
+
+    def _find_bluestacks_weapon_region(self):
+        """Findet das BlueStacks-Fenster und leitet das Waffenfeld (oben links in der
+        Ausrüstung) per Proportion ab -> ohne manuelles Markieren."""
+        rect = _find_window_rect(("bluestacks", "bluestack"))
+        if not rect:
+            messagebox.showinfo("BlueStacks", self._t(
+                "BlueStacks-Fenster nicht gefunden. Bitte BlueStacks mit der Ausrüstungs-Seite öffnen "
+                "— oder das Waffenfeld manuell festlegen.",
+                "BlueStacks window not found. Open BlueStacks on the Equipment page — "
+                "or set the weapon area manually."))
+            return
+        L, T, R, B = rect
+        w, h = R - L, B - T
+        if w < 50 or h < 50:
+            return
+        # Waffe = oben links im Ausrüstungs-Screen (Proportionen, bei Bedarf justierbar)
+        x0 = L + int(w * 0.055); y0 = T + int(h * 0.065)
+        x1 = L + int(w * 0.235); y1 = T + int(h * 0.150)
+        self.region_weapon = {"left": x0, "top": y0,
+                              "width": max(8, x1 - x0), "height": max(8, y1 - y0)}
+        self.cfg["region_weapon"] = self.region_weapon
+        save_config(self.cfg)
+        self._weapon_status = self._t(
+            "BlueStacks gefunden — Waffenfeld gesetzt. Jetzt Auto-Build einschalten.",
+            "BlueStacks found — weapon area set. Now turn on Auto-Build.")
+        self._render()
+
+    def _toggle_auto_build(self):
+        if self.auto_build.get():
+            if not self.region_weapon:
+                messagebox.showinfo(self._t("Waffenfeld", "Weapon area"), self._t(
+                    "Erst das Waffenfeld festlegen (oder „BlueStacks finden“), dann Auto-Build einschalten.",
+                    "Set the weapon area first (or “Find BlueStacks”), then enable Auto-Build."))
+                self.auto_build.set(False)
+                self._update_auto_build_label()
+                return
+            self._ab_scanned = None
+            if not self._ab_loop_running:
+                self._ab_loop_running = True
+                self._auto_build_tick()
+        self._update_auto_build_label()
+
+    def _auto_build_tick(self):
+        """Überwacht das Waffenfeld (nur im Held-Tab); erkennt nur bei deutlicher,
+        ruhiger Änderung neu (spart CPU) – wie der Skill-Auto-Scan."""
+        if not self.auto_build.get():
+            self._ab_loop_running = False
+            return
+        if self.view == "hero" and self.region_weapon and not self._ab_busy:
+            self._ab_busy = True
+            threading.Thread(target=self._auto_build_work, daemon=True).start()
+        self.root.after(1300, self._auto_build_tick)
+
+    def _auto_build_work(self):
+        try:
+            if not self._significant_change(self.region_weapon, "_ab_prev", "_ab_scanned"):
+                return
+            self.root.after(0, self._detect_build_once)
+        except Exception:
+            pass
+        finally:
+            self._ab_busy = False
 
     # ----- Lauf-Tracking: gewählte Skills merken + Synergie -----
     def _skill_pick(self, sk):
@@ -2514,6 +2760,20 @@ class App:
                 break
         return out
 
+    def _slot_top_gems(self, slot, k=3):
+        """Die k bestbewerteten Steine für EINEN Slot + den aktuellen Build/Modus
+        (für die „Build-Ziele je Slot" im Held-Tab)."""
+        seen, out = set(), []
+        for g in sorted(GEMS.get(slot, []), key=lambda x: -self._score(x)):
+            nm = self._gname(g)
+            if nm in seen:
+                continue
+            seen.add(nm)
+            out.append((nm, self._score(g)))
+            if len(out) >= k:
+                break
+        return out
+
     def _render_quick(self):
         self.lbl_quick_intro.configure(text=self._t(
             "Ein Knopf: Markiere einmal den Spielbereich mit den Edelstein-Effekten (z. B. Inventar). "
@@ -2777,109 +3037,56 @@ class App:
 
     def _render_hero(self):
         self.lbl_hero_intro.configure(text=self._t(
-            "Region EINMAL festlegen (der ganze Spiel-Screen reicht). Dann nacheinander Helden "
-            "scannen: zuerst die AUSGERÜSTETEN (1–2), dann die RESERVE. Visiere jeden Helden "
-            "im Spiel an und drück den passenden Knopf. Das Tool vergleicht Rang + Build-Eignung.",
-            "Set the region ONCE (the whole game screen is fine). Then scan heroes one by one: "
-            "first the EQUIPPED (1–2), then the RESERVE. Aim at each hero in-game and press the "
-            "matching button. The tool compares rank + build suitability."))
-        self.btn_reg_hero.configure(fg=GREEN if self.region_hero else TEXT, text=self._t(
-            "🎯 Bereich festlegen (ganzer Screen ok)", "🎯 Set region (whole screen ok)")
-            + ("   ✓" if self.region_hero else ""))
-        self.lbl_prev_hero.configure(
-            text=(self._t("erfasst: ", "captured: ") + self.prev_hero) if self.prev_hero else "")
-        for key, role, de, en in HERO_SLOTS:
-            b = self.hero_btns.get(key)
-            if not b:
-                continue
-            info = self.hero_scans.get(key)
-            base = self._t(de, en)
-            if str(b["state"]) != "disabled":
-                b.configure(text=(base + "  ✓") if info else base,
-                            bg=(GREEN if info else (PURPLE if role == "equipped" else PANEL2)),
-                            fg=(self._text_on(GREEN) if info else ("#fff" if role == "equipped" else TEXT)))
-        self.btn_hero_reset.configure(text=self._t("↺ Helden zurücksetzen", "↺ reset heroes"))
-        self.chk_dbg_h.configure(text=self._t("🔍 Details anzeigen", "🔍 show details"))
+            "Ausrüstung gegen deinen Build. Schalte „🤖 Auto-Build\" ein – die Waffe wird erkannt "
+            "und der Build automatisch gesetzt. Darunter siehst du je Ausrüstungs-Slot, welche "
+            "Steine dieser Build will. Die echten Steine prüfst du mit dem ⚡ Schnell- oder "
+            "🔍 Slot-Scanner (Edelsteine laufen separat).",
+            "Equipment vs your build. Turn on “🤖 Auto-Build” – the weapon is detected and the "
+            "build is set automatically. Below, each equipment slot shows what gems this build "
+            "wants. Scan the actual gems with the ⚡ Quick or 🔍 Slot scanner (gems are separate)."))
+        try:
+            self.btn_reg_hero.pack_forget()
+            self.lbl_prev_hero.pack_forget()
+        except Exception:
+            pass
+        # ---- Auto-Build-Bereich (Texte je Sprache) ----
+        self.lbl_ab_title.configure(text=self._t("🤖 Auto-Build (Waffe → Build)",
+                                                 "🤖 Auto-Build (weapon → build)"))
+        self.btn_reg_weapon.configure(fg=GREEN if self.region_weapon else TEXT, text=self._t(
+            "🎯 Waffenfeld festlegen", "🎯 Set weapon area") + ("   ✓" if self.region_weapon else ""))
+        self.btn_bluestacks.configure(text=self._t("🔎 BlueStacks finden", "🔎 Find BlueStacks"))
+        self.chk_auto_build.configure(text=self._t("🔁 Auto-Build (Build automatisch erkennen)",
+                                                  "🔁 Auto-Build (detect build automatically)"))
+        self.btn_learn_weapon.configure(text=self._t("✚ Aktuelle Waffe merken", "✚ Learn current weapon"))
+        self._update_auto_build_label()
 
         for x in self.hero_inner.winfo_children():
             x.destroy()
-        if not self.hero_scans:
-            tk.Label(self.hero_inner, text=self._t(
-                "— noch nichts gescannt — Bereich festlegen, Held im Spiel anvisieren und einen "
-                "der Knöpfe oben drücken (Ausgerüstet 1/2, dann Reserve).",
-                "— nothing scanned yet — set the region, aim at a hero in-game and press one of "
-                "the buttons above (Equipped 1/2, then Reserve)."),
-                bg=BG, fg=DIM, font=("Segoe UI", 9), wraplength=500, justify="left").pack(anchor="w", pady=(8, 0))
-            self._hero_note()
-            return
-
-        # --- Vergleich / Empfehlung ---
-        reco = self._hero_reco()
-        if reco is not None:
-            doc = tk.Frame(self.hero_inner, bg=PANEL2, highlightbackground=GOLD, highlightthickness=1)
-            doc.pack(fill="x", pady=(8, 6))
-            tk.Label(doc, text=self._t("⚔️ Helden-Vergleich · %s", "⚔️ Hero comparison · %s") % self._bname(self.build),
-                     bg=PANEL2, fg=GOLD, font=("Segoe UI", 9, "bold"), wraplength=470,
-                     justify="left").pack(anchor="w", padx=10, pady=(7, 2))
-            wl, _ = self._hero_label(reco["weak_key"]); bl, _ = self._hero_label(reco["best_key"])
-            if reco["better"]:
-                txt = self._t(
-                    "❌ Tausch-Tipp: „%s\" (Rang +%d, Eignung ×%.2f) ist stärker als dein "
-                    "ausgerüsteter „%s\" (Rang +%d, ×%.2f) → erwäge Wechsel.",
-                    "❌ Swap tip: '%s' (rank +%d, fit ×%.2f) is stronger than your equipped "
-                    "'%s' (rank +%d, ×%.2f) → consider swapping.") % (
-                    bl, reco["bp"], reco["bs"], wl, reco["wp"], reco["ws"])
-                col = AMBER
-            else:
-                txt = self._t(
-                    "✅ Deine ausgerüsteten Helden sind stark genug – keine Reserve ist klar besser.",
-                    "✅ Your equipped heroes are strong enough – no reserve is clearly better.")
-                col = GREEN
-            tk.Label(doc, text=txt, bg=PANEL2, fg=col, font=("Segoe UI", 8), wraplength=470,
-                     justify="left").pack(anchor="w", padx=10, pady=(0, 8))
-
-        # --- Pro Held eine kompakte Karte (gruppiert: ausgerüstet, dann Reserve) ---
-        prefs = BUILD_PREFS.get(self.build, {})
-        for key, role, de, en in HERO_SLOTS:
-            info = self.hero_scans.get(key)
-            if not info:
-                continue
-            power, syn = self._hero_fit(info)
-            rank = (info["rank_de"] if self.lang == "de" else info["rank_en"]) or \
-                self._t("Rang ?", "rank ?")
+        tk.Label(self.hero_inner, text=self._t("Ausrüstung für %s · %s", "Equipment for %s · %s")
+                 % (self._bname(self.build), self.mode.upper()), bg=BG, fg=GOLD,
+                 font=("Segoe UI", 9, "bold"), anchor="w", justify="left",
+                 wraplength=500).pack(anchor="w", pady=(8, 4))
+        for de, en, slotkey in EQUIP_SLOTS:
             card = tk.Frame(self.hero_inner, bg=PANEL, highlightbackground=BORDER, highlightthickness=1)
             card.pack(fill="x", pady=3)
-            top = tk.Frame(card, bg=PANEL); top.pack(fill="x")
-            badge = self._t("ausgerüstet", "equipped") if role == "equipped" else self._t("Reserve", "reserve")
-            tk.Label(top, text="%s — %s" % (self._t(de, en), rank), bg=PANEL, fg=TEXT,
-                     font=("Segoe UI", 9, "bold")).pack(side="left", padx=10, pady=(7, 0))
-            tk.Label(top, text=badge, bg=PANEL,
-                     fg=(PURPLE if role == "equipped" else TEAL),
-                     font=("Segoe UI", 8, "bold")).pack(side="right", padx=10, pady=(7, 0))
-            if syn >= 1.05:
-                smsg, scol = self._t("passt gut zum Build", "fits the build"), GREEN
-            elif syn <= 0.95:
-                smsg, scol = self._t("eher schwach für Build", "rather weak for build"), AMBER
+            tk.Label(card, text=self._t(de, en), bg=PANEL, fg=TEXT,
+                     font=("Segoe UI", 9, "bold")).pack(anchor="w", padx=10, pady=(7, 0))
+            tops = self._slot_top_gems(slotkey, 3)
+            if tops:
+                tk.Label(card, text=self._t("Build will hier: ", "This build wants: ")
+                         + ", ".join("%s (%d%%)" % (n, s) for n, s in tops),
+                         bg=PANEL, fg=GREEN, font=("Segoe UI", 8), anchor="w",
+                         wraplength=470, justify="left").pack(anchor="w", padx=12, pady=(1, 7))
             else:
-                smsg, scol = self._t("neutral", "neutral"), DIM
-            tk.Label(card, text=self._t("Build-Eignung: %s (Ø ×%.2f)", "Build fit: %s (avg ×%.2f)")
-                     % (smsg, syn), bg=PANEL, fg=scol, font=("Segoe UI", 8), anchor="w",
-                     wraplength=470, justify="left").pack(anchor="w", padx=12, pady=(1, 0))
-            kws = info.get("kw", [])
-            if kws:
-                chips = ", ".join("%s%s" % (self._t(lde, len_),
-                                  " ✓" if prefs.get(cat, 1.0) >= 1.05 else
-                                  (" ✗" if prefs.get(cat, 1.0) <= 0.9 else ""))
-                                  for cat, lde, len_ in kws)
-                tk.Label(card, text=self._t("Effekte: ", "Effects: ") + chips, bg=PANEL, fg=DIM,
-                         font=("Segoe UI", 8), anchor="w", wraplength=470,
-                         justify="left").pack(anchor="w", padx=12, pady=(0, 7))
-            else:
-                tk.Label(card, text=self._t("Keine Effekt-Stichwörter erkannt (Effekt-Text mitscannen).",
-                                            "No effect keywords found (include the effect text)."),
-                         bg=PANEL, fg=DIM, font=("Segoe UI", 8), anchor="w", wraplength=470,
-                         justify="left").pack(anchor="w", padx=12, pady=(0, 7))
-        self._hero_note()
+                tk.Label(card, text=self._t("(keine Slot-Daten)", "(no slot data)"), bg=PANEL,
+                         fg=DIM, font=("Segoe UI", 8), anchor="w").pack(anchor="w", padx=12, pady=(1, 7))
+        tk.Label(self.hero_inner, text=self._t(
+            "Ring 1/2 und Halskette 1/2 teilen sich denselben Stein-Pool. Die echten Steine in "
+            "deinen Teilen liest der ⚡ Schnell- oder 🔍 Slot-Scanner – hier siehst du nur das "
+            "Build-Ziel je Slot.",
+            "Ring 1/2 and Necklace 1/2 share the same gem pool. The actual gems in your items are "
+            "read by the ⚡ Quick or 🔍 Slot scanner – this only shows the build target per slot."),
+            bg=BG, fg=DIM, font=("Segoe UI", 8), wraplength=500, justify="left").pack(anchor="w", pady=(8, 4))
 
     def _hero_note(self):
         tk.Label(self.hero_inner, text=self._t(

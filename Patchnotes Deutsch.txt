@@ -1,5 +1,5 @@
 =========================================================
-  Capybara Gem Scanner  -  Community Edition (v41)
+  Capybara Gem Scanner  -  Community Edition (v43)
   PATCHNOTES  (Deutsch)
 =========================================================
 
@@ -40,6 +40,23 @@ BEDIENUNG (kurz)
 =========================================================
   WAS IST NEU
 =========================================================
+
+v43 (Held-Tab = Ausruestungs-Ansicht):
+  - Der Held-Tab zeigt jetzt deine AUSRUESTUNG gegen den Build, mit echten Slots:
+    Hauptwaffe, Ruestung, Ring 1, Ring 2, Halskette 1, Halskette 2.
+  - Je Slot werden die Ziel-Steine fuer deinen gewaehlten Build angezeigt.
+  - Die Waffe setzt den Build weiterhin automatisch (Auto-Build).
+  - Die echten Steine in deinen Teilen liest weiterhin der Schnell-/Slot-Scanner.
+
+v42 (Held: automatische Build-Erkennung):
+  - Neuer "Auto-Build" im Held-Tab: erkennt die ausgeruestete WAFFE am Icon und
+    setzt den passenden Build AUTOMATISCH.
+  - Selbstlernend: bei unbekannter Waffe einmal den richtigen Build waehlen und
+    "Aktuelle Waffe merken" druecken -> ab dann sichere Erkennung.
+  - Optionale BlueStacks-Fenster-Erkennung (kein Bereich-Markieren noetig).
+  - Auto-Scan wie im Skills-Tab (prueft nur bei echter Aenderung -> wenig CPU).
+  TIPP: Ausruestungs-Screen oeffnen, Waffenfeld einmal festlegen (oder "BlueStacks
+  finden"), Auto-Build an -> der Build wechselt von selbst beim Waffenwechsel.
 
 v41 (weniger CPU-Last):
   - Der Auto-Scan (Edelsteine & Skills) braucht jetzt deutlich weniger CPU. Die
