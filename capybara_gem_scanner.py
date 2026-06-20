@@ -2,11 +2,29 @@
 # -*- coding: utf-8 -*-
 """
 ================================================================================
- Capybara Gem Scanner  ·  Capybara Go            (v46 – Community Edition)
+ Capybara Gem Scanner  ·  Capybara Go            (v48 – Community Edition)
 ================================================================================
  Erkennt ausgerüstete + angewählte Edelsteine vom Bildschirm und bewertet sie
  für den jeweiligen Build. / Reads equipped + selected gems from screen and
  rates them for the chosen build.
+
+ Features (v48 – Balance-Audit: jeder Build korrekt bewertet):
+  • Systematischer Audit über ALLE Steine × ALLE 8 Builds. Befund: Signatur-Steine
+    waren in den Rohdaten ungleich stark (Dolch/Wut/Krit/Kombo ~80-100, aber
+    Schwertchi nur 52 und Blitz-Koeffizient nur 28) → Skysplitter/Nashir erreichten
+    mit ihren EIGENEN Kern-Steinen nie Top-Tier. Behoben: Schwertchi-, Blitz- und
+    Element-Signaturen auf vergleichbares Niveau gezogen; die niedrigen Off-Build-
+    Multiplikatoren halten sie bei anderen Builds weiter unten. Star-Staff-prefs
+    mage-gerecht justiert (kein Wut-Dolch mehr). Ergebnis (geprüft): jeder der 8
+    Builds bekommt seine echten Kern-Steine als Top-Empfehlung.
+
+ Features (v47 – intelligentere Build-Bewertung):
+  • Globaler Standard-Multiplikator (DEFAULT_PREFS): situative Kategorien
+    (Geschwindigkeit/Konter, conditional, control, pvp_ignore) werden jetzt
+    abgewertet, wenn ein Build sie nicht ausdrücklich will – statt neutral mit
+    1.0 durchzurutschen. Behebt: Geschwindigkeits-Stein wurde fälschlich für
+    Whisperer/Schadensbuilds empfohlen. Tank/Kontroll-Builds (Mushroom/Durian),
+    die utility WOLLEN, behalten ihre hohe Wertung.
 
  Features (v46 – Funktions- & Oberflächen-Ausbau):
   • Echte +X%-WERTE: der Scanner liest jetzt die Prozentzahl mit. Gleiche Steine
@@ -280,13 +298,16 @@ def reload_gems():
 
 def reload_builds():
     """Liest builds.json neu ein und aktualisiert die Build-Globals."""
-    global BUILDS, BUILD_LIST, BUILD_NAMES, BUILD_PREFS, BUILD_EN
+    global BUILDS, BUILD_LIST, BUILD_NAMES, BUILD_PREFS, BUILD_EN, DEFAULT_PREFS
     with open(os.path.join(HERE, "builds.json"), encoding="utf-8") as f:
         BUILDS = json.load(f)
     BUILD_LIST = BUILDS.get("builds", [])
     BUILD_NAMES = [b["name"] for b in BUILD_LIST] or ["—"]
     BUILD_PREFS = {b["name"]: b.get("prefs", {}) for b in BUILD_LIST}
     BUILD_EN = {b["name"]: b.get("name_en", b["name"]) for b in BUILD_LIST}
+    meta_def = (BUILDS.get("_meta", {}) or {}).get("default_prefs")
+    if meta_def:
+        DEFAULT_PREFS = meta_def
 
 
 def fetch_url(url, timeout=15):
@@ -379,6 +400,32 @@ BUILD_LIST = BUILDS.get("builds", [])
 BUILD_NAMES = [b["name"] for b in BUILD_LIST] or ["—"]
 BUILD_PREFS = {b["name"]: b.get("prefs", {}) for b in BUILD_LIST}
 BUILD_EN = {b["name"]: b.get("name_en", b["name"]) for b in BUILD_LIST}
+
+# Globaler Standard-Multiplikator je Kategorie: gilt, wenn ein Build die Kategorie
+# NICHT ausdrücklich in seinen prefs nennt. Wichtig für „Intelligenz": situative/
+# spezialisierte Kategorien (Geschwindigkeit/Konter=utility, conditional, control,
+# pvp_ignore) werden so abgewertet, statt neutral mit 1.0 durchzurutschen – sonst
+# empfiehlt das Tool z. B. einen Geschwindigkeits-Stein (Basis PvP 80) für einen
+# Whisperer-Schadensbuild. Builds, die eine Kategorie WOLLEN (z. B. Mushroom/Durian
+# utility 1.3), überschreiben den Standard. Kann via builds.json `_meta.default_prefs`
+# überschrieben werden (Online-Update-fähig).
+DEFAULT_PREFS = (BUILDS.get("_meta", {}) or {}).get("default_prefs") or {
+    "final": 1.05,        # universell stark
+    "atk": 0.95,          # globale ATK breit nützlich
+    "crit": 0.95,
+    "combo": 0.85,
+    "dagger": 0.6,        # nur Dolch-Builds
+    "rage": 0.55,         # nur Wut-Builds
+    "swordchi": 0.5,      # nur Schwertchi-Builds
+    "coef_other": 0.5,
+    "lightning": 0.45, "fire": 0.45, "explosion": 0.4, "normal": 0.55, "physical": 0.55,
+    "survival": 0.8,      # Defensive: nützlich, aber kein Schaden
+    "defensive": 0.7,
+    "conditional": 0.6,   # situativer Schaden
+    "control": 0.5,       # PvP-Kontrolle, situativ
+    "pvp_ignore": 0.5,    # nur PvP
+    "utility": 0.45,      # Geschwindigkeit/Konter – situativ (behebt Speed-für-Whisperer)
+}
 
 
 def tier_of(score):
@@ -1387,17 +1434,26 @@ class App:
     def _sname(self, key):
         return SLOT_DISP[key][0 if self.lang == "de" else 1]
 
+    @staticmethod
+    def _eff_mult(build, cat):
+        """Effektiver Build-Multiplikator einer Kategorie: ausdrücklicher Wert des
+        Builds, sonst der globale Standard (DEFAULT_PREFS). So werden situative
+        Kategorien (Geschwindigkeit/Konter, conditional, control) korrekt abgewertet,
+        statt neutral mit 1.0 durchzurutschen."""
+        p = BUILD_PREFS.get(build, {})
+        if cat in p:
+            return p[cat]
+        return DEFAULT_PREFS.get(cat, 1.0)
+
     def _score(self, g):
         base = g["pve"] if self.mode == "pve" else g["pvp"]
-        mult = BUILD_PREFS.get(self.build, {}).get(g.get("cat", "atk"), 1.0)
-        return int(round(min(100, base * mult)))
+        return int(round(min(100, base * self._eff_mult(self.build, g.get("cat", "atk")))))
 
     def _score_for(self, g, build):
         """Score eines Steins für einen BELIEBIGEN Build (Build-übergreifender
         Vergleich im Held-Tab – findet den Build, zu dem ein Stein gehört)."""
         base = g["pve"] if self.mode == "pve" else g["pvp"]
-        mult = BUILD_PREFS.get(build, {}).get(g.get("cat", "atk"), 1.0)
-        return int(round(min(100, base * mult)))
+        return int(round(min(100, base * self._eff_mult(build, g.get("cat", "atk")))))
 
     def _best_build_for(self, g):
         """Der Build, in dem dieser Stein am besten passt -> (build_key, score).
@@ -3211,7 +3267,7 @@ class App:
         if g.get("auto"):
             return note
         cat = g.get("cat", "atk")
-        mult = BUILD_PREFS.get(self.build, {}).get(cat, 1.0)
+        mult = self._eff_mult(self.build, cat)
         if mult <= 0.9 or sc < 55:
             tag = self._t("schwach für diesen Build", "weak for this build")
         elif sc >= 90:
@@ -3350,7 +3406,7 @@ class App:
     def _skill_reason(self, sk, sc):
         note = self._gnote(sk)
         cat = sk.get("cat", "atk")
-        mult = BUILD_PREFS.get(self.build, {}).get(cat, 1.0)
+        mult = self._eff_mult(self.build, cat)
         tier = sk.get("tier", "?")
         if sc >= 75:
             tag = self._t("LERNEN – stark für diesen Build", "LEARN – strong for this build")

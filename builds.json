@@ -534,15 +534,18 @@
     {
       "name": "Star Staff  (Stab · PvE+PvP)",
       "prefs": {
-        "final": 1.05,
-        "rage": 0.9,
-        "dagger": 0.8,
-        "swordchi": 0.4,
-        "lightning": 0.4,
-        "fire": 0.5,
-        "explosion": 0.5,
+        "final": 1.1,
+        "atk": 1.0,
+        "crit": 0.9,
+        "combo": 0.8,
+        "fire": 0.85,
+        "explosion": 0.85,
+        "lightning": 0.8,
+        "physical": 0.7,
         "normal": 0.6,
-        "physical": 0.7
+        "rage": 0.5,
+        "dagger": 0.5,
+        "swordchi": 0.4
       },
       "char": {
         "inheritance": {

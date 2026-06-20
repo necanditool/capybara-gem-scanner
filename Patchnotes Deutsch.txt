@@ -1,5 +1,5 @@
 =========================================================
-  Capybara Gem Scanner  -  Community Edition (v46)
+  Capybara Gem Scanner  -  Community Edition (v48)
   PATCHNOTES  (Deutsch)
 =========================================================
 
@@ -40,6 +40,27 @@ BEDIENUNG (kurz)
 =========================================================
   WAS IST NEU
 =========================================================
+
+v48 (Balance-Audit: jeder Build korrekt bewertet):
+  - Systematischer Audit ueber ALLE Steine x ALLE 8 Builds. Befund: Signatur-Steine
+    waren in den Rohdaten ungleich stark (Dolch/Wut/Krit/Kombo ~80-100, aber
+    Schwertchi nur 52 und Blitz-Koeffizient nur 28) -> Skysplitter/Nashir erreichten
+    mit ihren EIGENEN Kern-Steinen nie Top-Tier.
+  - Behoben: Schwertchi-, Blitz- und Element-Signaturen auf vergleichbares Niveau
+    gezogen. Die niedrigen Off-Build-Multiplikatoren halten sie bei anderen Builds
+    weiterhin unten (z. B. bleibt Blitz bei Whisperer schwach).
+  - Star-Staff (Stab) mage-gerecht justiert: rage/dagger runter (kein Wut-Dolch mehr
+    als Top-Pick), Elemente rauf.
+  - Ergebnis (geprueft): jeder der 8 Builds bekommt jetzt seine echten Kern-Steine
+    als Top-Empfehlung.
+
+v47 (intelligentere Build-Bewertung):
+  - Steine, die ein Build NICHT braucht, werden jetzt korrekt abgewertet: situative
+    Kategorien (Geschwindigkeit/Konter, bedingter Schaden, Kontrolle, PvP-Ignorieren)
+    rutschen nicht mehr neutral mit 1.0 durch. Behebt: ein Geschwindigkeits-Stein
+    wurde faelschlich fuer Whisperer/Schadensbuilds empfohlen.
+  - Tank-/Kontroll-Builds (Mushroom, Durian), die genau diese Steine WOLLEN,
+    behalten ihre hohe Wertung. (Tunebar in builds.json _meta.default_prefs.)
 
 v46 (Funktions- & Oberflaechen-Ausbau):
   - ECHTE +X%-WERTE: der Scanner liest jetzt die Prozentzahl mit. Beim Slot-Scan
