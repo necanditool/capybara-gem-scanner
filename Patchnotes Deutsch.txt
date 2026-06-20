@@ -1,5 +1,5 @@
 =========================================================
-  Capybara Gem Scanner  -  Community Edition (v44)
+  Capybara Gem Scanner  -  Community Edition (v45)
   PATCHNOTES  (Deutsch)
 =========================================================
 
@@ -16,8 +16,8 @@ BEDIENUNG (kurz)
     fuer deinen Build und zeigt oben den Build-Doktor (Behalten / Tauschen).
   - Slot: PvE/PvP und Slot waehlen, zwei Bereiche festlegen (Ausgeruestet
     rechts, Auswahl links), Stein anwaehlen, "Scannen & vergleichen" -> Urteil.
-  - Held: Region einmal festlegen (ganzer Spiel-Screen reicht), dann
-    ausgeruestete + Reserve-Helden scannen -> Vergleich + Wechsel-Empfehlung.
+  - Held: zeigt deine Ausruestung gegen den Build. Der Build-Check vergleicht
+    deine gescannten Steine mit dem Build und markiert, was nicht passt.
   - Skills: Bereich der angebotenen Skills markieren, "Skills pruefen" ->
     das Tool sagt pro Build, was du LERNEN und was du MEIDEN solltest.
   - Loadout: alle Slots auf einen Blick. Guide: komplette Build-Specs.
@@ -40,6 +40,21 @@ BEDIENUNG (kurz)
 =========================================================
   WAS IST NEU
 =========================================================
+
+v45 (Held: echter Build-Check + Stein-Verwechslung behoben):
+  - Der Held-Tab vergleicht jetzt deine GESCANNTEN Steine (aus Schnell- oder
+    Slot-Scan) mit dem gewaehlten Build und zeigt klar, was NICHT passt -
+    inkl. "gehoert zu Build X". Beispiel: Wut-Dolch bei Nashir/Blitz-Stab wird
+    rot markiert (gehoert zu Skysplitter). Build oben wechseln = sofort neu geprueft.
+  - Pro Slot steht jetzt "Build will hier" (Ziel) UND "Du hast hier" (deine
+    gescannten Steine) mit Haken/Warnung je Stein.
+  - Neuer Knopf "Erkannte Ausruestung zuruecksetzen" loescht alle gescannten Steine.
+  - Auto-Check setzt den Build nicht mehr still um, sondern WARNT bei falscher Waffe.
+  - Fix: "Kontrollimmunitaetsrate +X%" wurde mit "Kontrollimmunitaetsrate
+    ignorieren +X%" verwechselt (faelschlich "schon ausgeruestet"). Ein neuer
+    Ausschluss-Mechanismus trennt jetzt prefix-gleiche Steine sauber.
+  TIPP: Steine zuerst mit dem Schnell-Scan (alle auf einmal) erfassen, dann im
+  Held-Tab den Build umschalten - der Build-Check zeigt sofort die Fehlbesetzungen.
 
 v44 (Held: Waffe-gegen-Build-Check):
   - Auto-Check WARNT jetzt, wenn die ausgeruestete Waffe nicht zum gewaehlten

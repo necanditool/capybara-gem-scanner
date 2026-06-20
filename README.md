@@ -1,6 +1,17 @@
-# 💎 Capybara Gem Scanner — Community Edition (v44)
+# 💎 Capybara Gem Scanner — Community Edition (v45)
 
 **Deutsch unten / German below.**
+
+## New in v45 — Hero: real Build Check + gem mix-up fixed
+- **The Hero tab now compares your scanned gems against the selected build** and clearly shows what
+  does **not** fit — including *"belongs to build X"*. Example: a Rage Dagger on a Nashir/Lightning-staff
+  build is flagged red (it belongs to Skysplitter). **Switching the build re-checks instantly.**
+- Per slot it now shows **"This build wants"** (target) *and* **"You have here"** (your scanned gems)
+  with a ✅/⚠️ per gem. New **"↺ Reset detected equipment"** button.
+- Auto-Check no longer silently switches the build; it **warns** on a wrong weapon.
+- **Fix:** *"Control Immunity Rate +X%"* was confused with *"Control Immunity Rate **ignore** +X%"*
+  (wrongly shown as *"already equipped"*). A new exclusion mechanism cleanly separates gems whose
+  names share a prefix.
 
 ## New in v44 — Hero: weapon-vs-build check
 - **Auto-Check now warns when your equipped weapon doesn't match the selected build** (e.g. a bow
@@ -303,7 +314,18 @@ Bundled open-source components: see `THIRD-PARTY-LICENSES.txt`. Full text: `DISC
 
 ---
 
-# 💎 Capybara Gem Scanner — Community Edition (v44)  [Deutsch]
+# 💎 Capybara Gem Scanner — Community Edition (v45)  [Deutsch]
+
+## Neu in v45 — Held: echter Build-Check + Stein-Verwechslung behoben
+- **Der Held-Tab vergleicht jetzt deine gescannten Steine mit dem gewählten Build** und zeigt klar,
+  was **nicht** passt — inkl. *„gehört zu Build X"*. Beispiel: Wut-Dolch bei Nashir/Blitz-Stab wird
+  rot markiert (gehört zu Skysplitter). **Build wechseln prüft sofort neu.**
+- Pro Slot steht jetzt **„Build will hier"** (Ziel) *und* **„Du hast hier"** (deine gescannten Steine)
+  mit ✅/⚠️ je Stein. Neuer Knopf **„↺ Erkannte Ausrüstung zurücksetzen"**.
+- Auto-Check setzt den Build nicht mehr still um, sondern **warnt** bei falscher Waffe.
+- **Fix:** *„Kontrollimmunitätsrate +X%"* wurde mit *„Kontrollimmunitätsrate **ignorieren** +X%"*
+  verwechselt (fälschlich *„schon ausgerüstet"*). Ein neuer Ausschluss-Mechanismus trennt jetzt
+  Steine mit gleichem Namensanfang sauber.
 
 ## Neu in v44 — Held: Waffe-gegen-Build-Check
 - **Auto-Check warnt jetzt, wenn die ausgerüstete Waffe nicht zum gewählten Build passt** (z. B.

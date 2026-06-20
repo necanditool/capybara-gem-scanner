@@ -2,11 +2,22 @@
 # -*- coding: utf-8 -*-
 """
 ================================================================================
- Capybara Gem Scanner  ·  Capybara Go            (v44 – Community Edition)
+ Capybara Gem Scanner  ·  Capybara Go            (v45 – Community Edition)
 ================================================================================
  Erkennt ausgerüstete + angewählte Edelsteine vom Bildschirm und bewertet sie
  für den jeweiligen Build. / Reads equipped + selected gems from screen and
  rates them for the chosen build.
+
+ Features (v45 – Held: echter Build-Check + Stein-Verwechslung behoben):
+  • Der Held-Tab vergleicht jetzt deine GESCANNTEN Steine (Schnell-/Slot-Scan)
+    mit dem gewählten Build und zeigt, was NICHT passt – inkl. „gehört zu Build X".
+    Beispiel: Wut-Dolch bei Nashir/Blitz-Stab → ❌, gehört zu Skysplitter.
+    Build wechseln prüft sofort neu. Pro Slot: „Build will hier" + „Du hast hier".
+  • Neuer Knopf „↺ Erkannte Ausrüstung zurücksetzen" (löscht alle gescannten Steine).
+  • Auto-Check setzt den Build nicht mehr still um, sondern WARNT bei falscher Waffe.
+  • Fix: „Kontrollimmunitätsrate +X%" wurde mit „Kontrollimmunitätsrate ignorieren
+    +X%" verwechselt (fälschlich „schon ausgerüstet"). Neuer Ausschluss-Mechanismus
+    („not"-Stichwörter) trennt prefix-gleiche Steine sauber.
 
  Features (v44 – Held: Waffen-Check gegen Build):
   • Auto-Check warnt jetzt, wenn die ausgerüstete Waffe NICHT zum gewählten Build
@@ -383,6 +394,26 @@ GENERIC_TOKENS = {
 }
 
 
+def _phrase_present(nt, ntjoin, phrase):
+    """True, wenn die (normalisierte) Phrase im Text steht – gespaced ODER ohne
+    Leerzeichen (robust gegen OCR-Worttrennung)."""
+    p = _norm(phrase)
+    if not p:
+        return False
+    pj = p.replace(" ", "")
+    return (p in nt) or (bool(pj) and pj in ntjoin)
+
+
+def _gem_blocked(gem, nt, ntjoin):
+    """Ausschluss-Stichwörter („not"): steht eines davon im Text, kann DIESER Stein
+    NICHT gemeint sein. Trennt z. B. „Kontrollimmunitätsrate" (gut) sauber von
+    „Kontrollimmunitätsrate IGNORIEREN" (PvP), obwohl der Name ein Teilstring ist."""
+    for ph in gem.get("not", []):
+        if _phrase_present(nt, ntjoin, ph):
+            return True
+    return False
+
+
 def gem_score_detail(gem, text):
     """Wie gem_score, gibt zusätzlich die 'Spezifität' zurück = Länge der getroffenen
     Phrase. Bei Score-Gleichstand gewinnt damit der spezifischere (längere) Treffer,
@@ -392,6 +423,8 @@ def gem_score_detail(gem, text):
         return 0, 0
     ntset = set(nt.split())
     ntjoin = nt.replace(" ", "")
+    if _gem_blocked(gem, nt, ntjoin):   # Ausschluss-Stichwort vorhanden -> dieser Stein scheidet aus
+        return 0, 0
     best, best_spec = 0, 0
     for phrase in gem.get("match", []):
         np_ = _norm(phrase)
@@ -634,7 +667,8 @@ def detect_equipped(items, slot):
             card_de = cg["de"]
     items = filter_noise(items)
     lines = cluster_into_lines(items)
-    nblob = _norm(" ".join(t[0] for t in items)).replace(" ", "")
+    nfull = _norm(" ".join(t[0] for t in items))
+    nblob = nfull.replace(" ", "")
     found = {}
     for ln in lines:
         g, sc = best_match(ln, slot)
@@ -648,6 +682,8 @@ def detect_equipped(items, slot):
                 found.setdefault(ag["de"], (ag, 72))
     for g in GEMS.get(slot, []):
         if g["de"] in found:
+            continue
+        if _gem_blocked(g, nfull, nblob):   # Ausschluss-Stichwort im Blob -> nicht per Blob-Suche setzen
             continue
         for ph in g.get("match", []):
             p = _norm(ph).replace(" ", "")
@@ -1245,6 +1281,56 @@ class App:
         mult = BUILD_PREFS.get(self.build, {}).get(g.get("cat", "atk"), 1.0)
         return int(round(min(100, base * mult)))
 
+    def _score_for(self, g, build):
+        """Score eines Steins für einen BELIEBIGEN Build (Build-übergreifender
+        Vergleich im Held-Tab – findet den Build, zu dem ein Stein gehört)."""
+        base = g["pve"] if self.mode == "pve" else g["pvp"]
+        mult = BUILD_PREFS.get(build, {}).get(g.get("cat", "atk"), 1.0)
+        return int(round(min(100, base * mult)))
+
+    def _best_build_for(self, g):
+        """Der Build, in dem dieser Stein am besten passt -> (build_key, score).
+        Builds ohne prefs (z. B. „Allgemeine Regeln") werden übersprungen."""
+        best, bs = None, -1
+        for b in BUILD_NAMES:
+            if not BUILD_PREFS.get(b):
+                continue
+            s = self._score_for(g, b)
+            if s > bs:
+                best, bs = b, s
+        return best, bs
+
+    def _collect_equipped_gems(self):
+        """Alle dem Tool bekannten AUSGERÜSTETEN Steine: aus den Slot-Scans
+        (self.equipped je Slot) plus dem Schnell-Scan. Dedup nach Anzeigename.
+        -> liste[(gem, herkunfts_label)]."""
+        out, seen = [], set()
+        for slot in SLOT_KEYS:
+            for g, sc in self.equipped.get(slot, []):
+                nm = self._gname(g)
+                if nm in seen:
+                    continue
+                seen.add(nm); out.append((g, self._sname(slot)))
+        for g, conf in self.quick_results:
+            if g.get("auto") and g.get("unknown"):
+                continue
+            nm = self._gname(g)
+            if nm in seen:
+                continue
+            seen.add(nm); out.append((g, self._t("Schnell-Scan", "Quick scan")))
+        return out
+
+    def _reset_detected_equipment(self):
+        """Löscht ALLE erkannten/gescannten Ausrüstungs-Steine (Slot-Scans +
+        Schnell-Scan) -> der Build-Check im Held-Tab startet sauber neu."""
+        self.equipped = {}
+        self.quick_results = []
+        self.quick_unclear = 0
+        self.dbg_quick = ""
+        self.candidate = None
+        self.cand_conf = 0
+        self._render()
+
     # ---------- Capybara-Banner ----------
     @staticmethod
     def _hex(h):
@@ -1623,7 +1709,30 @@ class App:
         self.build = key
         self.cfg["build"] = key; save_config(self.cfg)
         self.build_var.set(self._bname(key))
+        self._recheck_weapon_match()   # bei Build-Wechsel die Waffen-Prüfung aktualisieren
         self._fill_guide(); self._render()
+
+    def _recheck_weapon_match(self):
+        """Aktualisiert die „Waffe gegen Build"-Anzeige bei Build-Wechsel – ohne neuen
+        Screen-Scan (nutzt die zuletzt erkannte Waffe). Behebt: Build wechseln ohne
+        Waffenwechsel löste vorher keine Neuprüfung aus."""
+        det = getattr(self, "_detected_build", None)
+        if not det or det not in BUILD_NAMES:
+            return
+        d = self._bname(det).split("(")[0].strip()
+        s = self._bname(self.build).split("(")[0].strip()
+        if det == self.build:
+            self._weapon_match = "ok"
+            self._weapon_status = self._t("✅ Richtige Waffe — passt zu „%s“.",
+                                          "✅ Correct weapon — matches “%s”.") % d
+        else:
+            self._weapon_match = "mismatch"
+            self._weapon_status = self._t(
+                "⚠️ FALSCHE WAFFE! Ausgerüstet ist eine „%s“-Waffe, aber Build „%s“ gewählt. "
+                "→ Waffe wechseln ODER „Build auf Waffe setzen“.",
+                "⚠️ WRONG WEAPON! A “%s” weapon is equipped, but build “%s” is selected. "
+                "→ Swap the weapon OR use “Set build to weapon”.") % (d, s)
+        self._update_auto_build_label()
 
     def _toggle_lang(self):
         self.lang = "en" if self.lang == "de" else "de"
@@ -2050,12 +2159,10 @@ class App:
         key, score = self._match_weapon(sig)
         if key is not None and key in BUILD_NAMES and score >= AB_THRESHOLD:
             self._weapon_unknown = False
-            self._weapon_status = (self._t("Erkannt: ", "Detected: ") + self._bname(key)
-                                   + "  (%d%%)" % int(max(0.0, min(1.0, score)) * 100))
-            if key != self.build:
-                self._set_build(key)            # ruft _render -> aktualisiert auch das Label
-            else:
-                self._update_auto_build_label()
+            self._detected_build = key
+            # NICHT mehr still den Build überschreiben, sondern PRÜFEN/WARNEN: passt die
+            # ausgerüstete Waffe zum gewählten Build? (Übernahme per „Build auf Waffe setzen".)
+            self._recheck_weapon_match()
         else:
             self._weapon_unknown = True
             self._weapon_status = self._t(
@@ -2081,6 +2188,8 @@ class App:
         self.cfg["weapon_refs"] = self.weapon_refs
         save_config(self.cfg)
         self._weapon_unknown = False
+        self._detected_build = self.build      # gelernte Waffe = aktueller Build -> Vergleich danach möglich
+        self._weapon_match = "ok"
         self._weapon_status = self._t("Gemerkt als: ", "Learned as: ") + self._bname(self.build)
         self._update_auto_build_label()
 
@@ -3081,13 +3190,14 @@ class App:
 
     def _render_hero(self):
         self.lbl_hero_intro.configure(text=self._t(
-            "Ausrüstung gegen deinen Build. Schalte „🤖 Auto-Build\" ein – die Waffe wird erkannt "
-            "und der Build automatisch gesetzt. Darunter siehst du je Ausrüstungs-Slot, welche "
-            "Steine dieser Build will. Die echten Steine prüfst du mit dem ⚡ Schnell- oder "
-            "🔍 Slot-Scanner (Edelsteine laufen separat).",
-            "Equipment vs your build. Turn on “🤖 Auto-Build” – the weapon is detected and the "
-            "build is set automatically. Below, each equipment slot shows what gems this build "
-            "wants. Scan the actual gems with the ⚡ Quick or 🔍 Slot scanner (gems are separate)."))
+            "Ausrüstung gegen deinen Build. Der Build-Check unten vergleicht deine GESCANNTEN "
+            "Steine (aus ⚡ Schnell- oder 🔍 Slot-Scan) mit dem oben gewählten Build und zeigt, "
+            "was NICHT passt. Wechselst du den Build, prüft er sofort neu. „🤖 Auto-Check“ warnt "
+            "zusätzlich, wenn die ausgerüstete Waffe nicht zum Build passt.",
+            "Equipment vs your build. The Build Check below compares your SCANNED gems (from the "
+            "⚡ Quick or 🔍 Slot scan) against the build selected above and shows what does NOT "
+            "fit. Switching the build re-checks instantly. “🤖 Auto-Check” additionally warns if "
+            "the equipped weapon does not match the build."))
         try:
             self.btn_reg_hero.pack_forget()
             self.lbl_prev_hero.pack_forget()
@@ -3108,10 +3218,12 @@ class App:
 
         for x in self.hero_inner.winfo_children():
             x.destroy()
-        tk.Label(self.hero_inner, text=self._t("Ausrüstung für %s · %s", "Equipment for %s · %s")
+        self._hero_build_check()        # 🩺 Vergleich gescannte Ausrüstung gegen Build
+        tk.Label(self.hero_inner, text=self._t("Build-Ziele je Slot · %s · %s",
+                 "Build targets per slot · %s · %s")
                  % (self._bname(self.build), self.mode.upper()), bg=BG, fg=GOLD,
                  font=("Segoe UI", 9, "bold"), anchor="w", justify="left",
-                 wraplength=500).pack(anchor="w", pady=(8, 4))
+                 wraplength=500).pack(anchor="w", pady=(12, 4))
         for de, en, slotkey in EQUIP_SLOTS:
             card = tk.Frame(self.hero_inner, bg=PANEL, highlightbackground=BORDER, highlightthickness=1)
             card.pack(fill="x", pady=3)
@@ -3122,17 +3234,93 @@ class App:
                 tk.Label(card, text=self._t("Build will hier: ", "This build wants: ")
                          + ", ".join("%s (%d%%)" % (n, s) for n, s in tops),
                          bg=PANEL, fg=GREEN, font=("Segoe UI", 8), anchor="w",
-                         wraplength=470, justify="left").pack(anchor="w", padx=12, pady=(1, 7))
+                         wraplength=470, justify="left").pack(anchor="w", padx=12, pady=(1, 3))
             else:
                 tk.Label(card, text=self._t("(keine Slot-Daten)", "(no slot data)"), bg=PANEL,
-                         fg=DIM, font=("Segoe UI", 8), anchor="w").pack(anchor="w", padx=12, pady=(1, 7))
+                         fg=DIM, font=("Segoe UI", 8), anchor="w").pack(anchor="w", padx=12, pady=(1, 3))
+            have = self.equipped.get(slotkey, [])
+            if have:
+                parts = []
+                for g, _sc in have:
+                    sc = self._score(g)
+                    mk = "✅" if sc >= 55 else "⚠️"
+                    parts.append("%s %s (%d%%)" % (mk, self._gname(g), sc))
+                tk.Label(card, text=self._t("Du hast hier: ", "You have here: ") + ", ".join(parts),
+                         bg=PANEL, fg=TEXT, font=("Segoe UI", 8), anchor="w",
+                         wraplength=470, justify="left").pack(anchor="w", padx=12, pady=(0, 7))
+            else:
+                tk.Label(card, text=self._t("Du hast hier: — (noch nicht gescannt)",
+                         "You have here: — (not scanned yet)"), bg=PANEL, fg=DIM,
+                         font=("Segoe UI", 8), anchor="w").pack(anchor="w", padx=12, pady=(0, 7))
         tk.Label(self.hero_inner, text=self._t(
-            "Ring 1/2 und Halskette 1/2 teilen sich denselben Stein-Pool. Die echten Steine in "
-            "deinen Teilen liest der ⚡ Schnell- oder 🔍 Slot-Scanner – hier siehst du nur das "
-            "Build-Ziel je Slot.",
-            "Ring 1/2 and Necklace 1/2 share the same gem pool. The actual gems in your items are "
-            "read by the ⚡ Quick or 🔍 Slot scanner – this only shows the build target per slot."),
+            "Ring 1/2 und Halskette 1/2 teilen sich denselben Stein-Pool. „Du hast hier“ zeigt die "
+            "im 🔍 Slot-Scanner erfassten Steine dieses Pools. Steine aus dem ⚡ Schnell-Scan "
+            "fließen oben in den Build-Check ein.",
+            "Ring 1/2 and Necklace 1/2 share the same gem pool. “You have here” shows the gems of "
+            "that pool captured in the 🔍 Slot scanner. Gems from the ⚡ Quick scan feed the Build "
+            "Check above."),
             bg=BG, fg=DIM, font=("Segoe UI", 8), wraplength=500, justify="left").pack(anchor="w", pady=(8, 4))
+
+    def _hero_build_check(self):
+        """🩺 Vergleicht die GESCANNTEN ausgerüsteten Steine mit dem gewählten Build und
+        zeigt, was nicht passt (inkl. „gehört zu Build X"). Reset-Knopf inklusive."""
+        gems = self._collect_equipped_gems()
+        fit, weak, wrong = [], [], []
+        for g, src in gems:
+            sc = self._score(g)
+            bestb, bs = self._best_build_for(g)
+            if sc >= 55:
+                fit.append((g, src, sc))
+            elif bestb and bestb != self.build and bs - sc >= 18:
+                wrong.append((g, src, sc, bestb, bs))
+            else:
+                weak.append((g, src, sc))
+        bcol = RED if wrong else (AMBER if weak else GREEN)
+        panel = tk.Frame(self.hero_inner, bg=PANEL2, highlightbackground=bcol, highlightthickness=2)
+        panel.pack(fill="x", pady=(8, 2))
+        tk.Label(panel, text=self._t("🩺 Build-Check — %s · %s", "🩺 Build Check — %s · %s")
+                 % (self._bname(self.build).split("(")[0].strip(), self.mode.upper()),
+                 bg=PANEL2, fg=GOLD, font=("Segoe UI", 10, "bold"), anchor="w",
+                 wraplength=480, justify="left").pack(anchor="w", padx=12, pady=(8, 2))
+        if not gems:
+            tk.Label(panel, text=self._t(
+                "Noch keine Steine erkannt. Scanne deine ausgerüsteten Steine mit dem "
+                "⚡ Schnell-Scan (alle auf einmal) oder dem 🔍 Slot-Scanner – dann zeigt der "
+                "Build-Check hier sofort, welche Steine NICHT zu „%s“ passen.",
+                "No gems detected yet. Scan your equipped gems with the ⚡ Quick scan (all at "
+                "once) or the 🔍 Slot scanner – the Build Check then instantly shows which gems "
+                "do NOT fit “%s”.") % self._bname(self.build).split("(")[0].strip(),
+                bg=PANEL2, fg=TEXT, font=("Segoe UI", 9), anchor="w",
+                wraplength=470, justify="left").pack(anchor="w", padx=12, pady=(0, 10))
+            return
+        short = self._bname(self.build).split("(")[0].strip()
+        tk.Label(panel, text=self._t(
+            "✅ %d passen   ·   ❌ %d gehören zu anderem Build   ·   • %d schwach",
+            "✅ %d fit   ·   ❌ %d belong to another build   ·   • %d weak")
+            % (len(fit), len(wrong), len(weak)), bg=PANEL2, fg=TEXT,
+            font=("Segoe UI", 9, "bold"), anchor="w").pack(anchor="w", padx=12, pady=(0, 4))
+        for g, src, sc, bestb, bs in sorted(wrong, key=lambda x: x[2]):
+            bshort = self._bname(bestb).split("(")[0].strip()
+            tk.Label(panel, text="❌ %s — %s" % (self._gname(g), self._t(
+                "nur %d%% für %s · gehört zu %s (%d%%)",
+                "only %d%% for %s · belongs to %s (%d%%)") % (sc, short, bshort, bs)),
+                bg=PANEL2, fg=RED, font=("Segoe UI", 8), anchor="w",
+                wraplength=470, justify="left").pack(anchor="w", padx=(18, 8))
+        for g, src, sc in sorted(weak, key=lambda x: x[2]):
+            tk.Label(panel, text="• %s — %s" % (self._gname(g), self._t(
+                "%d%% · schwach für %s", "%d%% · weak for %s") % (sc, short)),
+                bg=PANEL2, fg=AMBER, font=("Segoe UI", 8), anchor="w",
+                wraplength=470, justify="left").pack(anchor="w", padx=(18, 8))
+        if not wrong and not weak:
+            tk.Label(panel, text=self._t(
+                "✅ Alle erkannten Steine passen zu diesem Build.",
+                "✅ All detected gems fit this build."), bg=PANEL2, fg=GREEN,
+                font=("Segoe UI", 8), anchor="w", wraplength=470,
+                justify="left").pack(anchor="w", padx=(18, 8))
+        tk.Button(panel, text=self._t("↺ Erkannte Ausrüstung zurücksetzen (%d)",
+                  "↺ Reset detected equipment (%d)") % len(gems),
+                  command=self._reset_detected_equipment, bg=PANEL, fg=DIM, relief="flat",
+                  bd=0, font=("Segoe UI", 8), padx=8, pady=4).pack(anchor="w", padx=12, pady=(6, 9))
 
     def _hero_note(self):
         tk.Label(self.hero_inner, text=self._t(

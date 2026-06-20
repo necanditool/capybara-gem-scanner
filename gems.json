@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "version": 44,
+    "version": 45,
     "note": "Community-Einschätzungen (meowdb Gem-Liste Juni 2026 – komplette Liste mit 986 Steinen / 199 Effekt-Familien, NiaMeowDB, game-vault Wiki). Keine offiziellen Spielwerte. Frei erweiterbar. pve/pvp 0-100. cat = Kategorie (für Build-Anpassung). match = Suchphrasen DE+EN. Tier-Mapping: SS=100,S=92,A=80,B=62,C=46,D=28,F=12.",
     "cats": [
       "final",
@@ -939,6 +939,10 @@
         "kontrollimmunitatsrate",
         "kontrollimmunitat rate",
         "control immunity rate"
+      ],
+      "not": [
+        "ignorieren",
+        "ignore"
       ]
     },
     {
@@ -1070,7 +1074,9 @@
       "note_en": "PvP-only gem – breaks enemy control immunity.",
       "match": [
         "kontrollimmunitat ignorieren",
-        "ignore control immunity"
+        "ignore control immunity",
+        "kontrollimmunitatsrate ignorieren",
+        "control immunity rate"
       ]
     },
     {
@@ -1888,6 +1894,10 @@
       "match": [
         "kontrollimmunitatsrate",
         "control immunity rate"
+      ],
+      "not": [
+        "ignorieren",
+        "ignore"
       ]
     },
     {
@@ -1901,7 +1911,9 @@
       "note_en": "PvP-only gem.",
       "match": [
         "kontrollimmunitat ignorieren",
-        "ignore control immunity"
+        "ignore control immunity",
+        "kontrollimmunitatsrate ignorieren",
+        "control immunity rate"
       ]
     },
     {

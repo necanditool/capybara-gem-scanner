@@ -1,5 +1,5 @@
 =========================================================
-  Capybara Gem Scanner  -  Community Edition (v44)
+  Capybara Gem Scanner  -  Community Edition (v45)
   PATCHNOTES  (English)
 =========================================================
 
@@ -16,8 +16,8 @@ HOW TO USE (short)
     build and shows the Build Doctor on top (Keep / Swap).
   - Slot: pick PvE/PvP and the slot, set two regions (Equipped on the right,
     Selection on the left), select a gem, press "Scan & compare" -> verdict.
-  - Hero: set the region once (the whole game screen is fine), then scan
-    equipped + reserve heroes -> comparison + swap suggestion.
+  - Hero: shows your equipment vs the build. The Build Check compares your
+    scanned gems against the build and flags whatever does NOT fit.
   - Skills: mark the offered skills, press "Check skills" -> the tool tells
     you per build which to LEARN and which to AVOID.
   - Loadout: all slots at a glance. Guide: full build specs.
@@ -39,6 +39,21 @@ HOW TO USE (short)
 =========================================================
   WHAT'S NEW
 =========================================================
+
+v45 (Hero: real Build Check + gem mix-up fixed):
+  - The Hero tab now compares your SCANNED gems (from the Quick or Slot scan)
+    against the selected build and clearly shows what does NOT fit - including
+    "belongs to build X". Example: a Rage Dagger on Nashir/Lightning-staff is
+    flagged red (belongs to Skysplitter). Switching the build re-checks instantly.
+  - Per slot it now shows "This build wants" (target) AND "You have here" (your
+    scanned gems) with a tick/warning per gem.
+  - New button "Reset detected equipment" clears all scanned gems.
+  - Auto-Check no longer silently switches the build; it WARNS on a wrong weapon.
+  - Fix: "Control Immunity Rate +X%" was confused with "Control Immunity Rate
+    IGNORE +X%" (wrongly shown as "already equipped"). A new exclusion mechanism
+    now cleanly separates gems whose names share a prefix.
+  TIP: capture gems first with the Quick scan (all at once), then switch the
+  build in the Hero tab - the Build Check instantly shows the mismatches.
 
 v44 (Hero: weapon-vs-build check):
   - Auto-Check now WARNS when your equipped weapon does not match the selected
