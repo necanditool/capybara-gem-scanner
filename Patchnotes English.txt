@@ -1,5 +1,5 @@
 =========================================================
-  Capybara Gem Scanner  -  Community Edition (v43)
+  Capybara Gem Scanner  -  Community Edition (v44)
   PATCHNOTES  (English)
 =========================================================
 
@@ -39,6 +39,15 @@ HOW TO USE (short)
 =========================================================
   WHAT'S NEW
 =========================================================
+
+v44 (Hero: weapon-vs-build check):
+  - Auto-Check now WARNS when your equipped weapon does not match the selected
+    build (e.g. a bow equipped but a staff build chosen).
+  - New "Set build to weapon" (adopt detected weapon) and "Reset recognition"
+    (clear learned weapons) buttons.
+  - It no longer auto-overrides the build; your selected build stays and is checked.
+  TIP: first time per weapon, pick the correct build and press "Learn current
+  weapon" - after that the tool warns reliably when the weapon is wrong.
 
 v43 (Hero tab = equipment view):
   - The Hero tab now shows your EQUIPMENT vs the build, with real slots:

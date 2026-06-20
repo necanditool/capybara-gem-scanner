@@ -1,5 +1,5 @@
 =========================================================
-  Capybara Gem Scanner  -  Community Edition (v43)
+  Capybara Gem Scanner  -  Community Edition (v44)
   PATCHNOTES  (Deutsch)
 =========================================================
 
@@ -40,6 +40,15 @@ BEDIENUNG (kurz)
 =========================================================
   WAS IST NEU
 =========================================================
+
+v44 (Held: Waffe-gegen-Build-Check):
+  - Auto-Check WARNT jetzt, wenn die ausgeruestete Waffe nicht zum gewaehlten
+    Build passt (z. B. Bogen ausgeruestet, aber Stab-Build gewaehlt).
+  - Neue Knoepfe "Build auf Waffe setzen" (erkannte Waffe uebernehmen) und
+    "Erkennung zuruecksetzen" (gelernte Waffen loeschen).
+  - Der Build wird nicht mehr automatisch umgesetzt; deine Wahl bleibt + wird geprueft.
+  TIPP: beim 1. Mal je Waffe richtigen Build waehlen + "Aktuelle Waffe merken" -
+  danach warnt das Tool zuverlaessig, wenn die Waffe falsch ist.
 
 v43 (Held-Tab = Ausruestungs-Ansicht):
   - Der Held-Tab zeigt jetzt deine AUSRUESTUNG gegen den Build, mit echten Slots:

@@ -2,11 +2,17 @@
 # -*- coding: utf-8 -*-
 """
 ================================================================================
- Capybara Gem Scanner  ·  Capybara Go            (v43 – Community Edition)
+ Capybara Gem Scanner  ·  Capybara Go            (v44 – Community Edition)
 ================================================================================
  Erkennt ausgerüstete + angewählte Edelsteine vom Bildschirm und bewertet sie
  für den jeweiligen Build. / Reads equipped + selected gems from screen and
  rates them for the chosen build.
+
+ Features (v44 – Held: Waffen-Check gegen Build):
+  • Auto-Check warnt jetzt, wenn die ausgerüstete Waffe NICHT zum gewählten Build
+    passt (z. B. Bogen ausgerüstet, aber Stab-Build gewählt). „→ Build auf Waffe
+    setzen" übernimmt die erkannte Waffe; „↺ Erkennung zurücksetzen" löscht
+    gelernte Waffen. Setzt den Build nicht mehr automatisch um.
 
  Features (v43 – Held = Ausrüstungs-Ansicht):
   • Der Held-Tab zeigt jetzt die Ausrüstung gegen den Build: echte Slots
@@ -1186,6 +1192,8 @@ class App:
         self._ab_prev = self._ab_scanned = None
         self._weapon_unknown = False
         self._weapon_status = ""
+        self._detected_build = None
+        self._weapon_match = ""
 
         root.title("Capybara Gem Scanner")
         root.configure(bg=BG)
@@ -1583,9 +1591,16 @@ class App:
                                              activeforeground=GREEN, font=("Segoe UI", 9, "bold"), bd=0,
                                              highlightthickness=0)
         self.chk_auto_build.pack(anchor="w", padx=6, pady=(4, 0))
-        self.btn_learn_weapon = tk.Button(ab, command=self._learn_current_weapon, bg=PANEL2, fg=GOLD,
+        abr2 = tk.Frame(ab, bg=PANEL); abr2.pack(anchor="w", fill="x", padx=8, pady=(2, 0))
+        self.btn_learn_weapon = tk.Button(abr2, command=self._learn_current_weapon, bg=PANEL2, fg=GOLD,
                                           relief="flat", bd=0, font=("Segoe UI", 8, "bold"), padx=8, pady=4)
-        self.btn_learn_weapon.pack(anchor="w", padx=8, pady=(2, 0))
+        self.btn_learn_weapon.pack(side="left")
+        self.btn_adopt_build = tk.Button(abr2, command=self._adopt_detected_build, bg=PANEL2, fg=TEXT,
+                                         relief="flat", bd=0, font=("Segoe UI", 8), padx=8, pady=4)
+        self.btn_adopt_build.pack(side="left", padx=(6, 0))
+        self.btn_reset_weapon = tk.Button(abr2, command=self._reset_weapon_recognition, bg=PANEL2, fg=DIM,
+                                          relief="flat", bd=0, font=("Segoe UI", 8), padx=8, pady=4)
+        self.btn_reset_weapon.pack(side="left", padx=(6, 0))
         self.lbl_auto_build = tk.Label(ab, text="", bg=PANEL, fg=DIM, font=("Segoe UI", 8), anchor="w",
                                        justify="left", wraplength=500)
         self.lbl_auto_build.pack(fill="x", padx=8, pady=(2, 7))
@@ -2069,17 +2084,46 @@ class App:
         self._weapon_status = self._t("Gemerkt als: ", "Learned as: ") + self._bname(self.build)
         self._update_auto_build_label()
 
+    def _adopt_detected_build(self):
+        """Setzt den Build auf die erkannte Waffe (Ein-Klick-Übernahme auf Wunsch)."""
+        if self._detected_build and self._detected_build in BUILD_NAMES:
+            self._set_build(self._detected_build)
+            self._weapon_match = "ok"
+            self._weapon_status = self._t("Build auf erkannte Waffe gesetzt: ",
+                                          "Build set to detected weapon: ") \
+                + self._bname(self._detected_build).split("(")[0].strip()
+            self._update_auto_build_label()
+        else:
+            messagebox.showinfo(self._t("Keine Waffe erkannt", "No weapon detected"), self._t(
+                "Es wurde noch keine bekannte Waffe erkannt. Erst eine Waffe „merken“.",
+                "No known weapon detected yet. Learn a weapon first."))
+
+    def _reset_weapon_recognition(self):
+        """Setzt die Waffen-Erkennung zurück (löscht die gelernten Waffen)."""
+        self.weapon_refs = {}
+        self.cfg["weapon_refs"] = {}
+        save_config(self.cfg)
+        self._detected_build = None
+        self._weapon_unknown = False
+        self._weapon_match = ""
+        self._weapon_status = self._t("Erkennung zurückgesetzt — gelernte Waffen gelöscht.",
+                                      "Recognition reset — learned weapons cleared.")
+        self._update_auto_build_label()
+
     def _update_auto_build_label(self):
         try:
             if self._weapon_status:
-                self.lbl_auto_build.configure(
-                    text=self._weapon_status, fg=(AMBER if self._weapon_unknown else GREEN))
+                col = {"ok": GREEN, "mismatch": AMBER, "unknown": AMBER}.get(
+                    getattr(self, "_weapon_match", ""), GREEN)
+                self.lbl_auto_build.configure(text=self._weapon_status, fg=col)
             else:
                 self.lbl_auto_build.configure(fg=DIM, text=self._t(
-                    "1) Waffenfeld festlegen (oder BlueStacks finden)  2) Auto-Build an  → der Build "
-                    "wird automatisch erkannt. Unbekannte Waffe? Build oben wählen + merken.",
-                    "1) Set the weapon area (or Find BlueStacks)  2) turn on Auto-Build  → the build "
-                    "is detected automatically. Unknown weapon? Pick the build above + learn."))
+                    "So geht's: 1) Waffenfeld festlegen (oder BlueStacks finden)  2) „Auto-Check“ an. "
+                    "Das Tool prüft, ob die ausgerüstete Waffe zum gewählten Build passt. Beim 1. Mal "
+                    "je Waffe: richtigen Build wählen + „merken“.",
+                    "How to: 1) set the weapon area (or Find BlueStacks)  2) turn on “Auto-Check”. "
+                    "The tool checks whether your equipped weapon matches the selected build. First time "
+                    "per weapon: pick the correct build + “learn”."))
         except Exception:
             pass
 
@@ -3049,15 +3093,17 @@ class App:
             self.lbl_prev_hero.pack_forget()
         except Exception:
             pass
-        # ---- Auto-Build-Bereich (Texte je Sprache) ----
-        self.lbl_ab_title.configure(text=self._t("🤖 Auto-Build (Waffe → Build)",
-                                                 "🤖 Auto-Build (weapon → build)"))
+        # ---- Auto-Check-Bereich (Texte je Sprache) ----
+        self.lbl_ab_title.configure(text=self._t("🤖 Auto-Check (Waffe ↔ Build)",
+                                                 "🤖 Auto-Check (weapon ↔ build)"))
         self.btn_reg_weapon.configure(fg=GREEN if self.region_weapon else TEXT, text=self._t(
             "🎯 Waffenfeld festlegen", "🎯 Set weapon area") + ("   ✓" if self.region_weapon else ""))
         self.btn_bluestacks.configure(text=self._t("🔎 BlueStacks finden", "🔎 Find BlueStacks"))
-        self.chk_auto_build.configure(text=self._t("🔁 Auto-Build (Build automatisch erkennen)",
-                                                  "🔁 Auto-Build (detect build automatically)"))
+        self.chk_auto_build.configure(text=self._t("🔁 Auto-Check (Waffe gegen Build prüfen)",
+                                                  "🔁 Auto-Check (check weapon against build)"))
         self.btn_learn_weapon.configure(text=self._t("✚ Aktuelle Waffe merken", "✚ Learn current weapon"))
+        self.btn_adopt_build.configure(text=self._t("→ Build auf Waffe setzen", "→ Set build to weapon"))
+        self.btn_reset_weapon.configure(text=self._t("↺ Erkennung zurücksetzen", "↺ Reset recognition"))
         self._update_auto_build_label()
 
         for x in self.hero_inner.winfo_children():

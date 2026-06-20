@@ -1,6 +1,11 @@
-# 💎 Capybara Gem Scanner — Community Edition (v43)
+# 💎 Capybara Gem Scanner — Community Edition (v44)
 
 **Deutsch unten / German below.**
+
+## New in v44 — Hero: weapon-vs-build check
+- **Auto-Check now warns when your equipped weapon doesn't match the selected build** (e.g. a bow
+  equipped but a staff build selected). **"→ Set build to weapon"** adopts the detected weapon;
+  **"↺ Reset recognition"** clears learned weapons. It no longer auto-overrides the build.
 
 ## New in v43 — Hero tab is now an equipment view
 - The **Hero tab shows your equipment vs the build**: real slots (**Main weapon · Armor · Ring 1/2 ·
@@ -298,7 +303,13 @@ Bundled open-source components: see `THIRD-PARTY-LICENSES.txt`. Full text: `DISC
 
 ---
 
-# 💎 Capybara Gem Scanner — Community Edition (v43)  [Deutsch]
+# 💎 Capybara Gem Scanner — Community Edition (v44)  [Deutsch]
+
+## Neu in v44 — Held: Waffe-gegen-Build-Check
+- **Auto-Check warnt jetzt, wenn die ausgerüstete Waffe nicht zum gewählten Build passt** (z. B.
+  Bogen ausgerüstet, aber Stab-Build gewählt). **„→ Build auf Waffe setzen"** übernimmt die erkannte
+  Waffe; **„↺ Erkennung zurücksetzen"** löscht gelernte Waffen. Der Build wird nicht mehr automatisch
+  umgesetzt.
 
 ## Neu in v43 — Held-Tab ist jetzt eine Ausrüstungs-Ansicht
 - Der **Held-Tab zeigt deine Ausrüstung gegen den Build**: echte Slots (**Hauptwaffe · Rüstung ·
