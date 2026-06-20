@@ -1,5 +1,5 @@
 =========================================================
-  Capybara Gem Scanner  -  Community Edition (v45)
+  Capybara Gem Scanner  -  Community Edition (v46)
   PATCHNOTES  (English)
 =========================================================
 
@@ -39,6 +39,18 @@ HOW TO USE (short)
 =========================================================
   WHAT'S NEW
 =========================================================
+
+v46 (functionality & UI expansion):
+  - REAL +X% VALUES: the scanner now reads the percentage too. In the Slot scan,
+    for the same effect it now says "same effect but HIGHER -> swap". Values also
+    show in the Quick list and under "You have here" in the Hero tab.
+  - HERO TAB: own "Scan gems now" button (Build Check without switching tabs) and
+    "Your gems fit best: build X" (data-driven, more robust than weapon-icon).
+  - ONLINE UPDATE: one-click "Official DB from GitHub" fills the gems/builds/skills
+    URLs -> community updates without re-downloading.
+  - UI: responsive text wrap (uses large windows), status bar at the bottom
+    (regions / auto-scan / last scan), button tooltips, "Help" button with a
+    getting-started guide (also on first start).
 
 v45 (Hero: real Build Check + gem mix-up fixed):
   - The Hero tab now compares your SCANNED gems (from the Quick or Slot scan)

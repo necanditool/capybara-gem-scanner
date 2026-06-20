@@ -1,5 +1,5 @@
 =========================================================
-  Capybara Gem Scanner  -  Community Edition (v45)
+  Capybara Gem Scanner  -  Community Edition (v46)
   PATCHNOTES  (Deutsch)
 =========================================================
 
@@ -40,6 +40,19 @@ BEDIENUNG (kurz)
 =========================================================
   WAS IST NEU
 =========================================================
+
+v46 (Funktions- & Oberflaechen-Ausbau):
+  - ECHTE +X%-WERTE: der Scanner liest jetzt die Prozentzahl mit. Beim Slot-Scan
+    heisst es bei gleichem Effekt nun "gleicher Effekt, aber HOEHER -> tauschen".
+    Werte stehen auch in der Schnell-Liste und beim "Du hast hier" im Held-Tab.
+  - HELD-TAB: eigener Knopf "Steine jetzt scannen" (Build-Check ohne Tab-Wechsel)
+    und "Deine Steine passen am besten zu Build X" (datengetrieben, robuster als
+    die Waffen-Icon-Erkennung).
+  - ONLINE-UPDATE: ein Klick "Offizielle DB von GitHub" traegt die URLs fuer
+    gems/builds/skills ein -> Community-Updates ohne Neu-Download.
+  - OBERFLAECHE: responsiver Textumbruch (nutzt grosse Fenster aus), Statuszeile
+    unten (gesetzte Regionen / Auto-Scan / letzter Scan), Tooltips an den Knoepfen,
+    "Hilfe"-Knopf oben mit Erste-Schritte-Anleitung (auch beim 1. Start).
 
 v45 (Held: echter Build-Check + Stein-Verwechslung behoben):
   - Der Held-Tab vergleicht jetzt deine GESCANNTEN Steine (aus Schnell- oder

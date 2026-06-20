@@ -1,6 +1,17 @@
-# 💎 Capybara Gem Scanner — Community Edition (v45)
+# 💎 Capybara Gem Scanner — Community Edition (v46)
 
 **Deutsch unten / German below.**
+
+## New in v46 — functionality & UI expansion
+- **Real +X% values:** the scanner now reads the percentage. For the *same* effect the Slot scan now
+  says *"same effect but HIGHER → swap"*; values also show in the Quick list and under "You have here".
+- **Hero tab:** a dedicated **"🔍 Scan gems now"** button (Build Check without switching tabs) and
+  **"🧭 Your gems fit best: build X"** (data-driven, more robust than weapon-icon detection).
+- **Online update:** one-click **"⬇ Official DB from GitHub"** fills the gems/builds/skills URLs →
+  community DB updates without re-downloading the tool.
+- **UI:** responsive text wrap (uses large windows), a **status bar** at the bottom (regions /
+  auto-scan / last scan), **tooltips** on buttons, and a **"❓ Help"** button with a getting-started
+  guide (also shown on first start).
 
 ## New in v45 — Hero: real Build Check + gem mix-up fixed
 - **The Hero tab now compares your scanned gems against the selected build** and clearly shows what
@@ -314,7 +325,19 @@ Bundled open-source components: see `THIRD-PARTY-LICENSES.txt`. Full text: `DISC
 
 ---
 
-# 💎 Capybara Gem Scanner — Community Edition (v45)  [Deutsch]
+# 💎 Capybara Gem Scanner — Community Edition (v46)  [Deutsch]
+
+## Neu in v46 — Funktions- & Oberflächen-Ausbau
+- **Echte +X%-Werte:** der Scanner liest jetzt die Prozentzahl mit. Bei *gleichem* Effekt sagt der
+  Slot-Scan nun *„gleicher Effekt, aber HÖHER → tauschen"*; Werte stehen auch in der Schnell-Liste
+  und unter „Du hast hier".
+- **Held-Tab:** eigener **„🔍 Steine jetzt scannen"**-Knopf (Build-Check ohne Tab-Wechsel) und
+  **„🧭 Deine Steine passen am besten zu Build X"** (datengetrieben, robuster als die Waffen-Icon-Erkennung).
+- **Online-Update:** ein Klick **„⬇ Offizielle DB von GitHub"** trägt die URLs für gems/builds/skills
+  ein → Community-Updates ohne Neu-Download.
+- **Oberfläche:** responsiver Textumbruch (nutzt große Fenster), **Statuszeile** unten (Regionen /
+  Auto-Scan / letzter Scan), **Tooltips** an den Knöpfen und ein **„❓ Hilfe"**-Knopf mit
+  Erste-Schritte-Anleitung (auch beim 1. Start).
 
 ## Neu in v45 — Held: echter Build-Check + Stein-Verwechslung behoben
 - **Der Held-Tab vergleicht jetzt deine gescannten Steine mit dem gewählten Build** und zeigt klar,

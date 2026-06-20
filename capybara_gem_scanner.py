@@ -2,11 +2,22 @@
 # -*- coding: utf-8 -*-
 """
 ================================================================================
- Capybara Gem Scanner  ·  Capybara Go            (v45 – Community Edition)
+ Capybara Gem Scanner  ·  Capybara Go            (v46 – Community Edition)
 ================================================================================
  Erkennt ausgerüstete + angewählte Edelsteine vom Bildschirm und bewertet sie
  für den jeweiligen Build. / Reads equipped + selected gems from screen and
  rates them for the chosen build.
+
+ Features (v46 – Funktions- & Oberflächen-Ausbau):
+  • Echte +X%-WERTE: der Scanner liest jetzt die Prozentzahl mit. Gleiche Steine
+    werden nach Höhe verglichen (Slot: „gleicher Effekt, aber höher → tauschen").
+  • Held-Tab hat einen eigenen „🔍 Steine jetzt scannen"-Knopf (Build-Check ohne
+    Tab-Wechsel) und zeigt „🧭 Deine Steine passen am besten zu Build X".
+  • Online-Update: Ein-Klick „⬇ Offizielle DB von GitHub" (gems/builds/skills),
+    URLs vorbelegt.
+  • Oberfläche: responsiver Textumbruch (nutzt große Fenster), Statuszeile unten
+    (Regionen/Auto-Scan/letzter Scan), Tooltips an den Knöpfen, „❓ Hilfe"-Knopf
+    mit Erste-Schritte-Anleitung beim 1. Start.
 
  Features (v45 – Held: echter Build-Check + Stein-Verwechslung behoben):
   • Der Held-Tab vergleicht jetzt deine GESCANNTEN Steine (Schnell-/Slot-Scan)
@@ -358,6 +369,8 @@ DEFAULT_FREE = {"Weapon": 0, "Armor": 0, "Ring": 0, "Accessory": 0}  # freie (le
 IDEAL_SHOW = 4  # wie viele "ideale" Steine pro Slot angezeigt werden
 DETECT_THRESHOLD = 70
 AB_THRESHOLD = 0.80   # Mindest-Ähnlichkeit (0-1) für sichere Waffen->Build-Erkennung
+# Offizielles Community-Repo (GitHub) für das Ein-Klick-Online-Update der DB.
+GITHUB_RAW_BASE = "https://raw.githubusercontent.com/necanditool/capybara-gem-scanner/main/"
 CATS = GEMS.get("_meta", {}).get("cats") or [
     "final", "rage", "dagger", "combo", "crit", "atk", "survival", "control",
     "pvp_ignore", "defensive", "coef_other", "conditional", "utility", "swordchi"]
@@ -382,6 +395,33 @@ def _norm(s):
     s = re.sub(r"[^a-z0-9 ]", " ", s)
     s = re.sub(r"\s+", " ", s).strip()
     return s
+
+
+_VAL_PCT = re.compile(r"([0-9]+(?:[.,][0-9]+)?)\s*%")
+_VAL_PLUS = re.compile(r"\+\s*([0-9]+(?:[.,][0-9]+)?)\b")
+
+
+def _parse_value(text):
+    """Liest den HAUPT-Zahlenwert eines Effekt-Textes aus dem ROH-Text (mit %/+):
+    '+12%' -> (12.0, '12%'), 'Kombo-Anzahl +1' -> (1.0, '+1'). Für den Vergleich
+    GLEICHER Steine nach tatsächlicher Höhe. -> (zahl|None, anzeige|None)."""
+    if not text:
+        return None, None
+    m = _VAL_PCT.search(text)
+    if m:
+        try:
+            num = float(m.group(1).replace(",", "."))
+            return num, ("%g%%" % num)
+        except Exception:
+            return None, None
+    m = _VAL_PLUS.search(text)
+    if m:
+        try:
+            num = float(m.group(1).replace(",", "."))
+            return num, ("+%g" % num)
+        except Exception:
+            return None, None
+    return None, None
 
 
 # Generische Wörter, die KEIN Stein eindeutig machen (gemeinsame Endungen/Füllwörter).
@@ -672,12 +712,15 @@ def detect_equipped(items, slot):
     found = {}
     for ln in lines:
         g, sc = best_match(ln, slot)
+        num, ds = _parse_value(ln)
         if g and sc >= 80:   # streng (wie Schnell-Scan/Kandidat) – verhindert Fuzzy-Fehltreffer
             key = g["de"]
             if key not in found or sc > found[key][1]:
-                found[key] = (g, sc)
+                gem = dict(g); gem["auto"] = False; gem["unknown"] = False
+                gem["val"], gem["valstr"] = num, ds
+                found[key] = (gem, sc)
         elif len(_norm(ln)) >= 6:
-            ag = _auto_gem(ln)
+            ag = _auto_gem(ln); ag["val"], ag["valstr"] = num, ds
             if not ag["unknown"]:
                 found.setdefault(ag["de"], (ag, 72))
     for g in GEMS.get(slot, []):
@@ -688,7 +731,8 @@ def detect_equipped(items, slot):
         for ph in g.get("match", []):
             p = _norm(ph).replace(" ", "")
             if len(p) >= 7 and p in nblob:
-                found[g["de"]] = (g, 90)
+                gem = dict(g); gem["auto"] = False; gem["unknown"] = False
+                found[g["de"]] = (gem, 90)
                 break
     if card_de:                      # Eigenschaft des angewählten Steins entfernen
         found.pop(card_de, None)
@@ -704,10 +748,13 @@ def detect_candidate(items, slot):
         sc, spec = gem_score_detail(g, attr)
         if (sc, spec) > (bs, bspec):
             best, bs, bspec = g, sc, spec
+    num, ds = _parse_value(attr)
     if best and bs >= 80:
         gem = dict(best); gem["auto"] = False; gem["unknown"] = False
+        gem["val"], gem["valstr"] = num, ds
         return gem, bs, blob
-    return _auto_gem(attr), bs, blob
+    ag = _auto_gem(attr); ag["val"], ag["valstr"] = num, ds
+    return ag, bs, blob
 
 
 def top_matches(text, slot, lang, k=4):
@@ -742,13 +789,15 @@ def detect_quick(items):
         if len(_norm(ln)) < 6:
             continue
         g, sc = best_match_any(ln)
+        num, ds = _parse_value(ln)
         if g and sc >= 80:
             gem = dict(g); gem["auto"] = False; gem["unknown"] = False
+            gem["val"], gem["valstr"] = num, ds
             key = gem["de"]
             if key not in found or sc > found[key][1]:
                 found[key] = (gem, sc)
         else:
-            ag = _auto_gem(ln)
+            ag = _auto_gem(ln); ag["val"], ag["valstr"] = num, ds
             if not ag["unknown"]:
                 found.setdefault(ag["de"], (ag, 72))
             else:
@@ -1166,6 +1215,62 @@ def _find_window_rect(name_substrings):
         return None
 
 
+class Tooltip:
+    """Leichter Tooltip: zeigt beim Überfahren eines Widgets einen kleinen Hinweis.
+    `text_func` liefert den Text sprachabhängig (wird bei jedem Einblenden neu geholt)."""
+    def __init__(self, widget, text_func):
+        self.widget = widget
+        self.text_func = text_func
+        self.tip = None
+        self._after = None
+        widget.bind("<Enter>", self._schedule, add="+")
+        widget.bind("<Leave>", self._hide, add="+")
+        widget.bind("<ButtonPress>", self._hide, add="+")
+
+    def _schedule(self, _e=None):
+        self._cancel()
+        self._after = self.widget.after(450, self._show)
+
+    def _cancel(self):
+        if self._after:
+            try:
+                self.widget.after_cancel(self._after)
+            except Exception:
+                pass
+            self._after = None
+
+    def _show(self):
+        if self.tip or not self.widget.winfo_exists():
+            return
+        try:
+            txt = self.text_func()
+        except Exception:
+            txt = ""
+        if not txt:
+            return
+        x = self.widget.winfo_rootx() + 14
+        y = self.widget.winfo_rooty() + self.widget.winfo_height() + 6
+        self.tip = tw = tk.Toplevel(self.widget)
+        tw.wm_overrideredirect(True)
+        tw.wm_geometry("+%d+%d" % (x, y))
+        try:
+            tw.attributes("-topmost", True)
+        except Exception:
+            pass
+        tk.Label(tw, text=txt, bg="#1b2330", fg="#eaf2fb", font=("Segoe UI", 8),
+                 justify="left", wraplength=300, padx=8, pady=5,
+                 relief="solid", bd=1).pack()
+
+    def _hide(self, _e=None):
+        self._cancel()
+        if self.tip:
+            try:
+                self.tip.destroy()
+            except Exception:
+                pass
+            self.tip = None
+
+
 # ================================================================== #
 #  APP                                                               #
 # ================================================================== #
@@ -1230,6 +1335,9 @@ class App:
         self._weapon_status = ""
         self._detected_build = None
         self._weapon_match = ""
+        self._last_scan_txt = ""       # Statuszeile: letzter Scan (Art + Trefferzahl)
+        self._last_w = 0               # für responsiven Textumbruch (Resize-Drossel)
+        self._reflow_after = None
 
         root.title("Capybara Gem Scanner")
         root.configure(bg=BG)
@@ -1253,8 +1361,11 @@ class App:
         root.minsize(int(520 * sc), int(460 * sc))
         self._build()
         self._render()
+        self.root.bind("<Configure>", self._on_resize, add="+")   # responsiver Textumbruch
         if DATA_WARN:
             self.root.after(400, lambda: messagebox.showwarning("gems.json", DATA_WARN))
+        if not self.cfg.get("seen_intro"):
+            self.root.after(550, lambda: self._show_intro(force=False))
 
     def _t(self, de, en):
         return de if self.lang == "de" else en
@@ -1330,6 +1441,118 @@ class App:
         self.candidate = None
         self.cand_conf = 0
         self._render()
+
+    def _detect_build_from_gems(self):
+        """Datengetrieben: zu welchem Build passen deine GESCANNTEN Steine in Summe am
+        besten? Robuster als die Waffen-Icon-Erkennung. -> (build_key|None, anteil 0-1)."""
+        gems = self._collect_equipped_gems()
+        if not gems:
+            return None, 0.0
+        totals = {}
+        for b in BUILD_NAMES:
+            if not BUILD_PREFS.get(b):
+                continue
+            totals[b] = sum(self._score_for(g, b) for g, _ in gems)
+        if not totals:
+            return None, 0.0
+        best = max(totals, key=totals.get)
+        # Durchschnittliche Passung der Steine zu diesem Build (0-1) – intuitiver als
+        # ein Anteil über alle Builds.
+        share = totals[best] / (len(gems) * 100.0) if gems else 0.0
+        return best, share
+
+    def _gval(self, g):
+        """Angezeigter gelesener Wert eines Steins (z. B. '  ·  12%'), falls erkannt."""
+        ds = g.get("valstr")
+        return ("  ·  " + ds) if ds else ""
+
+    def _note_scan(self, kind, n):
+        """Merkt den letzten Scan für die Statuszeile."""
+        import time as _t
+        self._last_scan_txt = "%s · %d %s · %s" % (
+            kind, n, self._t("Steine", "gems"), _t.strftime("%H:%M"))
+
+    # ---------- responsiver Textumbruch ----------
+    def _on_resize(self, event):
+        if event.widget is not self.root:
+            return
+        w = self.root.winfo_width()
+        if w <= 1 or abs(w - self._last_w) < 24:
+            return
+        self._last_w = w
+        if self._reflow_after:
+            try:
+                self.root.after_cancel(self._reflow_after)
+            except Exception:
+                pass
+        self._reflow_after = self.root.after(120, self._reflow_now)
+
+    def _reflow_now(self):
+        """Setzt die Umbruchbreite aller Fließtext-Labels auf die aktuelle Fensterbreite
+        (nur Labels, die schon einen Umbruch haben) -> nutzt große Fenster aus."""
+        try:
+            w = self.root.winfo_width()
+        except Exception:
+            return
+        if w <= 1:
+            return
+        target = max(320, w - 90)
+        self._apply_wrap(self.root, target)
+
+    def _apply_wrap(self, widget, target):
+        for ch in widget.winfo_children():
+            try:
+                if isinstance(ch, tk.Label) and int(float(ch.cget("wraplength") or 0)) > 1:
+                    ch.configure(wraplength=target)
+            except Exception:
+                pass
+            self._apply_wrap(ch, target)
+
+    # ---------- Tooltips & Erste-Schritte ----------
+    def _tip(self, widget, de, en):
+        Tooltip(widget, lambda: self._t(de, en))
+
+    def _show_intro(self, force=False):
+        if not force and self.cfg.get("seen_intro"):
+            return
+        self.cfg["seen_intro"] = True
+        save_config(self.cfg)
+        messagebox.showinfo(
+            self._t("Erste Schritte", "Getting started"),
+            self._t(
+                "Willkommen beim Capybara Gem Scanner!\n\n"
+                "1) Oben den BUILD wählen (ändert alle Bewertungen).\n"
+                "2) ⚡ Schnell: einmal den Spielbereich mit den Edelstein-Effekten "
+                "markieren → liest alle Steine und bewertet sie.\n"
+                "3) 🔍 Slot: ausgerüstete Steine (rechts) + angewählten Stein (links) "
+                "markieren → klares Tausch-Urteil.\n"
+                "4) 🦸 Held: zeigt, was NICHT zu deinem Build passt (Build-Check).\n"
+                "5) 🧠 Skills: zeigt pro Build, welchen Skill du lernen/meiden solltest.\n\n"
+                "Tipp: DE⇄EN, hell/dunkel und 🔄 Update (DB aus dem Internet) findest du "
+                "oben rechts. Diese Hilfe öffnest du jederzeit über „❓ Hilfe“.",
+                "Welcome to the Capybara Gem Scanner!\n\n"
+                "1) Pick your BUILD at the top (it drives every rating).\n"
+                "2) ⚡ Quick: mark the game area with the gem effects once → it reads and "
+                "rates all gems.\n"
+                "3) 🔍 Slot: mark equipped gems (right) + the selected gem (left) → clear "
+                "swap verdict.\n"
+                "4) 🦸 Hero: shows what does NOT fit your build (Build Check).\n"
+                "5) 🧠 Skills: tells you per build which skill to learn/avoid.\n\n"
+                "Tip: DE⇄EN, light/dark and 🔄 Update (DB from the internet) are at the top "
+                "right. Reopen this help anytime via “❓ Help”."))
+
+    # ---------- Held: Steine direkt hier scannen ----------
+    def _hero_scan_gems(self):
+        """Scannt die Schnell-Region und füttert damit den Build-Check – ohne Tab-Wechsel."""
+        if not self.region_quick:
+            messagebox.showinfo(self._t("Bereich", "Region"), self._t(
+                "Markiere zuerst den Spielbereich mit den Edelstein-Effekten "
+                "(gleicher Bereich wie beim ⚡ Schnell-Scan).",
+                "First mark the game area with the gem effects "
+                "(same area as the ⚡ Quick scan)."))
+            self._set_region_quick()
+            return
+        self._scan_quick()
 
     # ---------- Capybara-Banner ----------
     @staticmethod
@@ -1426,6 +1649,19 @@ class App:
         self.btn_theme = tk.Button(head, command=self._toggle_theme, relief="flat", bd=0,
                                    bg=PANEL2, fg=TEXT, font=("Segoe UI", 9, "bold"), padx=8, pady=2)
         self.btn_theme.pack(side="right", padx=(0, 6))
+        self.btn_help = tk.Button(head, command=lambda: self._show_intro(force=True), relief="flat",
+                                  bd=0, bg=PANEL2, fg=TEXT, font=("Segoe UI", 9, "bold"), padx=8, pady=2)
+        self.btn_help.pack(side="right", padx=(0, 6))
+        self._tip(self.btn_help, "Kurze Erste-Schritte-Anleitung öffnen.",
+                  "Open the short getting-started guide.")
+        self._tip(self.btn_update, "Datenbank (gems/builds/skills) aus dem Internet aktualisieren – "
+                  "ein Klick lädt die offizielle Version von GitHub.",
+                  "Update the database (gems/builds/skills) from the internet – one click loads "
+                  "the official version from GitHub.")
+        self._tip(self.btn_theme, "Zwischen hellem und dunklem Design umschalten.",
+                  "Switch between light and dark look.")
+        self._tip(self.btn_lang, "Sprache Deutsch ⇄ Englisch umschalten.",
+                  "Switch language German ⇄ English.")
 
         tabs = tk.Frame(self.root, bg=BG); tabs.pack(fill="x", padx=14, pady=(8, 0))
         self.tab_quick = tk.Button(tabs, command=lambda: self._set_view("quick"), relief="flat",
@@ -1454,6 +1690,16 @@ class App:
         self.build_menu["menu"].configure(bg=PANEL2, fg=TEXT)
         self.build_menu.pack(side="left", fill="x", expand=True)
         self._rebuild_build_menu()   # Einträge mit sprachabhängigen Anzeigenamen füllen
+        self._tip(self.build_menu, "Dein aktiver Build. Steuert ALLE Bewertungen (Schnell, Slot, "
+                  "Held-Build-Check, Skills).", "Your active build. Drives ALL ratings (Quick, Slot, "
+                  "Hero Build Check, Skills).")
+
+        # ---- Statuszeile (unten, bleibt immer sichtbar) ----
+        self.status_bar = tk.Frame(self.root, bg=PANEL2, highlightthickness=1, highlightbackground=BORDER)
+        self.status_bar.pack(side="bottom", fill="x")
+        self.lbl_status = tk.Label(self.status_bar, text="", bg=PANEL2, fg=DIM, font=("Segoe UI", 8),
+                                   anchor="w", justify="left")
+        self.lbl_status.pack(side="left", fill="x", expand=True, padx=10, pady=3)
 
         # ---- SCANNER ----
         self.scan_view = tk.Frame(self.root, bg=BG)
@@ -1655,6 +1901,13 @@ class App:
         ht = tk.Frame(self.hero_view, bg=BG); ht.pack(fill="x", padx=14, pady=(10, 0))
         self.lbl_hero_intro = tk.Label(ht, bg=BG, fg=DIM, font=("Segoe UI", 8), anchor="w",
                                        justify="left", wraplength=500); self.lbl_hero_intro.pack(fill="x")
+        self.btn_hero_scan = tk.Button(ht, command=self._hero_scan_gems, bg=PURPLE, fg="#fff",
+                                       relief="flat", bd=0, font=("Segoe UI", 9, "bold"), padx=8, pady=6)
+        self.btn_hero_scan.pack(fill="x", pady=(8, 0))
+        self._tip(self.btn_hero_scan, "Scannt den Schnell-Bereich und füttert direkt den Build-Check "
+                  "unten – ohne in den Schnell-Tab zu wechseln.",
+                  "Scans the Quick area and feeds the Build Check below directly – without switching "
+                  "to the Quick tab.")
         self.btn_reg_hero = tk.Button(ht, command=self._set_region_hero, bg=PANEL2, fg=TEXT,
                                       relief="flat", bd=0, font=("Segoe UI", 9), padx=8, pady=6, anchor="w")
         self.btn_reg_hero.pack(fill="x", pady=(10, 0))
@@ -2034,6 +2287,7 @@ class App:
     def _apply_quick(self, results, unclear, dbg):
         self._busy2(self.btn_scan_quick, False, False, self._t("⚡  SCHNELL-SCAN", "⚡  QUICK SCAN"))
         self.quick_results = results; self.quick_unclear = unclear; self.dbg_quick = dbg
+        self._note_scan(self._t("Schnell-Scan", "Quick scan"), len(results))
         self._render()
 
     def _fmt_quick(self, blob, lines):
@@ -2468,28 +2722,50 @@ class App:
                  bg=BG, fg=TEXT, font=("Segoe UI", 13, "bold")).grid(
                  row=0, column=0, columnspan=2, sticky="w", padx=16, pady=(16, 2))
         tk.Label(win, text=self._t(
-            "Trage die URL zu einer gehosteten gems.json ein (z. B. GitHub-Raw, Gist oder dein NAS). "
-            "builds.json ist optional. Vor dem Überschreiben wird automatisch eine .bak-Sicherung angelegt.",
-            "Enter the URL to a hosted gems.json (e.g. GitHub raw, Gist, or your NAS). "
-            "builds.json is optional. A .bak backup is created before overwriting."),
+            "Ein Klick: „⬇ Offizielle DB von GitHub“ trägt die URLs des Community-Repos ein – dann "
+            "„Jetzt aktualisieren“. Oder eigene URLs (GitHub-Raw, Gist, NAS) eintragen. Vor dem "
+            "Überschreiben wird automatisch eine .bak-Sicherung angelegt.",
+            "One click: “⬇ Official DB from GitHub” fills in the community repo URLs – then "
+            "“Update now”. Or enter your own URLs (GitHub raw, Gist, NAS). A .bak backup is created "
+            "before overwriting."),
             bg=BG, fg=DIM, font=("Segoe UI", 9), justify="left", wraplength=480).grid(
-            row=1, column=0, columnspan=2, sticky="w", padx=16, pady=(0, 10))
+            row=1, column=0, columnspan=2, sticky="w", padx=16, pady=(0, 8))
+
+        v_g = tk.StringVar(value=self.cfg.get("db_gems_url") or (GITHUB_RAW_BASE + "gems.json"))
+        v_b = tk.StringVar(value=self.cfg.get("db_builds_url") or (GITHUB_RAW_BASE + "builds.json"))
+        v_s = tk.StringVar(value=self.cfg.get("db_skills_url") or (GITHUB_RAW_BASE + "skills.json"))
+
+        ghrow = tk.Frame(win, bg=BG); ghrow.grid(row=2, column=0, columnspan=2, sticky="w", padx=16, pady=(0, 8))
+
+        def use_github():
+            v_g.set(GITHUB_RAW_BASE + "gems.json")
+            v_b.set(GITHUB_RAW_BASE + "builds.json")
+            v_s.set(GITHUB_RAW_BASE + "skills.json")
+            status.configure(text=self._t("GitHub-URLs eingetragen — jetzt „Jetzt aktualisieren“ klicken.",
+                                          "GitHub URLs filled in — now click “Update now”."), fg=DIM)
+        tk.Button(ghrow, text=self._t("⬇ Offizielle DB von GitHub", "⬇ Official DB from GitHub"),
+                  command=use_github, bg=PANEL2, fg=TEXT, relief="flat", bd=0,
+                  font=("Segoe UI", 9, "bold"), padx=10, pady=5).pack(side="left")
+
         tk.Label(win, text="gems.json URL:", bg=BG, fg=DIM, font=("Segoe UI", 9)).grid(
-            row=2, column=0, columnspan=2, sticky="w", padx=16)
-        v_g = tk.StringVar(value=self.cfg.get("db_gems_url", ""))
+            row=3, column=0, columnspan=2, sticky="w", padx=16)
         tk.Entry(win, textvariable=v_g, width=56, bg=PANEL, fg=TEXT, insertbackground=TEXT, bd=0,
                  highlightthickness=1, highlightbackground=BORDER, font=("Segoe UI", 9)).grid(
-                 row=3, column=0, columnspan=2, sticky="we", padx=16, pady=(2, 8))
+                 row=4, column=0, columnspan=2, sticky="we", padx=16, pady=(2, 8))
         tk.Label(win, text=self._t("builds.json URL (optional):", "builds.json URL (optional):"),
-                 bg=BG, fg=DIM, font=("Segoe UI", 9)).grid(row=4, column=0, columnspan=2, sticky="w", padx=16)
-        v_b = tk.StringVar(value=self.cfg.get("db_builds_url", ""))
+                 bg=BG, fg=DIM, font=("Segoe UI", 9)).grid(row=5, column=0, columnspan=2, sticky="w", padx=16)
         tk.Entry(win, textvariable=v_b, width=56, bg=PANEL, fg=TEXT, insertbackground=TEXT, bd=0,
                  highlightthickness=1, highlightbackground=BORDER, font=("Segoe UI", 9)).grid(
-                 row=5, column=0, columnspan=2, sticky="we", padx=16, pady=(2, 8))
+                 row=6, column=0, columnspan=2, sticky="we", padx=16, pady=(2, 8))
+        tk.Label(win, text=self._t("skills.json URL (optional):", "skills.json URL (optional):"),
+                 bg=BG, fg=DIM, font=("Segoe UI", 9)).grid(row=7, column=0, columnspan=2, sticky="w", padx=16)
+        tk.Entry(win, textvariable=v_s, width=56, bg=PANEL, fg=TEXT, insertbackground=TEXT, bd=0,
+                 highlightthickness=1, highlightbackground=BORDER, font=("Segoe UI", 9)).grid(
+                 row=8, column=0, columnspan=2, sticky="we", padx=16, pady=(2, 8))
         status = tk.Label(win, text="", bg=BG, fg=DIM, font=("Segoe UI", 9), justify="left", wraplength=480)
-        status.grid(row=6, column=0, columnspan=2, sticky="w", padx=16, pady=(2, 0))
+        status.grid(row=9, column=0, columnspan=2, sticky="w", padx=16, pady=(2, 0))
 
-        btns = tk.Frame(win, bg=BG); btns.grid(row=7, column=0, columnspan=2, sticky="we", padx=16, pady=(12, 16))
+        btns = tk.Frame(win, bg=BG); btns.grid(row=10, column=0, columnspan=2, sticky="we", padx=16, pady=(12, 16))
         btn_go = tk.Button(btns, text=self._t("Jetzt aktualisieren", "Update now"), bg=PURPLE, fg="#fff",
                            relief="flat", bd=0, font=("Segoe UI", 10, "bold"), padx=14, pady=7)
         btn_go.pack(side="left")
@@ -2521,6 +2797,14 @@ class App:
                     self._rebuild_build_menu()
                     msgs.append(self._t("builds.json: %d Builds" % len(BUILD_LIST),
                                         "builds.json: %d builds" % len(BUILD_LIST)))
+                if "s" in res:
+                    data = json.loads(res["s"])
+                    if "skills" not in data:
+                        raise ValueError(self._t("keine gültige skills.json", "not a valid skills.json"))
+                    backup_and_write_json("skills.json", data)
+                    reload_skills()
+                    msgs.append(self._t("skills.json: %d Skills" % len(SKILLS_DB.get("skills", [])),
+                                        "skills.json: %d skills" % len(SKILLS_DB.get("skills", []))))
             except Exception as e:
                 status.configure(text=self._t("Datei ungültig: ", "Invalid file: ") + "%s" % e, fg=RED); return
             self.manual_menu = None
@@ -2529,11 +2813,12 @@ class App:
                              "  (old version saved as .bak)"), fg=GREEN)
 
         def run():
-            gurl = v_g.get().strip(); burl = v_b.get().strip()
-            if not gurl and not burl:
+            gurl = v_g.get().strip(); burl = v_b.get().strip(); surl = v_s.get().strip()
+            if not gurl and not burl and not surl:
                 status.configure(text=self._t("Bitte mindestens eine URL eintragen.",
                                               "Please enter at least one URL."), fg=AMBER); return
-            self.cfg["db_gems_url"] = gurl; self.cfg["db_builds_url"] = burl; save_config(self.cfg)
+            self.cfg["db_gems_url"] = gurl; self.cfg["db_builds_url"] = burl
+            self.cfg["db_skills_url"] = surl; save_config(self.cfg)
             btn_go.configure(state="disabled", text=self._t("… lädt …", "… loading …"))
             status.configure(text=self._t("Lade …", "Downloading …"), fg=DIM)
 
@@ -2544,6 +2829,8 @@ class App:
                         res["g"] = fetch_url(gurl)
                     if burl:
                         res["b"] = fetch_url(burl)
+                    if surl:
+                        res["s"] = fetch_url(surl)
                 except Exception as e:
                     res["err"] = "%s" % e
                 self.root.after(0, lambda: finish(res))
@@ -2581,8 +2868,20 @@ class App:
                             "Text not clear. Rest: '%s'. Check 'Details' or pick manually.") % self._gname(cand))
         cs = self._score(cand)
         if cand.get("de") in eq_des:
+            eqg = next((g for g, _ in eq if g.get("de") == cand.get("de")), None)
+            cv = cand.get("val"); ev = eqg.get("val") if eqg else None
+            if cv is not None and ev is not None and cv > ev:
+                return ("✅ " + self._t("STÄRKER – TAUSCHEN", "STRONGER – SWAP"), GREEN,
+                        self._t("Gleicher Effekt, aber HÖHER: ausgerüstet %s → Kandidat %s. Einbetten lohnt.",
+                                "Same effect but HIGHER: equipped %s → candidate %s. Worth embedding.")
+                        % (eqg.get("valstr") or "?", cand.get("valstr") or "?"))
+            extra = ""
+            if cv is not None and ev is not None and cv < ev:
+                extra = self._t("  (ausgerüstet %s ist höher als Kandidat %s)",
+                                "  (equipped %s is higher than candidate %s)") % (
+                                eqg.get("valstr") or "?", cand.get("valstr") or "?")
             return ("ℹ️ " + self._t("Schon ausgerüstet", "Already equipped"), DIM,
-                    self._t("„%s“ steckt bereits drin.", "'%s' is already slotted.") % self._gname(cand))
+                    (self._t("„%s“ steckt bereits drin.", "'%s' is already slotted.") % self._gname(cand)) + extra)
         if free > 0:
             return ("✅ " + self._t("EINFACH EINBETTEN", "JUST EMBED"), GREEN,
                     self._t("Du hast %d freie(n) Slot. Setz „%s“ (%d%%) ein – kein Tausch nötig.",
@@ -2634,6 +2933,31 @@ class App:
         else:
             self.guide_view.pack(fill="both", expand=True)
             self._fill_guide()
+        self._update_status()
+        self._reflow_now()
+
+    def _update_status(self):
+        """Statuszeile unten: gesetzte Regionen, Auto-Scan-Status, letzter Scan."""
+        def m(ok):
+            return "✓" if ok else "✗"
+        reg = self._t("Regionen: Schnell %s · Slot %s%s · Waffe %s",
+                      "Regions: Quick %s · Slot %s%s · Weapon %s") % (
+            m(self.region_quick), m(self.region_eq), m(self.region_cand), m(self.region_weapon))
+        autos = []
+        if self.scan_auto.get():
+            autos.append(self._t("Slot", "Slot"))
+        if self.skill_auto.get():
+            autos.append("Skills")
+        if self.auto_build.get():
+            autos.append(self._t("Waffe", "Weapon"))
+        au = (", ".join(autos)) if autos else self._t("aus", "off")
+        parts = [reg, self._t("Auto-Scan: ", "Auto-scan: ") + au]
+        if self._last_scan_txt:
+            parts.append(self._t("Zuletzt: ", "Last: ") + self._last_scan_txt)
+        try:
+            self.lbl_status.configure(text="   |   ".join(parts))
+        except Exception:
+            pass
 
     def _render_scanner(self):
         self.btn_pve.configure(bg=PURPLE if self.mode == "pve" else PANEL, fg="#fff" if self.mode == "pve" else DIM)
@@ -2998,8 +3322,8 @@ class App:
             top = tk.Frame(rf, bg=PANEL); top.pack(fill="x")
             tk.Label(top, text=sym, bg=PANEL, fg=syc, font=("Segoe UI", 10)).pack(side="left", padx=(8, 2), pady=(6, 0))
             tk.Label(top, text="[%s]" % tl, bg=PANEL, fg=tc, font=("Segoe UI", 10, "bold")).pack(side="left", padx=(0, 4), pady=(6, 0))
-            tk.Label(top, text=self._gname(g), bg=PANEL, fg=TEXT, font=("Segoe UI", 9), anchor="w",
-                     wraplength=300, justify="left").pack(side="left", fill="x", expand=True, pady=(6, 0))
+            tk.Label(top, text=self._gname(g) + self._gval(g), bg=PANEL, fg=TEXT, font=("Segoe UI", 9),
+                     anchor="w", wraplength=300, justify="left").pack(side="left", fill="x", expand=True, pady=(6, 0))
             tk.Label(top, text="%d%%" % sc, bg=tc, fg=self._text_on(tc), font=("Segoe UI", 9, "bold"),
                      padx=5).pack(side="right", padx=8, pady=(6, 0))
             reason = self._quick_reason(g, sc)
@@ -3214,6 +3538,9 @@ class App:
         self.btn_learn_weapon.configure(text=self._t("✚ Aktuelle Waffe merken", "✚ Learn current weapon"))
         self.btn_adopt_build.configure(text=self._t("→ Build auf Waffe setzen", "→ Set build to weapon"))
         self.btn_reset_weapon.configure(text=self._t("↺ Erkennung zurücksetzen", "↺ Reset recognition"))
+        self.btn_hero_scan.configure(text=self._t(
+            "🔍 Steine jetzt scannen (für Build-Check)", "🔍 Scan gems now (for Build Check)")
+            + ("   ✓" if self.region_quick else ""))
         self._update_auto_build_label()
 
         for x in self.hero_inner.winfo_children():
@@ -3244,7 +3571,7 @@ class App:
                 for g, _sc in have:
                     sc = self._score(g)
                     mk = "✅" if sc >= 55 else "⚠️"
-                    parts.append("%s %s (%d%%)" % (mk, self._gname(g), sc))
+                    parts.append("%s %s (%d%%)%s" % (mk, self._gname(g), sc, self._gval(g)))
                 tk.Label(card, text=self._t("Du hast hier: ", "You have here: ") + ", ".join(parts),
                          bg=PANEL, fg=TEXT, font=("Segoe UI", 8), anchor="w",
                          wraplength=470, justify="left").pack(anchor="w", padx=12, pady=(0, 7))
@@ -3294,6 +3621,17 @@ class App:
                 wraplength=470, justify="left").pack(anchor="w", padx=12, pady=(0, 10))
             return
         short = self._bname(self.build).split("(")[0].strip()
+        # Datengetrieben: zu welchem Build passt die Ausrüstung in Summe am besten?
+        db, share = self._detect_build_from_gems()
+        if db:
+            dbshort = self._bname(db).split("(")[0].strip()
+            same = (db == self.build)
+            tk.Label(panel, text=("🧭 " + (self._t("Deine Steine passen am besten zu: %s (%d%%)",
+                     "Your gems fit best: %s (%d%%)") % (dbshort, int(share * 100)))
+                     + ("" if same else self._t("  — du hast aber „%s“ gewählt",
+                        "  — but you selected “%s”") % short)),
+                     bg=PANEL2, fg=(GREEN if same else AMBER), font=("Segoe UI", 8, "bold"),
+                     anchor="w", wraplength=470, justify="left").pack(anchor="w", padx=12, pady=(0, 4))
         tk.Label(panel, text=self._t(
             "✅ %d passen   ·   ❌ %d gehören zu anderem Build   ·   • %d schwach",
             "✅ %d fit   ·   ❌ %d belong to another build   ·   • %d weak")
@@ -3301,13 +3639,13 @@ class App:
             font=("Segoe UI", 9, "bold"), anchor="w").pack(anchor="w", padx=12, pady=(0, 4))
         for g, src, sc, bestb, bs in sorted(wrong, key=lambda x: x[2]):
             bshort = self._bname(bestb).split("(")[0].strip()
-            tk.Label(panel, text="❌ %s — %s" % (self._gname(g), self._t(
+            tk.Label(panel, text="❌ %s%s — %s" % (self._gname(g), self._gval(g), self._t(
                 "nur %d%% für %s · gehört zu %s (%d%%)",
                 "only %d%% for %s · belongs to %s (%d%%)") % (sc, short, bshort, bs)),
                 bg=PANEL2, fg=RED, font=("Segoe UI", 8), anchor="w",
                 wraplength=470, justify="left").pack(anchor="w", padx=(18, 8))
         for g, src, sc in sorted(weak, key=lambda x: x[2]):
-            tk.Label(panel, text="• %s — %s" % (self._gname(g), self._t(
+            tk.Label(panel, text="• %s%s — %s" % (self._gname(g), self._gval(g), self._t(
                 "%d%% · schwach für %s", "%d%% · weak for %s") % (sc, short)),
                 bg=PANEL2, fg=AMBER, font=("Segoe UI", 8), anchor="w",
                 wraplength=470, justify="left").pack(anchor="w", padx=(18, 8))
