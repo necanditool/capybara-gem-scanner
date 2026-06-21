@@ -1,5 +1,5 @@
 =========================================================
-  Capybara Gem Scanner  -  Community Edition (v50)
+  Capybara Gem Scanner  -  Community Edition (v51)
   PATCHNOTES  (English)
 =========================================================
 
@@ -39,6 +39,17 @@ HOW TO USE (short)
 =========================================================
   WHAT'S NEW
 =========================================================
+
+v51 (header fits + version clarity):
+  - The header no longer cuts off the buttons: the start window is wider and the
+    buttons (? Help / Light / Update / DE<->EN) always keep their space - on a narrow
+    window the title shrinks/truncates instead of the buttons; title slightly smaller.
+  - The program version is now shown in the status bar at the bottom (e.g. "v51").
+  - The Update button now makes it clear: it updates ONLY the database
+    (gems/builds/skills), NOT the program. New: "Check for new version" (compares your
+    version with GitHub) and "Open GitHub" for the new installer.
+    NOTE: a new program version/UI only comes via the new installer - the Update button
+    only downloads data.
 
 v50 (help button always visible):
   - The help button now shows plain text "? Help" / "? Hilfe" instead of the emoji

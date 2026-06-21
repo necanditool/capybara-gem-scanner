@@ -7,6 +7,16 @@ Vollständige Versionshistorie. Was das Tool ist und wie man es installiert/benu
 
 ## English
 
+## New in v51 — header fits + version clarity
+- **The header no longer cuts off the buttons.** The start window is wider and the buttons
+  (? Help · Light · Update · DE⇄EN) always keep their space — on a narrow window the title
+  shrinks/truncates instead of the buttons.
+- **The program version is shown in the status bar** (e.g. "v51").
+- **The Update button now makes it clear it updates ONLY the database** (gems/builds/skills), not the
+  program. New: **"🔎 Check for new version"** (compares your version with GitHub) and
+  **"🌐 Open GitHub"** for the new installer. *(A new program version/UI only comes via the new
+  installer — the Update button only downloads data.)*
+
 ## New in v50 — help button always visible
 - The **Help button now shows plain text "? Help"** instead of the ❓ emoji (which could appear as an
   empty box on some systems) and is labelled from startup — no more empty rectangle.
@@ -310,6 +320,16 @@ a curated gem database (updated via the online button), and a loadout analyzer.
 ---
 
 ## Deutsch
+
+## Neu in v51 — Kopfzeile passt + Versions-Klarheit
+- **Die Kopfzeile schneidet die Knöpfe nicht mehr ab.** Das Startfenster ist breiter und die Knöpfe
+  (? Help · Light · Update · DE⇄EN) behalten immer ihren Platz — bei schmalem Fenster kürzt der Titel
+  statt der Knöpfe.
+- **Die Programm-Version steht jetzt in der Statuszeile** (z. B. „v51").
+- **Der Update-Knopf stellt jetzt klar, dass er NUR die Datenbank aktualisiert** (Steine/Builds/Skills),
+  nicht das Programm. Neu: **„🔎 Neue Version prüfen"** (vergleicht deine Version mit GitHub) und
+  **„🌐 GitHub öffnen"** für den neuen Installer. *(Eine neue Programm-Version/Oberfläche bekommst du
+  nur über den neuen Installer — der Update-Knopf lädt nur Daten.)*
 
 ## Neu in v50 — Hilfe-Knopf immer sichtbar
 - Der **Hilfe-Knopf zeigt jetzt reinen Text „? Hilfe"** statt des ❓-Emojis (das auf manchen Systemen

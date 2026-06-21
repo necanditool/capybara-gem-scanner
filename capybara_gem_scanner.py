@@ -2,11 +2,19 @@
 # -*- coding: utf-8 -*-
 """
 ================================================================================
- Capybara Gem Scanner  ·  Capybara Go            (v50 – Community Edition)
+ Capybara Gem Scanner  ·  Capybara Go            (v51 – Community Edition)
 ================================================================================
  Erkennt ausgerüstete + angewählte Edelsteine vom Bildschirm und bewertet sie
  für den jeweiligen Build. / Reads equipped + selected gems from screen and
  rates them for the chosen build.
+
+ Features (v51 – Kopfzeile passt + Versions-Klarheit):
+  • Kopfzeile schneidet die Knöpfe nicht mehr ab: Startfenster breiter (bis 720),
+    die Knöpfe (? Help · Light · Update · DE⇄EN) behalten immer ihren Platz – bei
+    schmalem Fenster weicht/kürzt der Titel statt der Knöpfe; Titel etwas kleiner.
+  • Programm-Version steht jetzt unten in der Statuszeile (z. B. „v51"). Der Update-
+    Dialog stellt klar: er aktualisiert NUR die Datenbank, nicht das Programm – mit
+    „🔎 Neue Version prüfen" (Vergleich gegen GitHub) und „🌐 GitHub öffnen".
 
  Features (v50 – Hilfe-Knopf garantiert sichtbar):
   • Der Hilfe-Knopf zeigt jetzt REINEN TEXT „? Hilfe" / „? Help" (kein ❓-Emoji mehr,
@@ -250,6 +258,7 @@ import threading
 import traceback
 import urllib.request
 import urllib.error
+import webbrowser
 
 import tkinter as tk
 from tkinter import messagebox
@@ -406,6 +415,12 @@ DETECT_THRESHOLD = 70
 AB_THRESHOLD = 0.80   # Mindest-Ähnlichkeit (0-1) für sichere Waffen->Build-Erkennung
 # Offizielles Community-Repo (GitHub) für das Ein-Klick-Online-Update der DB.
 GITHUB_RAW_BASE = "https://raw.githubusercontent.com/necanditool/capybara-gem-scanner/main/"
+GITHUB_REPO_URL = "https://github.com/necanditool/capybara-gem-scanner"
+# Programm-Version (= Code/.exe). WIRD BEI JEDEM RELEASE MITGEZOGEN (Checkliste).
+# Der „🔄 Update"-Knopf aktualisiert NUR die Datenbank (gems/builds/skills); diese
+# Konstante spiegelt die installierte PROGRAMM-Version und dient der Versionsanzeige
+# + „neue Version verfügbar?"-Prüfung gegen die zuletzt veröffentlichte DB-Version.
+APP_VERSION = "51"
 CATS = GEMS.get("_meta", {}).get("cats") or [
     "final", "rage", "dagger", "combo", "crit", "atk", "survival", "control",
     "pvp_ignore", "defensive", "coef_other", "conditional", "utility", "swordchi"]
@@ -1412,14 +1427,20 @@ class App:
         self._ui_scale = sc
         # Fensterhöhe an die Bildschirmhöhe anpassen (Taskleiste lassen), damit unten
         # nichts abgeschnitten wird. Alle Tabs sind scrollbar -> kleinere Fenster sind ok.
-        win_w = int(600 * sc)
+        # Breit genug, damit die Kopfzeile (Titel + ? Help · Light · Update · DE⇄EN)
+        # von Anfang an komplett lesbar ist. Auf schmale Bildschirme begrenzt.
+        try:
+            scr_w = root.winfo_screenwidth()
+        except Exception:
+            scr_w = int(1200 * sc)
+        win_w = min(int(720 * sc), max(int(520 * sc), scr_w - int(40 * sc)))
         try:
             scr_h = root.winfo_screenheight()
         except Exception:
             scr_h = int(1000 * sc)
         win_h = min(int(980 * sc), max(int(560 * sc), scr_h - int(70 * sc)))
         root.geometry("%dx%d" % (win_w, win_h))
-        root.minsize(int(520 * sc), int(460 * sc))
+        root.minsize(int(640 * sc), int(460 * sc))
         self._build()
         self._render()
         self.root.bind("<Configure>", self._on_resize, add="+")   # responsiver Textumbruch
@@ -1805,21 +1826,24 @@ class App:
     def _build(self):
         self._make_banner(self.root)   # Capybara-Banner (Bild oder Farbverlauf) ganz oben
         head = tk.Frame(self.root, bg=BG); head.pack(fill="x", padx=16, pady=(10, 6))
-        tk.Label(head, text="💎 Capybara Gem Scanner 💎", bg=BG, fg=GOLD,
-                 font=("Segoe UI", 16, "bold")).pack(side="left")
+        # Knöpfe ZUERST packen -> sie behalten immer ihren Platz; bei schmalem Fenster
+        # weicht/kürzt der Titel, statt dass der „? Help"-Knopf abgeschnitten wird.
         self.btn_lang = tk.Button(head, command=self._toggle_lang, relief="flat", bd=0,
-                                  bg=PANEL2, fg=TEXT, font=("Segoe UI", 9, "bold"), padx=8, pady=2)
+                                  bg=PANEL2, fg=TEXT, font=("Segoe UI", 9, "bold"), padx=7, pady=2)
         self.btn_lang.pack(side="right")
         self.btn_update = tk.Button(head, command=self._open_update, relief="flat", bd=0,
-                                    bg=PANEL2, fg=TEXT, font=("Segoe UI", 9, "bold"), padx=8, pady=2)
-        self.btn_update.pack(side="right", padx=(0, 6))
+                                    bg=PANEL2, fg=TEXT, font=("Segoe UI", 9, "bold"), padx=7, pady=2)
+        self.btn_update.pack(side="right", padx=(0, 5))
         self.btn_theme = tk.Button(head, command=self._toggle_theme, relief="flat", bd=0,
-                                   bg=PANEL2, fg=TEXT, font=("Segoe UI", 9, "bold"), padx=8, pady=2)
-        self.btn_theme.pack(side="right", padx=(0, 6))
+                                   bg=PANEL2, fg=TEXT, font=("Segoe UI", 9, "bold"), padx=7, pady=2)
+        self.btn_theme.pack(side="right", padx=(0, 5))
         self.btn_help = tk.Button(head, text=self._t("? Hilfe", "? Help"),
                                   command=lambda: self._show_help(force=True), relief="flat",
-                                  bd=0, bg=PANEL2, fg=TEXT, font=("Segoe UI", 9, "bold"), padx=8, pady=2)
-        self.btn_help.pack(side="right", padx=(0, 6))
+                                  bd=0, bg=PANEL2, fg=TEXT, font=("Segoe UI", 9, "bold"), padx=7, pady=2)
+        self.btn_help.pack(side="right", padx=(0, 5))
+        # Titel ZULETZT (nimmt den restlichen Platz links; kürzt zuerst, nie die Knöpfe).
+        tk.Label(head, text="💎 Capybara Gem Scanner 💎", bg=BG, fg=GOLD,
+                 font=("Segoe UI", 14, "bold"), anchor="w").pack(side="left")
         self._tip(self.btn_help, "Hilfe öffnen – erklärt jede Funktion des Tools.",
                   "Open Help – explains every function of the tool.")
         self._tip(self.btn_update, "Datenbank (gems/builds/skills) aus dem Internet aktualisieren – "
@@ -2885,17 +2909,18 @@ class App:
             win.grab_set()
         except Exception:
             pass
-        tk.Label(win, text=self._t("Datenbank aus dem Internet aktualisieren",
-                                   "Update the database from the internet"),
+        tk.Label(win, text=self._t("Online-Update (Datenbank) & Programm-Version",
+                                   "Online update (database) & program version"),
                  bg=BG, fg=TEXT, font=("Segoe UI", 13, "bold")).grid(
                  row=0, column=0, columnspan=2, sticky="w", padx=16, pady=(16, 2))
         tk.Label(win, text=self._t(
-            "Ein Klick: „⬇ Offizielle DB von GitHub“ trägt die URLs des Community-Repos ein – dann "
-            "„Jetzt aktualisieren“. Oder eigene URLs (GitHub-Raw, Gist, NAS) eintragen. Vor dem "
-            "Überschreiben wird automatisch eine .bak-Sicherung angelegt.",
-            "One click: “⬇ Official DB from GitHub” fills in the community repo URLs – then "
-            "“Update now”. Or enter your own URLs (GitHub raw, Gist, NAS). A .bak backup is created "
-            "before overwriting."),
+            "WICHTIG: Dieser Bereich aktualisiert nur die DATENBANK (Steine/Builds/Skills) – NICHT das "
+            "Programm selbst. Eine neue PROGRAMM-Version (neue Oberfläche/Funktionen) bekommst du nur "
+            "über den neuen Installer von GitHub (siehe „Neue Version prüfen“). Vor dem Überschreiben "
+            "der DB wird eine .bak-Sicherung angelegt.",
+            "IMPORTANT: this section only updates the DATABASE (gems/builds/skills) – NOT the program "
+            "itself. A new PROGRAM version (new UI/features) only comes via the new installer from "
+            "GitHub (see “Check for new version”). A .bak backup of the DB is made before overwriting."),
             bg=BG, fg=DIM, font=("Segoe UI", 9), justify="left", wraplength=480).grid(
             row=1, column=0, columnspan=2, sticky="w", padx=16, pady=(0, 8))
 
@@ -2903,8 +2928,56 @@ class App:
         v_b = tk.StringVar(value=self.cfg.get("db_builds_url") or (GITHUB_RAW_BASE + "builds.json"))
         v_s = tk.StringVar(value=self.cfg.get("db_skills_url") or (GITHUB_RAW_BASE + "skills.json"))
 
-        ghrow = tk.Frame(win, bg=BG); ghrow.grid(row=2, column=0, columnspan=2, sticky="w", padx=16, pady=(0, 8))
+        ghrow = tk.Frame(win, bg=BG); ghrow.grid(row=2, column=0, columnspan=2, sticky="we", padx=16, pady=(0, 8))
+        # --- Programm-Version: Anzeige + Prüfung + GitHub ---
+        verline = tk.Frame(ghrow, bg=BG); verline.pack(anchor="w", fill="x")
+        tk.Label(verline, text=self._t("Programm: v%s installiert", "Program: v%s installed") % APP_VERSION,
+                 bg=BG, fg=GOLD, font=("Segoe UI", 9, "bold")).pack(side="left")
 
+        def open_github():
+            try:
+                webbrowser.open(GITHUB_REPO_URL)
+            except Exception:
+                pass
+
+        def check_version():
+            verstat.configure(text=self._t("Prüfe …", "Checking …"), fg=DIM)
+
+            def work():
+                try:
+                    txt = fetch_url(GITHUB_RAW_BASE + "gems.json")
+                    latest = int(json.loads(txt).get("_meta", {}).get("version", 0))
+                except Exception as e:
+                    self.root.after(0, lambda: verstat.configure(
+                        text=self._t("Prüfung fehlgeschlagen: ", "Check failed: ") + ("%s" % e), fg=AMBER))
+                    return
+                cur = int(APP_VERSION) if APP_VERSION.isdigit() else 0
+
+                def show():
+                    if latest > cur:
+                        verstat.configure(text=self._t(
+                            "⬆ Neue Version v%d verfügbar! Lade den neuen Installer von GitHub "
+                            "(„GitHub öffnen“).",
+                            "⬆ New version v%d available! Download the new installer from GitHub "
+                            "(“Open GitHub”).") % latest, fg=GREEN)
+                    else:
+                        verstat.configure(text=self._t(
+                            "✓ Du hast die neueste Version (v%s).",
+                            "✓ You have the latest version (v%s).") % APP_VERSION, fg=GREEN)
+                self.root.after(0, show)
+            threading.Thread(target=work, daemon=True).start()
+
+        tk.Button(verline, text=self._t("🔎 Neue Version prüfen", "🔎 Check for new version"),
+                  command=check_version, bg=PANEL2, fg=TEXT, relief="flat", bd=0,
+                  font=("Segoe UI", 8, "bold"), padx=8, pady=4).pack(side="left", padx=(10, 0))
+        tk.Button(verline, text=self._t("🌐 GitHub öffnen", "🌐 Open GitHub"),
+                  command=open_github, bg=PANEL2, fg=TEXT, relief="flat", bd=0,
+                  font=("Segoe UI", 8, "bold"), padx=8, pady=4).pack(side="left", padx=(6, 0))
+        verstat = tk.Label(ghrow, text="", bg=BG, fg=DIM, font=("Segoe UI", 8), anchor="w",
+                           justify="left", wraplength=470)
+        verstat.pack(anchor="w", fill="x", pady=(4, 6))
+
+        # --- Datenbank in einem Klick aus dem offiziellen Repo ---
         def use_github():
             v_g.set(GITHUB_RAW_BASE + "gems.json")
             v_b.set(GITHUB_RAW_BASE + "builds.json")
@@ -2913,7 +2986,7 @@ class App:
                                           "GitHub URLs filled in — now click “Update now”."), fg=DIM)
         tk.Button(ghrow, text=self._t("⬇ Offizielle DB von GitHub", "⬇ Official DB from GitHub"),
                   command=use_github, bg=PANEL2, fg=TEXT, relief="flat", bd=0,
-                  font=("Segoe UI", 9, "bold"), padx=10, pady=5).pack(side="left")
+                  font=("Segoe UI", 9, "bold"), padx=10, pady=5).pack(anchor="w")
 
         tk.Label(win, text="gems.json URL:", bg=BG, fg=DIM, font=("Segoe UI", 9)).grid(
             row=3, column=0, columnspan=2, sticky="w", padx=16)
@@ -3120,7 +3193,7 @@ class App:
         if self.auto_build.get():
             autos.append(self._t("Waffe", "Weapon"))
         au = (", ".join(autos)) if autos else self._t("aus", "off")
-        parts = [reg, self._t("Auto-Scan: ", "Auto-scan: ") + au]
+        parts = ["v" + APP_VERSION, reg, self._t("Auto-Scan: ", "Auto-scan: ") + au]
         if self._last_scan_txt:
             parts.append(self._t("Zuletzt: ", "Last: ") + self._last_scan_txt)
         try:
