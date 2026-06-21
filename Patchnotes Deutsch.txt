@@ -1,5 +1,5 @@
 =========================================================
-  Capybara Gem Scanner  -  Community Edition (v49)
+  Capybara Gem Scanner  -  Community Edition (v50)
   PATCHNOTES  (Deutsch)
 =========================================================
 
@@ -40,6 +40,11 @@ BEDIENUNG (kurz)
 =========================================================
   WAS IST NEU
 =========================================================
+
+v50 (Hilfe-Knopf garantiert sichtbar):
+  - Der Hilfe-Knopf zeigt jetzt reinen Text "? Hilfe" / "? Help" statt des Emojis
+    (das auf manchen Systemen als leeres Kaestchen erschien) und ist schon beim Start
+    beschriftet - nie wieder ein leeres Kaestchen.
 
 v49 (In-App-Hilfe + Doku aufgeraeumt):
   - Der "Hilfe"-Knopf oben rechts oeffnet jetzt ein vollstaendiges, scrollbares

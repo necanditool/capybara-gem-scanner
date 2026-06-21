@@ -2,11 +2,16 @@
 # -*- coding: utf-8 -*-
 """
 ================================================================================
- Capybara Gem Scanner  ·  Capybara Go            (v49 – Community Edition)
+ Capybara Gem Scanner  ·  Capybara Go            (v50 – Community Edition)
 ================================================================================
  Erkennt ausgerüstete + angewählte Edelsteine vom Bildschirm und bewertet sie
  für den jeweiligen Build. / Reads equipped + selected gems from screen and
  rates them for the chosen build.
+
+ Features (v50 – Hilfe-Knopf garantiert sichtbar):
+  • Der Hilfe-Knopf zeigt jetzt REINEN TEXT „? Hilfe" / „? Help" (kein ❓-Emoji mehr,
+    das auf manchen Systemen als leeres Kästchen erschien) und ist schon beim Erzeugen
+    beschriftet – nie wieder ein leeres Kästchen, unabhängig von der Schriftart.
 
  Features (v49 – In-App-Hilfe + Doku aufgeräumt):
   • Der „❓ Hilfe"-Knopf öffnet jetzt ein vollständiges, scrollbares Hilfe-Fenster,
@@ -1680,7 +1685,7 @@ class App:
                 lambda ev: cv.yview_scroll(int(-1 * (ev.delta / 120)), "units")))
         cv.bind("<Leave>", lambda e: cv.unbind_all("<MouseWheel>"))
         win.bind("<Destroy>", lambda e: cv.unbind_all("<MouseWheel>"))
-        tk.Label(inner, text=self._t("❓ Hilfe & Funktionen", "❓ Help & features"), bg=BG, fg=GOLD,
+        tk.Label(inner, text=self._t("? Hilfe & Funktionen", "? Help & features"), bg=BG, fg=GOLD,
                  font=("Segoe UI", 14, "bold"), anchor="w").pack(fill="x", padx=16, pady=(14, 2))
         tk.Label(inner, text=self._t(
             "So funktioniert jeder Bereich des Tools:", "How each part of the tool works:"),
@@ -1811,7 +1816,8 @@ class App:
         self.btn_theme = tk.Button(head, command=self._toggle_theme, relief="flat", bd=0,
                                    bg=PANEL2, fg=TEXT, font=("Segoe UI", 9, "bold"), padx=8, pady=2)
         self.btn_theme.pack(side="right", padx=(0, 6))
-        self.btn_help = tk.Button(head, command=lambda: self._show_help(force=True), relief="flat",
+        self.btn_help = tk.Button(head, text=self._t("? Hilfe", "? Help"),
+                                  command=lambda: self._show_help(force=True), relief="flat",
                                   bd=0, bg=PANEL2, fg=TEXT, font=("Segoe UI", 9, "bold"), padx=8, pady=2)
         self.btn_help.pack(side="right", padx=(0, 6))
         self._tip(self.btn_help, "Hilfe öffnen – erklärt jede Funktion des Tools.",
@@ -3063,7 +3069,7 @@ class App:
     # ---------- render ----------
     def _render(self):
         self.btn_lang.configure(text="DE ⇄ EN")
-        self.btn_help.configure(text=self._t("❓ Hilfe", "❓ Help"))
+        self.btn_help.configure(text=self._t("? Hilfe", "? Help"))
         self.btn_update.configure(text=self._t("🔄 Update", "🔄 Update"))
         self.btn_theme.configure(text=self._t("🌙 Dunkel", "🌙 Dark") if self.theme == "light"
                                  else self._t("☀️ Hell", "☀️ Light"))

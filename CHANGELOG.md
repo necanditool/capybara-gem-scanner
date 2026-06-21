@@ -7,6 +7,10 @@ Vollständige Versionshistorie. Was das Tool ist und wie man es installiert/benu
 
 ## English
 
+## New in v50 — help button always visible
+- The **Help button now shows plain text "? Help"** instead of the ❓ emoji (which could appear as an
+  empty box on some systems) and is labelled from startup — no more empty rectangle.
+
 ## New in v49 — in-app help + docs cleaned up
 - **The "❓ Help" button now opens a full, scrollable help window** that explains every function
   (pick build, Quick, Slot, Hero/Build Check, Skills, Loadout, Guide, online update, antivirus,
@@ -306,6 +310,10 @@ a curated gem database (updated via the online button), and a loadout analyzer.
 ---
 
 ## Deutsch
+
+## Neu in v50 — Hilfe-Knopf immer sichtbar
+- Der **Hilfe-Knopf zeigt jetzt reinen Text „? Hilfe"** statt des ❓-Emojis (das auf manchen Systemen
+  als leeres Kästchen erscheinen konnte) und ist schon beim Start beschriftet — kein leeres Viereck mehr.
 
 ## Neu in v49 — In-App-Hilfe + Doku aufgeräumt
 - **Der „❓ Hilfe"-Knopf öffnet jetzt ein vollständiges, scrollbares Hilfe-Fenster**, das jede

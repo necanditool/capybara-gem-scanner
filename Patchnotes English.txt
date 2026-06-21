@@ -1,5 +1,5 @@
 =========================================================
-  Capybara Gem Scanner  -  Community Edition (v49)
+  Capybara Gem Scanner  -  Community Edition (v50)
   PATCHNOTES  (English)
 =========================================================
 
@@ -39,6 +39,11 @@ HOW TO USE (short)
 =========================================================
   WHAT'S NEW
 =========================================================
+
+v50 (help button always visible):
+  - The help button now shows plain text "? Help" / "? Hilfe" instead of the emoji
+    (which appeared as an empty box on some systems) and is labelled from startup -
+    no more empty box.
 
 v49 (in-app help + docs cleaned up):
   - The "Help" button (top right) now opens a full, scrollable help window that
