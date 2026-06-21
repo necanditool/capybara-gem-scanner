@@ -2,11 +2,20 @@
 # -*- coding: utf-8 -*-
 """
 ================================================================================
- Capybara Gem Scanner  ·  Capybara Go            (v48 – Community Edition)
+ Capybara Gem Scanner  ·  Capybara Go            (v49 – Community Edition)
 ================================================================================
  Erkennt ausgerüstete + angewählte Edelsteine vom Bildschirm und bewertet sie
  für den jeweiligen Build. / Reads equipped + selected gems from screen and
  rates them for the chosen build.
+
+ Features (v49 – In-App-Hilfe + Doku aufgeräumt):
+  • Der „❓ Hilfe"-Knopf öffnet jetzt ein vollständiges, scrollbares Hilfe-Fenster,
+    das JEDE Funktion erklärt (Build wählen · Schnell · Slot · Held/Build-Check ·
+    Skills · Loadout · Guide · Online-Update · Antivirus · Haftung), zweisprachig.
+    (Der Knopf hatte vorher versehentlich keine Beschriftung.)
+  • Doku-Struktur wie gute Programme: README.md = kompakte GitHub-Startseite
+    (Was/Download/Installieren/Benutzen), komplette Historie in CHANGELOG.md,
+    ausführliches Offline-Handbuch = die beiden PDFs, plus die In-App-Hilfe.
 
  Features (v48 – Balance-Audit: jeder Build korrekt bewertet):
   • Systematischer Audit über ALLE Steine × ALLE 8 Builds. Befund: Signatur-Steine
@@ -1412,7 +1421,7 @@ class App:
         if DATA_WARN:
             self.root.after(400, lambda: messagebox.showwarning("gems.json", DATA_WARN))
         if not self.cfg.get("seen_intro"):
-            self.root.after(550, lambda: self._show_intro(force=False))
+            self.root.after(550, lambda: self._show_help(force=False))
 
     def _t(self, de, en):
         return de if self.lang == "de" else en
@@ -1568,34 +1577,131 @@ class App:
     def _tip(self, widget, de, en):
         Tooltip(widget, lambda: self._t(de, en))
 
-    def _show_intro(self, force=False):
+    # ---------- In-App-Hilfe (erklärt jede Funktion, zweisprachig) ----------
+    def _help_sections(self):
+        """Liste (Überschrift, Text) – die komplette Funktions-Erklärung je Sprache."""
+        t = self._t
+        return [
+            (t("Was ist das?", "What is this?"),
+             t("Der Capybara Gem Scanner liest deine Edelsteine und Skills direkt vom Bildschirm "
+               "(z. B. Spiel im BlueStacks) und sagt dir – für den oben gewählten Build – ob sich "
+               "ein Stein/Skill lohnt. Er verändert das Spiel NICHT, er liest nur.",
+               "The Capybara Gem Scanner reads your gems and skills straight off the screen (e.g. the "
+               "game in BlueStacks) and tells you – for the build you pick above – whether a gem/skill "
+               "is worth it. It does NOT modify the game, it only reads.")),
+            (t("1) Build wählen (das Wichtigste)", "1) Pick your build (most important)"),
+             t("Oben das Build-Menü öffnen und deinen Build wählen. Das steuert ALLE Bewertungen in "
+               "allen Tabs – derselbe Stein kann für Build A top und für Build B schwach sein.",
+               "Open the build menu at the top and choose your build. It drives ALL ratings in every "
+               "tab – the same gem can be top for build A and weak for build B.")),
+            (t("⚡ Schnell-Scan", "⚡ Quick scan"),
+             t("Einmal den Spielbereich mit den Edelstein-Effekten markieren → der Scan liest ALLE "
+               "Steine auf einmal, sortiert sie (bester → schwächster) und zeigt oben den „Build-Doktor“ "
+               "(behalten / tauschen).",
+               "Mark the game area with the gem effects once → the scan reads ALL gems at once, sorts "
+               "them (best → weakest) and shows the “Build Doctor” on top (keep / swap).")),
+            (t("🔍 Slot-Scan (genauer Vergleich)", "🔍 Slot scan (precise compare)"),
+             t("PvE/PvP, Slot und Anzahl freier Slots wählen. Zwei Bereiche EINMAL festlegen: "
+               "1) „Ausgerüstet“ = rechte Spalte mit den Effekt-Kästen; 2) „Auswahl“ = linkes "
+               "Info-Fenster (mit „Attribut“). Stein im Spiel anwählen → „Scannen & vergleichen“ → "
+               "klares Urteil (lohnt sich / lohnt nicht / einbetten). Wert-bewusst: gleicher Effekt, "
+               "aber höherer % → Tausch-Tipp.",
+               "Choose PvE/PvP, the slot and the number of free slots. Set two regions ONCE: "
+               "1) “Equipped” = the right column of effect boxes; 2) “Selection” = the left info panel "
+               "(with “Attribute”). Select a gem in-game → “Scan & compare” → clear verdict (worth it / "
+               "not / embed). Value-aware: same effect but higher % → swap tip.")),
+            (t("🦸 Held / Build-Check", "🦸 Hero / Build Check"),
+             t("Zeigt deine gescannten Steine gegen den gewählten Build: was passt und was NICHT "
+               "(inkl. „gehört zu Build X“). Mit „🔍 Steine jetzt scannen“ direkt hier scannen.",
+               "Shows your scanned gems against the chosen build: what fits and what does NOT (incl. "
+               "“belongs to build X”). Use “🔍 Scan gems now” to scan right here.")),
+            (t("🧠 Skills", "🧠 Skills"),
+             t("Beim Stufenaufstieg die angebotenen Skills markieren → das Tool sagt pro Build, welchen "
+               "du LERNEN und welchen du MEIDEN solltest.",
+               "On level-up, mark the offered skills → the tool tells you, per build, which to LEARN and "
+               "which to AVOID.")),
+            (t("🎒 Loadout · 📖 Guide", "🎒 Loadout · 📖 Guide"),
+             t("Loadout = Gesamtübersicht deiner Slots mit Tipps. Guide = komplette Specs des gewählten "
+               "Builds (Helden, Brandmal, Pets, Edelstein-Ziele).",
+               "Loadout = full overview of your slots with tips. Guide = complete specs of the selected "
+               "build (heroes, brands, pets, gem targets).")),
+            (t("🔄 Online-Update", "🔄 Online update"),
+             t("Aktualisiert die Datenbank (Steine/Builds/Skills) aus dem Internet. Ein Klick „⬇ "
+               "Offizielle DB von GitHub“ trägt die URLs ein → „Jetzt aktualisieren“.",
+               "Updates the database (gems/builds/skills) from the internet. One click “⬇ Official DB "
+               "from GitHub” fills the URLs → “Update now”.")),
+            (t("Tipp: Bereiche markieren", "Tip: marking regions"),
+             t("Jeden Bereich nur EINMAL festlegen (bleibt gespeichert). Eng um den Effekt-Text ziehen, "
+               "ohne Knöpfe wie „Veredeln/Einbetten“. Funktioniert über mehrere Monitore.",
+               "Set each region only ONCE (it is remembered). Drag tightly around the effect text, "
+               "excluding buttons like “Refine/Embed”. Works across multiple monitors.")),
+            (t("Sprache · Design", "Language · Look"),
+             t("Oben rechts: DE ⇄ EN umschalten und 🌙/☀️ zwischen hell und dunkel wechseln. Deine Wahl "
+               "wird gemerkt.",
+               "Top right: toggle DE ⇄ EN and switch 🌙/☀️ between light and dark. Your choice is "
+               "remembered.")),
+            (t("⚠️ Antivirus (Fehlalarm)", "⚠️ Antivirus (false positive)"),
+             t("Manche Scanner schlagen an – das ist ein FEHLALARM, keine Schadsoftware (das Tool macht "
+               "Bildschirmfotos und die .bat installiert Pakete). Es werden keine Daten gesendet. "
+               "Lösung: Tool-Ordner in Windows Defender als Ausnahme hinzufügen.",
+               "Some scanners may flag it – that is a FALSE POSITIVE, not malware (the tool takes "
+               "screenshots and the .bat installs packages). No data is sent. Fix: add the tool's folder "
+               "as an exclusion in Windows Defender.")),
+            (t("Inoffiziell / Haftung", "Unofficial / disclaimer"),
+             t("Inoffizielles Fan-Tool, keine Verbindung zu „Capybara Go“. Werte sind "
+               "Community-Einschätzungen, keine offiziellen Daten. Nutzung auf eigene Gefahr.",
+               "Unofficial fan tool, not connected to “Capybara Go”. Values are community estimates, "
+               "not official data. Use at your own risk.")),
+        ]
+
+    def _show_help(self, force=False):
         if not force and self.cfg.get("seen_intro"):
             return
         self.cfg["seen_intro"] = True
         save_config(self.cfg)
-        messagebox.showinfo(
-            self._t("Erste Schritte", "Getting started"),
-            self._t(
-                "Willkommen beim Capybara Gem Scanner!\n\n"
-                "1) Oben den BUILD wählen (ändert alle Bewertungen).\n"
-                "2) ⚡ Schnell: einmal den Spielbereich mit den Edelstein-Effekten "
-                "markieren → liest alle Steine und bewertet sie.\n"
-                "3) 🔍 Slot: ausgerüstete Steine (rechts) + angewählten Stein (links) "
-                "markieren → klares Tausch-Urteil.\n"
-                "4) 🦸 Held: zeigt, was NICHT zu deinem Build passt (Build-Check).\n"
-                "5) 🧠 Skills: zeigt pro Build, welchen Skill du lernen/meiden solltest.\n\n"
-                "Tipp: DE⇄EN, hell/dunkel und 🔄 Update (DB aus dem Internet) findest du "
-                "oben rechts. Diese Hilfe öffnest du jederzeit über „❓ Hilfe“.",
-                "Welcome to the Capybara Gem Scanner!\n\n"
-                "1) Pick your BUILD at the top (it drives every rating).\n"
-                "2) ⚡ Quick: mark the game area with the gem effects once → it reads and "
-                "rates all gems.\n"
-                "3) 🔍 Slot: mark equipped gems (right) + the selected gem (left) → clear "
-                "swap verdict.\n"
-                "4) 🦸 Hero: shows what does NOT fit your build (Build Check).\n"
-                "5) 🧠 Skills: tells you per build which skill to learn/avoid.\n\n"
-                "Tip: DE⇄EN, light/dark and 🔄 Update (DB from the internet) are at the top "
-                "right. Reopen this help anytime via “❓ Help”."))
+        win = tk.Toplevel(self.root)
+        win.title(self._t("Hilfe – Capybara Gem Scanner", "Help – Capybara Gem Scanner"))
+        win.configure(bg=BG)
+        win.transient(self.root)
+        try:
+            sc = self._ui_scale
+        except Exception:
+            sc = 1.0
+        win.geometry("%dx%d" % (int(560 * sc), int(660 * sc)))
+        # scrollbarer Inhalt
+        cv = tk.Canvas(win, bg=BG, highlightthickness=0)
+        sb = tk.Scrollbar(win, command=cv.yview); cv.configure(yscrollcommand=sb.set)
+        sb.pack(side="right", fill="y"); cv.pack(side="left", fill="both", expand=True)
+        inner = tk.Frame(cv, bg=BG)
+        winid = cv.create_window((0, 0), window=inner, anchor="nw")
+        inner.bind("<Configure>", lambda e: cv.configure(scrollregion=cv.bbox("all")))
+        cv.bind("<Configure>", lambda e: cv.itemconfigure(winid, width=e.width))
+        cv.bind("<Enter>", lambda e: cv.bind_all("<MouseWheel>",
+                lambda ev: cv.yview_scroll(int(-1 * (ev.delta / 120)), "units")))
+        cv.bind("<Leave>", lambda e: cv.unbind_all("<MouseWheel>"))
+        win.bind("<Destroy>", lambda e: cv.unbind_all("<MouseWheel>"))
+        tk.Label(inner, text=self._t("❓ Hilfe & Funktionen", "❓ Help & features"), bg=BG, fg=GOLD,
+                 font=("Segoe UI", 14, "bold"), anchor="w").pack(fill="x", padx=16, pady=(14, 2))
+        tk.Label(inner, text=self._t(
+            "So funktioniert jeder Bereich des Tools:", "How each part of the tool works:"),
+            bg=BG, fg=DIM, font=("Segoe UI", 9), anchor="w").pack(fill="x", padx=16, pady=(0, 8))
+        for title, body in self._help_sections():
+            card = tk.Frame(inner, bg=PANEL, highlightbackground=BORDER, highlightthickness=1)
+            card.pack(fill="x", padx=14, pady=4)
+            tk.Label(card, text=title, bg=PANEL, fg=GOLD, font=("Segoe UI", 10, "bold"),
+                     anchor="w", justify="left", wraplength=int(490 * sc)).pack(fill="x", padx=10, pady=(7, 1))
+            tk.Label(card, text=body, bg=PANEL, fg=TEXT, font=("Segoe UI", 9), anchor="w",
+                     justify="left", wraplength=int(490 * sc)).pack(fill="x", padx=10, pady=(0, 8))
+        tk.Label(inner, text=self._t(
+            "Ausführliches Handbuch (offline): „Lies mich (Deutsch).pdf“. "
+            "Volle Versionshistorie: „Patchnotes Deutsch.txt“ / CHANGELOG.md.",
+            "Full manual (offline): “Read Me (English).pdf”. "
+            "Complete version history: “Patchnotes English.txt” / CHANGELOG.md."),
+            bg=BG, fg=DIM, font=("Segoe UI", 8), anchor="w", justify="left",
+            wraplength=int(510 * sc)).pack(fill="x", padx=16, pady=(8, 4))
+        tk.Button(inner, text=self._t("Schließen", "Close"), command=win.destroy, bg=PURPLE,
+                  fg="#fff", relief="flat", bd=0, font=("Segoe UI", 10, "bold"), padx=16,
+                  pady=6).pack(pady=(4, 16))
 
     # ---------- Held: Steine direkt hier scannen ----------
     def _hero_scan_gems(self):
@@ -1705,11 +1811,11 @@ class App:
         self.btn_theme = tk.Button(head, command=self._toggle_theme, relief="flat", bd=0,
                                    bg=PANEL2, fg=TEXT, font=("Segoe UI", 9, "bold"), padx=8, pady=2)
         self.btn_theme.pack(side="right", padx=(0, 6))
-        self.btn_help = tk.Button(head, command=lambda: self._show_intro(force=True), relief="flat",
+        self.btn_help = tk.Button(head, command=lambda: self._show_help(force=True), relief="flat",
                                   bd=0, bg=PANEL2, fg=TEXT, font=("Segoe UI", 9, "bold"), padx=8, pady=2)
         self.btn_help.pack(side="right", padx=(0, 6))
-        self._tip(self.btn_help, "Kurze Erste-Schritte-Anleitung öffnen.",
-                  "Open the short getting-started guide.")
+        self._tip(self.btn_help, "Hilfe öffnen – erklärt jede Funktion des Tools.",
+                  "Open Help – explains every function of the tool.")
         self._tip(self.btn_update, "Datenbank (gems/builds/skills) aus dem Internet aktualisieren – "
                   "ein Klick lädt die offizielle Version von GitHub.",
                   "Update the database (gems/builds/skills) from the internet – one click loads "
@@ -2957,6 +3063,7 @@ class App:
     # ---------- render ----------
     def _render(self):
         self.btn_lang.configure(text="DE ⇄ EN")
+        self.btn_help.configure(text=self._t("❓ Hilfe", "❓ Help"))
         self.btn_update.configure(text=self._t("🔄 Update", "🔄 Update"))
         self.btn_theme.configure(text=self._t("🌙 Dunkel", "🌙 Dark") if self.theme == "light"
                                  else self._t("☀️ Hell", "☀️ Light"))

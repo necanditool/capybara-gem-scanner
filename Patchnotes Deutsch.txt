@@ -1,5 +1,5 @@
 =========================================================
-  Capybara Gem Scanner  -  Community Edition (v48)
+  Capybara Gem Scanner  -  Community Edition (v49)
   PATCHNOTES  (Deutsch)
 =========================================================
 
@@ -40,6 +40,15 @@ BEDIENUNG (kurz)
 =========================================================
   WAS IST NEU
 =========================================================
+
+v49 (In-App-Hilfe + Doku aufgeraeumt):
+  - Der "Hilfe"-Knopf oben rechts oeffnet jetzt ein vollstaendiges, scrollbares
+    Hilfe-Fenster, das JEDE Funktion erklaert (Build waehlen, Schnell, Slot, Held/
+    Build-Check, Skills, Loadout, Guide, Online-Update, Antivirus, Haftung) -
+    zweisprachig. (Der Knopf hatte vorher versehentlich keine Beschriftung.)
+  - Doku wie gute Programme aufgeteilt: README.md = kompakte GitHub-Startseite
+    (Was/Download/Installieren/Benutzen), vollstaendige Historie in CHANGELOG.md,
+    ausfuehrliches Offline-Handbuch = die beiden PDFs (Lies mich / Read Me).
 
 v48 (Balance-Audit: jeder Build korrekt bewertet):
   - Systematischer Audit ueber ALLE Steine x ALLE 8 Builds. Befund: Signatur-Steine
