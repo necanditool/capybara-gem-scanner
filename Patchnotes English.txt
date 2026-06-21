@@ -1,5 +1,5 @@
 =========================================================
-  Capybara Gem Scanner  -  Community Edition (v51)
+  Capybara Gem Scanner  -  Community Edition (v53)
   PATCHNOTES  (English)
 =========================================================
 
@@ -39,6 +39,16 @@ HOW TO USE (short)
 =========================================================
   WHAT'S NEW
 =========================================================
+
+v53 (font scales with the window):
+  - Resizing the window now scales the WHOLE font with it - but CLAMPED (about 0.90x to
+    1.30x) so nothing gets too big or too small and nothing is hidden. Beyond that range
+    the font stays within these limits.
+
+v52 (banner fits the window width):
+  - The top banner now ALWAYS fills the full window width - no more light bars on the
+    sides. (The wider start window from v51 exposed the fixed-width banner.) It rescales
+    automatically when you resize the window.
 
 v51 (header fits + version clarity):
   - The header no longer cuts off the buttons: the start window is wider and the

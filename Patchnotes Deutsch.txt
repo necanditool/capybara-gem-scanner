@@ -1,5 +1,5 @@
 =========================================================
-  Capybara Gem Scanner  -  Community Edition (v51)
+  Capybara Gem Scanner  -  Community Edition (v53)
   PATCHNOTES  (Deutsch)
 =========================================================
 
@@ -40,6 +40,16 @@ BEDIENUNG (kurz)
 =========================================================
   WAS IST NEU
 =========================================================
+
+v53 (mitwachsende Schrift-Skalierung):
+  - Beim Vergroessern/Verkleinern des Fensters skaliert jetzt die GANZE Schrift mit -
+    aber GEKLEMMT (ca. 0,90x bis 1,30x), damit nichts zu gross oder zu klein wird und
+    nichts ausgeblendet wird. Ausserhalb dieses Rahmens bleibt die Schrift in den Grenzen.
+
+v52 (Banner passt zur Fensterbreite):
+  - Der Banner oben fuellt jetzt IMMER die volle Fensterbreite - keine hellen Raender
+    mehr. (Das breitere Startfenster aus v51 hatte den fest zugeschnittenen Banner
+    sichtbar gemacht.) Beim Vergroessern/Verkleinern skaliert der Banner automatisch mit.
 
 v51 (Kopfzeile passt + Versions-Klarheit):
   - Die Kopfzeile schneidet die Knoepfe nicht mehr ab: Startfenster ist breiter, die

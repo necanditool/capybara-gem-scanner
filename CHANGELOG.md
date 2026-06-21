@@ -7,6 +7,15 @@ Vollständige Versionshistorie. Was das Tool ist und wie man es installiert/benu
 
 ## English
 
+## New in v53 — font scales with the window
+- **Resizing the window now scales the whole font with it** — but **clamped** (about 0.90×–1.30×) so
+  nothing gets too big or too small and nothing is hidden. Beyond that range the font stays within
+  these limits.
+
+## New in v52 — banner fits the window width
+- **The top banner now always fills the full window width** — no more light bars on the sides. (The
+  wider start window from v51 exposed the fixed-width banner.) It rescales automatically on resize.
+
 ## New in v51 — header fits + version clarity
 - **The header no longer cuts off the buttons.** The start window is wider and the buttons
   (? Help · Light · Update · DE⇄EN) always keep their space — on a narrow window the title
@@ -320,6 +329,16 @@ a curated gem database (updated via the online button), and a loadout analyzer.
 ---
 
 ## Deutsch
+
+## Neu in v53 — Schrift skaliert mit dem Fenster
+- **Beim Vergrößern/Verkleinern des Fensters skaliert jetzt die ganze Schrift mit** — aber
+  **geklemmt** (ca. 0,90×–1,30×), damit nichts zu groß/klein wird und nichts ausgeblendet wird.
+  Außerhalb dieses Rahmens bleibt die Schrift in den Grenzen.
+
+## Neu in v52 — Banner passt zur Fensterbreite
+- **Der Banner oben füllt jetzt immer die volle Fensterbreite** — keine hellen Ränder mehr. (Das
+  breitere Startfenster aus v51 hatte den fest zugeschnittenen Banner sichtbar gemacht.) Er skaliert
+  beim Vergrößern/Verkleinern automatisch mit.
 
 ## Neu in v51 — Kopfzeile passt + Versions-Klarheit
 - **Die Kopfzeile schneidet die Knöpfe nicht mehr ab.** Das Startfenster ist breiter und die Knöpfe

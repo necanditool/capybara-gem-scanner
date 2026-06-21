@@ -2,11 +2,23 @@
 # -*- coding: utf-8 -*-
 """
 ================================================================================
- Capybara Gem Scanner  ·  Capybara Go            (v51 – Community Edition)
+ Capybara Gem Scanner  ·  Capybara Go            (v53 – Community Edition)
 ================================================================================
  Erkennt ausgerüstete + angewählte Edelsteine vom Bildschirm und bewertet sie
  für den jeweiligen Build. / Reads equipped + selected gems from screen and
  rates them for the chosen build.
+
+ Features (v53 – mitwachsende Schrift-Skalierung):
+  • Beim Vergrößern/Verkleinern des Fensters skaliert jetzt die GANZE Schrift mit –
+    aber GEKLEMMT (ca. 0,90×–1,30×), damit nichts zu groß/klein wird oder ausgeblendet
+    wird. Technik: globales Tk-Scaling = DPI-Basis × geklemmter Fensterfaktor, danach
+    Oberfläche neu aufgebaut (gegen Endlosschleife/Doppel-Skalierung abgesichert).
+
+ Features (v52 – Banner passt zur Fensterbreite):
+  • Der Banner oben füllt jetzt IMMER die volle Fensterbreite – keine hellen Ränder
+    mehr (das breitere Startfenster aus v51 hatte den fest auf 600 zugeschnittenen
+    Banner sichtbar gemacht). Quellbild wird einmal geladen und beim Vergrößern/
+    Verkleinern des Fensters automatisch neu skaliert.
 
  Features (v51 – Kopfzeile passt + Versions-Klarheit):
   • Kopfzeile schneidet die Knöpfe nicht mehr ab: Startfenster breiter (bis 720),
@@ -420,7 +432,7 @@ GITHUB_REPO_URL = "https://github.com/necanditool/capybara-gem-scanner"
 # Der „🔄 Update"-Knopf aktualisiert NUR die Datenbank (gems/builds/skills); diese
 # Konstante spiegelt die installierte PROGRAMM-Version und dient der Versionsanzeige
 # + „neue Version verfügbar?"-Prüfung gegen die zuletzt veröffentlichte DB-Version.
-APP_VERSION = "51"
+APP_VERSION = "53"
 CATS = GEMS.get("_meta", {}).get("cats") or [
     "final", "rage", "dagger", "combo", "crit", "atk", "survival", "control",
     "pvp_ignore", "defensive", "coef_other", "conditional", "utility", "swordchi"]
@@ -1414,6 +1426,9 @@ class App:
         self._last_scan_txt = ""       # Statuszeile: letzter Scan (Art + Trefferzahl)
         self._last_w = 0               # für responsiven Textumbruch (Resize-Drossel)
         self._reflow_after = None
+        self._cur_fontfactor = 1.0     # aktueller Schrift-Skalierungsfaktor (geklemmt)
+        self._rebuilding = False       # Schutz gegen Resize-Endlosschleife beim Neuaufbau
+        self._base_tkscale = 1.0       # Basis-Tk-Scaling (DPI) – Schriftfaktor multipliziert das
 
         root.title("Capybara Gem Scanner")
         root.configure(bg=BG)
@@ -1421,9 +1436,14 @@ class App:
         # Fenster proportional mitskalieren, damit das Layout gleich groß bleibt.
         try:
             sc = max(1.0, root.winfo_fpixels("1i") / 96.0)
-            root.tk.call("tk", "scaling", root.winfo_fpixels("1i") / 72.0)
+            self._base_tkscale = root.winfo_fpixels("1i") / 72.0
+            root.tk.call("tk", "scaling", self._base_tkscale)
         except Exception:
             sc = 1.0
+            try:
+                self._base_tkscale = float(root.tk.call("tk", "scaling"))
+            except Exception:
+                self._base_tkscale = 1.0
         self._ui_scale = sc
         # Fensterhöhe an die Bildschirmhöhe anpassen (Taskleiste lassen), damit unten
         # nichts abgeschnitten wird. Alle Tabs sind scrollbar -> kleinere Fenster sind ok.
@@ -1434,6 +1454,7 @@ class App:
         except Exception:
             scr_w = int(1200 * sc)
         win_w = min(int(720 * sc), max(int(520 * sc), scr_w - int(40 * sc)))
+        self._win_w = win_w   # Startbreite (für den Banner, bevor das Fenster gemappt ist)
         try:
             scr_h = root.winfo_screenheight()
         except Exception:
@@ -1563,9 +1584,9 @@ class App:
         self._last_scan_txt = "%s · %d %s · %s" % (
             kind, n, self._t("Steine", "gems"), _t.strftime("%H:%M"))
 
-    # ---------- responsiver Textumbruch ----------
+    # ---------- responsiver Textumbruch + Schrift-Skalierung ----------
     def _on_resize(self, event):
-        if event.widget is not self.root:
+        if event.widget is not self.root or self._rebuilding:
             return
         w = self.root.winfo_width()
         if w <= 1 or abs(w - self._last_w) < 24:
@@ -1576,7 +1597,49 @@ class App:
                 self.root.after_cancel(self._reflow_after)
             except Exception:
                 pass
-        self._reflow_after = self.root.after(120, self._reflow_now)
+        self._reflow_after = self.root.after(140, self._resize_settled)
+
+    def _resize_settled(self):
+        """Nach dem Vergrößern/Verkleinern: Schrift mit der Fensterbreite skalieren
+        (geklemmt), Texte umbrechen und den Banner neu rendern. Läuft nur nach echtem
+        Resize (gedrosselt), nicht bei jedem _render."""
+        try:
+            w = self.root.winfo_width()
+        except Exception:
+            w = getattr(self, "_win_w", 720)
+        if w <= 1:
+            w = getattr(self, "_win_w", 720)
+        self._apply_window_scale(w)
+
+    def _font_factor_for(self, w):
+        """Schrift-Skalierungsfaktor aus der Fensterbreite – GEKLEMMT, damit die Schrift
+        nie zu klein oder zu groß wird (und nichts ausgeblendet wird)."""
+        base = max(1, int(720 * self._ui_scale))
+        return max(0.90, min(1.30, w / base))
+
+    def _apply_window_scale(self, w):
+        """Wendet den (geklemmten) Schriftfaktor an: ändert das globale Tk-Scaling und
+        baut die Oberfläche neu auf (damit alle Punkt-Schriften neu vermessen werden).
+        Nur bei spürbarer Änderung -> sonst nur Umbruch + Banner (günstig)."""
+        if self._rebuilding:
+            return
+        factor = self._font_factor_for(w)
+        if abs(factor - self._cur_fontfactor) >= 0.04:
+            self._cur_fontfactor = factor
+            self._rebuilding = True
+            try:
+                try:
+                    self.root.tk.call("tk", "scaling", self._base_tkscale * factor)
+                except Exception:
+                    pass
+                self._rebuild()   # Widgets neu -> Punkt-Schriften skalieren mit; reflow+banner inklusive
+            except Exception:
+                pass
+            finally:
+                self._rebuilding = False
+        else:
+            self._reflow_now()
+            self._render_banner()
 
     def _reflow_now(self):
         """Setzt die Umbruchbreite aller Fließtext-Labels auf die aktuelle Fensterbreite
@@ -1789,23 +1852,44 @@ class App:
 
     def _make_banner(self, parent):
         """Banner ganz oben: nutzt 'capybara_banner.(png|jpg)' aus dem Tool-Ordner,
-        sonst einen erzeugten Farbverlauf. Bricht den Start nie ab."""
+        sonst einen erzeugten Farbverlauf. Lädt das Quellbild EINMAL und legt ein
+        Label an; `_render_banner` skaliert es auf die aktuelle Fensterbreite (auch
+        beim Vergrößern), damit nie helle Ränder entstehen. Bricht den Start nie ab."""
         try:
             from PIL import Image, ImageTk
         except Exception:
             return
+        self._ImageTk = ImageTk
+        self._banner_src = None
         try:
-            sc = getattr(self, "_ui_scale", 1.0)
-            w, h = int(600 * sc), int(200 * sc)
-            img = None
             for nm in ("capybara_banner.png", "capybara_banner.jpg",
                        "capybara_banner.jpeg", "capybara.png", "capybara.jpg"):
                 p = os.path.join(HERE, nm)
                 if os.path.exists(p):
-                    img = Image.open(p).convert("RGB"); break
-            if img is not None:
-                r = w / img.width
-                img = img.resize((w, max(1, int(img.height * r))), Image.LANCZOS)
+                    self._banner_src = Image.open(p).convert("RGB"); break
+        except Exception:
+            self._banner_src = None
+        self._banner_label = tk.Label(parent, bd=0, bg=BG)
+        self._banner_label.pack(fill="x")
+        self._render_banner()
+
+    def _render_banner(self, w=None):
+        """(Re)rendert den Banner auf Breite w (Standard: aktuelle Fensterbreite),
+        füllt also immer die volle Breite – kein heller Rand mehr nach dem Vergrößern."""
+        try:
+            from PIL import Image
+            if not getattr(self, "_banner_label", None):
+                return
+            sc = getattr(self, "_ui_scale", 1.0)
+            if w is None:
+                w = self.root.winfo_width()
+                if w <= 1:
+                    w = getattr(self, "_win_w", int(720 * sc))
+            w = max(320, int(w)); h = int(200 * sc)
+            src = getattr(self, "_banner_src", None)
+            if src is not None:
+                r = w / src.width
+                img = src.resize((w, max(1, int(src.height * r))), Image.LANCZOS)
                 if img.height >= h:
                     top = int(img.height * 0.06)   # Krone + ganzes Gesicht + Schwert im Blick
                     if top + h > img.height:
@@ -1817,8 +1901,8 @@ class App:
             else:
                 img = self._gradient_banner(w, h)
             self._banner_fade(img)
-            self._banner_img = ImageTk.PhotoImage(img)
-            tk.Label(parent, image=self._banner_img, bd=0, bg=BG).pack(fill="x")
+            self._banner_img = self._ImageTk.PhotoImage(img)
+            self._banner_label.configure(image=self._banner_img)
         except Exception:
             pass
 
